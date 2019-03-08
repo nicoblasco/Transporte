@@ -1,0 +1,563 @@
+﻿@model Transporte.ViewModel.TransportCreateViewModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //string Usuario = Model.Usuario == null ? null : Model.Usuario.Nombreusuario;
+
+}
+
+<style>
+    .btn-sm {
+        font-size: 12px;
+        height: 30px;
+        margin-bottom: 3px;
+    }
+
+
+    .ck-sm {
+        font-size: 12px;
+    }
+
+    .select2 {
+        font-size: 12px;
+    }
+
+    label {
+        font-size: 12px;
+    }
+
+
+    .sol-container {
+        padding: 0px;
+    }
+
+    .red {
+        color: #a94442;
+    }
+
+    .color-well {
+        background-color: ghostwhite;
+    }
+
+    .btn-mas.fa-plus {
+        color: #FFFFFF;
+        background-color: #30ced6;
+        border-radius: 20px;
+        padding: 6px 1px 4px 1px;
+        font-size: 14px;
+    }
+
+    .btn-mas {
+        cursor: pointer;
+        margin: 0px;
+        font-size: 18px;
+        text-align: center;
+        vertical-align: middle;
+        width: 25px;
+        height: 25px;
+    }
+
+    .fa {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .btn-mas.fa-trash {
+        color: #FFFFFF;
+        background-color: #a02789;
+        border-radius: 20px;
+        padding: 6px 1px 4px 1px;
+        font-size: 14px;
+    }
+
+
+    .title {
+        color: black;
+        padding-top: 10px;
+    }
+</style>
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div id="page-wrapper">
+        <div class="row">
+            <form id="form-create" role="form" >
+                <div class="col-lg-12">
+                    <!-- /.Panel de Datos de Alta -->
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="well">
+                                <div class="well-body">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>Tipo</label><span class="red"> * </span>
+                                                @Html.DropDownListFor(model => model.TransportTypeId, new SelectList(ViewBag.listaTipos, "Id", "Descripcion"), "Seleccione...", new { @class = "form-control input-sm", id = "ddlTipoLicencia" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Expediente</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Expediente, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>Dominio</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Dominio, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Marca</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Marca, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label>Modelo</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label>Fecha Inscrip Inicial</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso", @type = "datetime" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Desinfección</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso", @type = "datetime" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Constatación</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso", @type = "datetime" } })
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label>Vto Poliza</label><span class="red"> * </span>
+                                        @Html.EditorFor(model => model.Dominio, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <label>VTV</label><span class="red"> * </span>
+                                        @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>Const.Opcion AFIP</label><span class="red"> * </span>
+                                        @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso", @type = "datetime" } })
+                                    </div>
+
+                                </div>
+
+                                @*       TITULARES        *@
+                                <div class="row">
+                                    <div class="col-lg-12 f-cost">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title">
+                                                    <h4 class="title"><b>Titular/es:</b></h4>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="copiedTitulares"></div>
+
+                                            <div id="PanelTitulares" class="card-body">
+                                                <div class="well color-well">
+                                                    <div class="well-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Nombre</label><span class="red"> * </span>
+                                                                    <input id="nombre" class="form-control input-sm" type="text" name="Persons[0].Nombre">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Apellido</label><span class="red"> * </span>
+                                                                    <input id="apellido" class="form-control input-sm" type="text" name="Persons[0].Apellido">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>DNI</label><span class="red"> * </span>
+                                                                    <input id="DNI" class="form-control input-sm" type="text" name="Persons[0].DNI">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 margin-top-15 text-right">
+                                                                <span id="AgregarTitular" class="btn-mas fa fa-plus"></span>
+                                                                <span id="QuitarTitular" class="btn-mas fa fa-trash"></span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Domicilio Real</label><span class="red"> * </span>
+                                                                    <input id="nombre" class="form-control input-sm" type="text" name="Persons[0].Nombre">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Domicilio Constituido</label><span class="red"> * </span>
+                                                                    <input id="apellido" class="form-control input-sm" type="text" name="Persons[0].Apellido">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>Teléfono</label><span class="red"> * </span>
+                                                                    <input id="DNI" class="form-control input-sm" type="text" name="Persons[0].DNI">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>E-mail</label><span class="red"> * </span>
+                                                                    <input id="DNI" class="form-control input-sm" type="text" name="Persons[0].DNI">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                @*       CHOFERES        *@
+                                <div class="row">
+                                    <div class="col-lg-12 f-cost">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title">
+                                                    <h4 class="title"><b>Chofer/es:</b></h4>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="copiedChoferes"></div>
+
+                                            <div id="PanelChoferes" class="card-body">
+                                                <div class="well color-well">
+                                                    <div class="well-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>Nombre</label><span class="red"> * </span>
+                                                                    <input id="nombre" class="form-control input-sm" type="text" name="Persons[0].Nombre">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>Apellido</label><span class="red"> * </span>
+                                                                    <input id="apellido" class="form-control input-sm" type="text" name="Persons[0].Apellido">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>DNI</label><span class="red"> * </span>
+                                                                    <input id="DNI" class="form-control input-sm" type="text" name="Persons[0].DNI">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="form-group">
+                                                                    <label>Fecha Vto Licencia</label>
+                                                                    <input class="form-control input-sm input-date input-width" id="input-FechaDeNacimiento" type="text" name="inputFechaDeNacimiento">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="form-group">
+                                                                    <label>Fecha Vto Libreta</label>
+                                                                    <input class="form-control input-sm input-date input-width" id="input-FechaDeNacimiento" type="text" name="inputFechaDeNacimiento">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 margin-top-15 text-right">
+                                                                <span id="AgregarChofer" class="btn-mas fa fa-plus"></span>
+                                                                <span id="QuitarChofer" class="btn-mas fa fa-trash"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                @*CELADORES*@
+                                <div class="row">
+                                    <div class="col-lg-12 f-cost">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title">
+                                                    <h4 class="title"><b>Celadora/s:</b></h4>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="copiedCeladores"></div>
+
+                                            <div id="PanelCeladores" class="card-body">
+                                                <div class="well color-well">
+                                                    <div class="well-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>Nombre</label><span class="red"> * </span>
+                                                                    <input id="nombre" class="form-control input-sm" type="text" name="Persons[0].Nombre">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>Apellido</label><span class="red"> * </span>
+                                                                    <input id="apellido" class="form-control input-sm" type="text" name="Persons[0].Apellido">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>DNI</label><span class="red"> * </span>
+                                                                    <input id="DNI" class="form-control input-sm" type="text" name="Persons[0].DNI">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="form-group">
+                                                                    <label>Fecha Vto Libreta</label>
+                                                                    <input class="form-control input-sm input-date input-width" id="input-FechaDeNacimiento" type="text" name="inputFechaDeNacimiento">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 margin-top-15 text-right">
+                                                                <span id="AgregarCelador" class="btn-mas fa fa-plus"></span>
+                                                                <span id="QuitarCelador" class="btn-mas fa fa-trash"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>    
+                        <!-- /. FIN Panel de Datos del Turno -->
+
+
+
+                </div>
+                <!-- /.col-lg-12 -->
+
+            </form>
+
+            <!-- /.form -->
+        </div>
+
+        <!-- /.ro -->
+    </div>
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
+    <script>
+
+        //$('#dt-FechaIngreso').attr("readonly", "readonly")
+        //Datepicker
+        $.datetimepicker.setLocale('es');
+
+        $('.input-date').datetimepicker({
+            timepicker: false,
+            format: 'd/m/Y',
+            scrollInput: false,
+            date: new Date(Date.now())
+        });
+
+        $('#input-FechaDeNacimiento').datetimepicker({
+            locale: 'es'
+        });
+
+        $('#QuitarTitular').hide();
+        $('#QuitarChofer').hide();
+        $('#QuitarCelador').hide();
+
+        //Titulares
+        $(document).on('click', '#AgregarTitular', function () {
+            //Busco el contenedor del boton que hizo click
+
+            var item = $(this).parents('#PanelTitulares').clone(true);
+
+            $(this).closest('#AgregarTitular').hide();
+            $(this).parents('#PanelTitulares').find('#QuitarTitular').show();
+
+            //var item = $("div#PanelNovedades.row-Hide").clone(true);
+            //var itemHide = $("div#PanelNovedades.row-Hide");
+
+
+
+            //Incremento el indice
+            $(item).find('input').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+                $this.val('');
+            });
+            $(item).find('select').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+            });
+
+
+
+            //Reemplazo el boton
+            $(item).find('#QuitarTitular').hide();
+            $(item).find('#AgregarTitular').show();
+            //cambio el id
+            // $(item).toggleClass('row-Hide row');
+            $(item).prependTo('#copiedTitulares');
+            $(item).show();
+
+        });
+
+        //CHOFERES
+        $(document).on('click', '#AgregarChofer', function () {
+            //Busco el contenedor del boton que hizo click
+
+            var item = $(this).parents('#PanelChoferes').clone(true);
+
+            $(this).closest('#AgregarChofer').hide();
+            $(this).parents('#PanelChoferes').find('#QuitarChofer').show();
+
+            //var item = $("div#PanelNovedades.row-Hide").clone(true);
+            //var itemHide = $("div#PanelNovedades.row-Hide");
+
+
+
+            //Incremento el indice
+            $(item).find('input').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+                $this.val('');
+            });
+            $(item).find('select').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+            });
+
+
+
+            //Reemplazo el boton
+            $(item).find('#QuitarChofer').hide();
+            $(item).find('#AgregarChofer').show();
+            //cambio el id
+            // $(item).toggleClass('row-Hide row');
+            $(item).prependTo('#copiedChoferes');
+            $(item).show();
+
+        });
+
+
+        //CELADORAS
+        $(document).on('click', '#AgregarCelador', function () {
+            //Busco el contenedor del boton que hizo click
+
+            var item = $(this).parents('#PanelCeladores').clone(true);
+
+            $(this).closest('#AgregarCelador').hide();
+            $(this).parents('#PanelCeladores').find('#QuitarCelador').show();
+
+            //var item = $("div#PanelNovedades.row-Hide").clone(true);
+            //var itemHide = $("div#PanelNovedades.row-Hide");
+
+
+
+            //Incremento el indice
+            $(item).find('input').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+                $this.val('');
+            });
+            $(item).find('select').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+            });
+
+
+
+            //Reemplazo el boton
+            $(item).find('#QuitarCelador').hide();
+            $(item).find('#AgregarCelador').show();
+            //cambio el id
+            // $(item).toggleClass('row-Hide row');
+            $(item).prependTo('#copiedCeladores');
+            $(item).show();
+
+        });
+
+
+        $(document).on('click', '#QuitarTitular', function () {
+
+            $(this).parents('#PanelTitulares').remove();
+
+        });
+
+        $(document).on('click', '#QuitarChofer', function () {
+
+            $(this).parents('#PanelChoferes').remove();
+
+        });
+
+        $(document).on('click', '#QuitarCelador', function () {
+
+            $(this).parents('#PanelCeladores').remove();
+
+        });
+
+    </script>
+
+}
+
+
+

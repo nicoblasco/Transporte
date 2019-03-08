@@ -1,0 +1,99 @@
+﻿@model Transporte.Models.Transport
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Transport</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TransportTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransportTypeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransportType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransportType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Expediente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Expediente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Dominio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dominio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Observaciones)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Observaciones)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VtoPoliza)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VtoPoliza)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReciboPagoSeguro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReciboPagoSeguro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VtoVTV)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VtoVTV)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VtoMatafuego)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VtoMatafuego)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VtoConstanciaAFIP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VtoConstanciaAFIP)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
