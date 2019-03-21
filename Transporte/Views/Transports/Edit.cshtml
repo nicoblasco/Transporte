@@ -1,115 +1,1001 @@
-﻿@model Transporte.Models.Transport
+﻿@model Transporte.ViewModel.TransportEditViewModel
 
 @{
+    /**/
+
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //string Usuario = Model.Usuario == null ? null : Model.Usuario.Nombreusuario;
+
 }
 
-<h2>Edit</h2>
+<style>
+    .btn-sm {
+        font-size: 12px;
+        height: 30px;
+        margin-bottom: 3px;
+    }
+
+
+    .ck-sm {
+        font-size: 12px;
+    }
+
+    .select2 {
+        font-size: 12px;
+    }
+
+    label {
+        font-size: 12px;
+    }
+
+
+    .sol-container {
+        padding: 0px;
+    }
+
+    .red {
+        color: #a94442;
+    }
+
+    .color-well {
+        background-color: ghostwhite;
+    }
+
+    .btn-mas.fa-plus {
+        color: #FFFFFF;
+        background-color: #30ced6;
+        border-radius: 20px;
+        padding: 6px 1px 4px 1px;
+        font-size: 14px;
+    }
+
+    .btn-mas {
+        cursor: pointer;
+        margin: 0px;
+        font-size: 18px;
+        text-align: center;
+        vertical-align: middle;
+        width: 25px;
+        height: 25px;
+    }
+
+    .fa {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .btn-mas.fa-trash {
+        color: #FFFFFF;
+        background-color: #a02789;
+        border-radius: 20px;
+        padding: 6px 1px 4px 1px;
+        font-size: 14px;
+    }
+
+
+    .title {
+        color: black;
+        padding-top: 10px;
+    }
+
+    .date-error {
+        background-color: #ff6666; /* red */
+    }
+
+    .date-warning {
+        background-color: #ffff99; /* yellow */
+    }
+
+</style>
+
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Transport</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TransportTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TransportTypeId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TransportTypeId, "", new { @class = "text-danger" })
-            </div>
+    @Html.HiddenFor(model => model.Id); 
+    <div id="page-wrapper">
+        <div class="row">
+            <form id="form-create" role="form">
+                <div class="col-lg-12">
+                    <!-- /.Panel de Datos de Alta -->
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="well">
+                                <div class="well-body">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>Tipo</label><span class="red"> * </span>
+                                                @Html.DropDownListFor(model => model.TransportTypeId, new SelectList(ViewBag.listaTipos, "Id", "Descripcion"), "Seleccione...", new { @class = "form-control input-sm", id = "TransportTypeId" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Expediente</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Expediente, new { htmlAttributes = new { @class = "form-control input-sm", id = "Expediente" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>Dominio</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Dominio, new { htmlAttributes = new { @class = "form-control input-sm", id = "Dominio" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Marca</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Marca, new { htmlAttributes = new { @class = "form-control input-sm", id = "Marca" } })
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label>Modelo</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "Modelo" } })
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label>Fecha Inscrip Inicial</label><span class="red"> * </span>
+                                                @*@Html.EditorFor(model => model.FechaInscripcionInicial, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "FechaInscripcionInicial", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.FechaInscripcionInicial, new { @Value = Model.FechaInscripcionInicial.HasValue ? Model.FechaInscripcionInicial.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width", id = "FechaInscripcionInicial", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Fecha Desinfección</label><span class="red"> * </span>
+                                                @*@Html.EditorFor(model => model.Desinfeccion, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "Desinfeccion", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.Desinfeccion, new { @Value = Model.Desinfeccion.HasValue ? Model.Desinfeccion.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width", id = "Desinfeccion", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Fecha Constatación</label><span class="red"> * </span>
+                                                @*@Html.EditorFor(model => model.Constatacion, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "Constatacion", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.Constatacion, new { @Value = Model.Constatacion.HasValue ? Model.Constatacion.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width", id = "Constatacion", @type = "datetime" })
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>Vto Poliza</label><span class="red"> * </span>
+                                                @*@Html.EditorFor(model => model.VtoPoliza, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoPoliza", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.VtoPoliza, new { @Value = Model.VtoPoliza.HasValue ? Model.VtoPoliza.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoPoliza", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>VTV</label><span class="red"> * </span>
+                                                @*@Html.EditorFor(model => model.VtoVTV, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoVTV", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.VtoVTV, new { @Value = Model.VtoVTV.HasValue ? Model.VtoVTV.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoVTV", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Vto Matafuego</label><span class="red"> * </span>
+                                                @*@Html.EditorFor(model => model.VtoMatafuego, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoMatafuego", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.VtoMatafuego, new { @Value = Model.VtoMatafuego.HasValue ? Model.VtoMatafuego.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoMatafuego", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Const.Opcion AFIP</label><span class="red"> * </span>
+                                                @*@Html.EditorFor(model => model.VtoConstanciaAFIP, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoConstanciaAFIP", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.VtoConstanciaAFIP, new { @Value = Model.VtoConstanciaAFIP.HasValue ? Model.VtoConstanciaAFIP.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoConstanciaAFIP", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <label>Observacion</label>
+                                                @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control input-sm", id = "Observaciones" } })
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*       TITULARES        *@
+                                <div class="row">
+                                    <div class="col-lg-12 f-cost">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title">
+                                                    <h4 class="title"><b>Titular/es:</b></h4>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="copiedTitulares"></div>
+                                            @{int quedanTitulares = Model.Titulares.Count;}
+                                            @for (int i = 0; i < Model.Titulares.Count; i++)
+                                            {
+                                                
+                                            <div id="PanelTitulares" class="card-body">
+                                                @Html.HiddenFor(x => x.Titulares[i].Enable, new { @class = "enable" })
+                                                @Html.HiddenFor(x => x.Titulares[i].Id)
+                                                <div class="well color-well">
+                                                    <div class="well-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Nombre</label><span class="red"> * </span>
+                                                                    @Html.EditorFor(model => model.Titulares[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "nombre" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Apellido</label><span class="red"> * </span>
+                                                                    @Html.EditorFor(model => model.Titulares[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "apellido" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>DNI</label><span class="red"> * </span>
+                                                                    @Html.EditorFor(model => model.Titulares[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 margin-top-15 text-right">
+                                                                @if (quedanTitulares == Model.Titulares.Count)
+                                                                {
+                                                                    <span id="AgregarTitular" class="btn-mas fa fa-plus"></span>
+                                                                    <span id="QuitarTitular" class="btn-mas fa fa-trash" style="display:none"></span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span id="AgregarTitular" class="btn-mas fa fa-plus" style="display:none"></span>
+                                                                    <span id="QuitarTitular" class="btn-mas fa fa-trash"></span>
+
+                                                                }
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Domicilio Real</label><span class="red"> * </span>
+                                                                    @Html.EditorFor(model => model.Titulares[i].CalleReal, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleReal" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Domicilio Constituido</label><span class="red"> * </span>
+                                                                    @Html.EditorFor(model => model.Titulares[i].CalleConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleConstituido" } })
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>Teléfono</label><span class="red"> * </span>
+                                                                    @Html.EditorFor(model => model.Titulares[i].Telefono, new { htmlAttributes = new { @class = "form-control input-sm", id = "Telefono", @type = "number" } })
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>E-mail</label><span class="red"> * </span>
+                                                                    @Html.EditorFor(model => model.Titulares[i].Email, new { htmlAttributes = new { @class = "form-control input-sm", id = "Email" } })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                quedanTitulares = quedanTitulares - 1;
+                                            }
+                                            </div>
+
+                                    </div>
+                                </div>
+                                @*       CHOFERES        *@
+                                <div class="row">
+                                    <div class="col-lg-12 f-cost">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title">
+                                                    <h4 class="title"><b>Chofer/es:</b></h4>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="copiedChoferes"></div>
+                                            @{int quedanChoferes = Model.Choferes.Count;}
+                                            @for (int i = 0; i < Model.Choferes.Count; i++)
+                                            {
+                                                
+                                            <div id="PanelChoferes" class="card-body">
+                                                @Html.HiddenFor(x => x.Choferes[i].Enable, new { @class = "enable" })
+                                                @Html.HiddenFor(x => x.Choferes[i].Id)
+                                                <div class="well color-well">
+                                                    <div class="well-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>Nombre</label><span class="red"> * </span>
+                                                                    @Html.EditorFor(model => model.Choferes[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "Nombre" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>Apellido</label><span class="red"> * </span>
+                                                                    @Html.EditorFor(model => model.Choferes[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "Apellido" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="input-group">
+                                                                    <label>DNI</label><span class="red"> * </span>
+                                                                    @Html.EditorFor(model => model.Choferes[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="form-group">
+                                                                    <label>Fecha Vto Licencia</label><span class="red"> * </span>
+                                                                    @*@Html.EditorFor(model => model.Choferes[i].VtoLicencia, new { htmlAttributes = new { @class = "form-control input-sm  input-date input-width", id = "VtoLicencia"  } })*@
+                                                                    @Html.TextBoxFor(m => m.Choferes[i].VtoLicencia, new { @Value = Model.Choferes[i].VtoLicencia.HasValue ? Model.Choferes[i].VtoLicencia.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLicencia" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="form-group">
+                                                                    <label>Fecha Vto Libreta</label>
+                                                                    @*@Html.EditorFor(model => model.Choferes[i].VtoLibreta, new { htmlAttributes = new { @class = "form-control input-sm  input-date input-width", id = "VtoLibreta" } })*@
+                                                                    @Html.TextBoxFor(m => m.Choferes[i].VtoLibreta, new { @Value = Model.Choferes[i].VtoLibreta.HasValue ? Model.Choferes[i].VtoLibreta.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLibreta" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 margin-top-15 text-right">
+
+                                                                @if (quedanChoferes == Model.Choferes.Count)
+                                                                {
+                                                                    <span id="AgregarChofer" class="btn-mas fa fa-plus"></span>
+                                                                    <span id="QuitarChofer" class="btn-mas fa fa-trash" style="display:none"></span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span id="AgregarChofer" class="btn-mas fa fa-plus" style="display:none"></span>
+                                                                    <span id="QuitarChofer" class="btn-mas fa fa-trash"></span>
+
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                quedanChoferes = quedanChoferes - 1;
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                @*CELADORES*@
+                                <div class="row">
+                                    <div class="col-lg-12 f-cost">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title">
+                                                    <h4 class="title"><b>Celadora/s:</b></h4>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="copiedCeladores"></div>
+                                            @if (Model.Celadores.Count ==0)
+                                            {
+
+
+                                                <div id="PanelCeladores" class="card-body">
+                                                    <div class="well color-well">
+                                                        <div class="well-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Nombre</label>
+                                                                        <input id="nombre" class="form-control input-sm" type="text" name="Celadores[0].Nombre">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Apellido</label>
+                                                                        <input id="apellido" class="form-control input-sm" type="text" name="Celadores[0].Apellido">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>DNI</label>
+                                                                        <input id="DNI" class="form-control input-sm" type="number" name="Celadores[0].DNI">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="form-group">
+                                                                        <label>Fecha Vto Libreta</label>
+                                                                        <input class="form-control input-sm input-date input-width  conVencimiento" id="VtoLibreta" type="text" name="Celadores[0].VtoLibreta">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 margin-top-15 text-right">
+                                                                    <span id="AgregarCelador" class="btn-mas fa fa-plus"></span>
+                                                                    <span id="QuitarCelador" class="btn-mas fa fa-trash"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+
+                                                int quedanCeladores = Model.Celadores.Count;
+                                                for (int i = 0; i < Model.Celadores.Count; i++)
+                                                {
+                                                    
+                                                <div id="PanelCeladores" class="card-body">
+                                                    @Html.HiddenFor(x => x.Celadores[i].Enable, new { @class = "enable" })
+                                                    @Html.HiddenFor(x => x.Celadores[i].Id)
+                                                    <div class="well color-well">
+                                                        <div class="well-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Nombre</label>
+                                                                        @Html.EditorFor(model => model.Celadores[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "Nombre" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Apellido</label>                                                                        
+                                                                        @Html.EditorFor(model => model.Celadores[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "Apellido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>DNI</label>                                                                        
+                                                                        @Html.EditorFor(model => model.Celadores[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="form-group">
+                                                                        <label>Fecha Vto Libreta</label>
+                                                                        @Html.TextBoxFor(m => m.Celadores[i].VtoLibreta, new { @Value = Model.Celadores[i].VtoLibreta.HasValue ? Model.Celadores[i].VtoLibreta.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLibreta" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 margin-top-15 text-right">
+                                                                    @if (quedanCeladores == Model.Celadores.Count)
+                                                                    {
+                                                                        <span id="AgregarCelador" class="btn-mas fa fa-plus"></span>
+                                                                        <span id="QuitarCelador" class="btn-mas fa fa-trash" style="display:none"></span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span id="AgregarCelador" class="btn-mas fa fa-plus" style="display:none"></span>
+                                                                        <span id="QuitarCelador" class="btn-mas fa fa-trash"></span>
+
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    quedanCeladores = quedanCeladores - 1;
+                                                }
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="float: right;">Guardar</button>
+                        </div>
+
+
+
+
+                    </div>
+                    <!-- /.col-lg-12 -->
+
+            </form>
+
+            <!-- /.form -->
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TransportType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.TransportType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TransportType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Expediente, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Expediente, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Expediente, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Dominio, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Dominio, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Dominio, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Observaciones, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Observaciones, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.VtoPoliza, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.VtoPoliza, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.VtoPoliza, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ReciboPagoSeguro, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ReciboPagoSeguro, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ReciboPagoSeguro, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.VtoVTV, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.VtoVTV, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.VtoVTV, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.VtoMatafuego, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.VtoMatafuego, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.VtoMatafuego, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.VtoConstanciaAFIP, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.VtoConstanciaAFIP, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.VtoConstanciaAFIP, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+        <!-- /.ro -->
+    </div>
+    <!-- Progress Loader -->
+    <div id="div-loader" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8; display: none">
+        <p style="position: absolute; color: White; top: 35%; left: 45%;">
+            <img src="~/Images/loading.gif" alt="Loading..." />
+        </p>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
+    <script>
+
+        $(document).ready(function () {
+            //$('#dt-FechaIngreso').attr("readonly", "readonly")
+            //Datepicker
+            $.datetimepicker.setLocale('es');
+
+            $('.input-date').datetimepicker({
+                timepicker: false,
+                format: 'd/m/Y',
+                scrollInput: false,
+                date: new Date(Date.now()),
+                onChangeDateTime: function (dp, $input) {
+                    if ($input.val() != '')
+                        validateDate($input);
+                }
+            });
+
+
+            $('#QuitarTitular').hide();
+            $('#QuitarChofer').hide();
+            $('#QuitarCelador').hide();
+
+
+
+            $(".conVencimiento").each(function () {
+                if ($(this).val()!='')
+                    validateDate($(this));
+            });
+
+
+            function validateDate(objeto) {
+                var fechaconVencimiento = convertToDate($(objeto).val());
+                var fechaActual = convertToDate(getNow());
+                var fechaPorVencer = convertToDate(getPorVencer());
+                if (fechaconVencimiento >= fechaActual && fechaconVencimiento <= fechaPorVencer) {
+                    $(objeto).addClass("date-warning")
+                }
+                else {
+                    $(objeto).removeClass("date-warning");
+                    $(objeto).removeClass("date-error");
+                }
+                if (fechaconVencimiento < fechaActual) {
+                    $(objeto).addClass("date-error")
+                }
+            }
+
+            function convertToDate(date) {
+                var parts = date.split("/");
+                return new Date(parts[2], parts[1] - 1, parts[0]);
+            }
+
+
+            function getNow() {
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+
+                var yyyy = today.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+                return today = dd + '/' + mm + '/' + yyyy;
+            }
+
+            function getPorVencer() {
+                var today = new Date();
+                today.setDate(today.getDate() + 7);
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+
+                var yyyy = today.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+                return today = dd + '/' + mm + '/' + yyyy;
+            }
+        });
+        //Titulares
+        $(document).on('click', '#AgregarTitular', function () {
+            //Busco el contenedor del boton que hizo click
+
+            var item = $(this).parents('#PanelTitulares').clone(true);
+
+            $(this).closest('#AgregarTitular').hide();
+            $(this).parents('#PanelTitulares').find('#QuitarTitular').show();
+
+            //var item = $("div#PanelNovedades.row-Hide").clone(true);
+            //var itemHide = $("div#PanelNovedades.row-Hide");
+
+
+
+            //Incremento el indice
+            $(item).find('input').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+                $this.val('');
+            });
+            $(item).find('select').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+            });
+
+
+
+            //Reemplazo el boton
+            $(item).find('#QuitarTitular').hide();
+            $(item).find('#AgregarTitular').show();
+            //cambio el id
+            // $(item).toggleClass('row-Hide row');
+            $(item).prependTo('#copiedTitulares');
+            $(item).show();
+
+        });
+
+        //CHOFERES
+        $(document).on('click', '#AgregarChofer', function () {
+            //Busco el contenedor del boton que hizo click
+
+            $(this).parents('#PanelChoferes').find('.input-date').datetimepicker("destroy");
+
+            var item = $(this).parents('#PanelChoferes').clone(true);
+
+            $(this).parents('#PanelChoferes').find('.input-date').datetimepicker({
+                timepicker: false,
+                format: 'd/m/Y',
+                scrollInput: false,
+                date: new Date(Date.now())
+            });
+
+            $(item).find('.input-date').datetimepicker({
+                timepicker: false,
+                format: 'd/m/Y',
+                scrollInput: false,
+                date: new Date(Date.now())
+            });
+
+            $(this).closest('#AgregarChofer').hide();
+            $(this).parents('#PanelChoferes').find('#QuitarChofer').show();
+
+
+            //Incremento el indice
+            $(item).find('input').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+                $this.val('');
+            });
+            $(item).find('select').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+            });
+
+
+
+            //Reemplazo el boton
+            $(item).find('#QuitarChofer').hide();
+            $(item).find('#AgregarChofer').show();
+            //cambio el id
+            // $(item).toggleClass('row-Hide row');
+            $(item).prependTo('#copiedChoferes');
+            $(item).show();
+
+        });
+
+
+        //CELADORAS
+        $(document).on('click', '#AgregarCelador', function () {
+            //Busco el contenedor del boton que hizo click
+
+            $(this).parents('#PanelCeladores').find('.input-date').datetimepicker("destroy");
+
+            var item = $(this).parents('#PanelCeladores').clone(true);
+
+            $(this).parents('#PanelCeladores').find('.input-date').datetimepicker({
+                timepicker: false,
+                format: 'd/m/Y',
+                scrollInput: false,
+                date: new Date(Date.now())
+            });
+
+            $(item).find('.input-date').datetimepicker({
+                timepicker: false,
+                format: 'd/m/Y',
+                scrollInput: false,
+                date: new Date(Date.now())
+            });
+
+            $(this).closest('#AgregarCelador').hide();
+            $(this).parents('#PanelCeladores').find('#QuitarCelador').show();
+
+
+
+
+            //Incremento el indice
+            $(item).find('input').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+                $this.val('');
+            });
+            $(item).find('select').each(function () {
+                var $this = $(this);
+                $this.attr('id', $this.attr('id').replace(/_(\d+)_/, function ($0, $1) {
+                    return '_' + (+$1 + 1) + '_';
+                }));
+                $this.attr('name', $this.attr('name').replace(/\[(\d+)\]/, function ($0, $1) {
+                    return '[' + (+$1 + 1) + ']';
+                }));
+            });
+
+
+
+            //Reemplazo el boton
+            $(item).find('#QuitarCelador').hide();
+            $(item).find('#AgregarCelador').show();
+            //cambio el id
+            // $(item).toggleClass('row-Hide row');
+            $(item).prependTo('#copiedCeladores');
+            $(item).show();
+
+        });
+
+
+        $(document).on('click', '#QuitarTitular', function () {
+
+            $(this).parents('#PanelTitulares').find('.enable').val("False");
+            $(this).parents('#PanelTitulares').remove();
+
+        });
+
+        $(document).on('click', '#QuitarChofer', function () {
+            $(this).parents('#PanelChoferes').find('.enable').val("False");
+            $(this).parents('#PanelChoferes').remove();
+
+        });
+
+        $(document).on('click', '#QuitarCelador', function () {
+            $(this).parents('#PanelCeladores').find('.enable').val("False");
+            $(this).parents('#PanelCeladores').remove();
+
+        });
+
+
+        //VALIDACIONES
+
+        function validoRequeridos() {
+            var messageError = '';
+
+            if ($("#TransportTypeId").val() == '') {
+                messageError += "Tipo </br>";
+            }
+
+            if ($("#Expediente").val() == '') {
+                messageError += "Expediente </br>";
+            }
+
+            if ($("#Dominio").val() == '') {
+                messageError += "Dominio </br>";
+            }
+
+            if ($("#Marca").val() == '') {
+                messageError += "Marca </br>";
+            }
+
+            if ($("#FechaInscripcionInicial").val() == '') {
+                messageError += "Fecha Inscrip Inicial </br>";
+            }
+
+            if ($("#Desinfeccion").val() == '') {
+                messageError += "Fecha Desinfección </br>";
+            }
+
+            if ($("#Constatacion").val() == '') {
+                messageError += "Fecha Constatación </br>";
+            }
+
+            if ($("#VtoPoliza").val() == '') {
+                messageError += "Vto Poliza </br>";
+            }
+
+            if ($("#VtoVTV").val() == '') {
+                messageError += "VTV </br>";
+            }
+
+
+            if ($("#VtoMatafuego").val() == '') {
+                messageError += "Vto Matafuego </br>";
+            }
+
+            if ($("#VtoConstanciaAFIP").val() == '') {
+                messageError += "Const.Opcion AFIP </br>";
+            }
+
+
+
+
+
+            $('#PanelTitulares:visible').each(function () {
+                if ($(this).find("#nombre").val() == '') {
+                    messageError += "Nombre </br>";
+                }
+                if ($(this).find("#apellido").val() == '') {
+                    messageError += "Apellido </br>";
+                }
+                if ($(this).find("#DNI").val() == '') {
+                    messageError += "DNI </br>";
+                }
+                if ($(this).find("#Telefono").val() == '') {
+                    messageError += "Teléfono </br>";
+                }
+                if ($(this).find("#CalleReal").val() == '') {
+                    messageError += "Domicilio Real </br>";
+                }
+                if ($(this).find("#CalleConstituido").val() == '') {
+                    messageError += "Domicilio Constituido </br>";
+                }
+                if ($(this).find("#Email").val() == '') {
+                    messageError += "E-mail </br>";
+                }
+
+            });
+
+
+            $('#PanelChoferes:visible').each(function () {
+                if ($(this).find("#nombre").val() == '') {
+                    messageError += "Nombre </br>";
+                }
+                if ($(this).find("#apellido").val() == '') {
+                    messageError += "Apellido </br>";
+                }
+                if ($(this).find("#DNI").val() == '') {
+                    messageError += "DNI </br>";
+                }
+                if ($(this).find("#VtoLicencia").val() == '') {
+                    messageError += "Fecha Vto Licencia </br>";
+                }
+                //if ($(this).find("#VtoLibreta").val() == '') {
+                //    messageError += "Fecha Vto Libreta </br>";
+                //}
+
+            });
+
+            //$('#PanelCeladores:visible').each(function () {
+            //    if ($(this).find("#nombre").val() == '') {
+            //        messageError += "Nombre </br>";
+            //    }
+            //    if ($(this).find("#apellido").val() == '') {
+            //        messageError += "Apellido </br>";
+            //    }
+            //    if ($(this).find("#DNI").val() == '') {
+            //        messageError += "DNI </br>";
+            //    }
+
+            //    //if ($(this).find("#VtoLibreta").val() == '') {
+            //    //    messageError += "Fecha Vto Libreta </br>";
+            //    //}
+
+            //});
+
+
+
+
+            if (messageError != '') {
+                messageError = "¡Debe completar los campos requeridos! ";// </br>+ messageError;
+            }
+
+            return messageError;
+
+        }
+
+
+         function validationIsTrue() {
+             //Devuelve si tiene alguno seleccionado
+             var valor1='';
+             valor1 = validoRequeridos();
+             if (valor1 != '') {
+                 Lobibox.notify('warning', {
+                     title: 'Advertencia',
+                     msg: valor1,
+                     height: 'auto'
+                 });
+                 return false;
+             }
+             else
+                 return true;
+
+         }
+
+
+        //SUBMIT
+         $("form").bind("keypress", function (e) {
+             if (e.keyCode == 13) {
+                 return false;
+             }
+         });
+
+         function serializerForm() {
+             var data = {};
+
+             $("form").serializeArray().map(function (x) {
+                 data[x.name] = x.value;
+             });
+
+             $("form").find('input:hidden[data-is-json]').each(function () {
+                 data[$(this).attr('id')] = $(this).data('json');
+             });
+
+             return data;
+         }
+
+
+
+         $("form").submit(function (e) {
+             $("#div-loader").show();
+             e.preventDefault();
+             if (validationIsTrue()) {
+                 var ajaxSettings = {
+                     type: 'POST',
+                     async: false,
+                     url: '@Url.Action("EditTransport", "Transports")',
+                     data: serializerForm(),
+                     dataType: 'json',
+                     success: function (dataResponse) {
+                         $("#div-loader").hide();
+                         if (dataResponse.responseCode == 0) {
+                             $("#div-loader").hide();
+                             Lobibox.notify('success', {
+                                 title: 'Exito',
+                                 msg: 'Los cambios se han grabado correctamente.'
+                             });
+                         } else {
+                             Lobibox.notify('error', {
+                                 title: 'Error',
+                                 msg: 'Ah ocurrido un error, intente nuevamente.'
+                             });
+                         }
+                         window.location.href = '@Url.Action("Index", "Transports")';
+                     },
+                     error: function (x, y, z) {
+                         $("#div-loader").hide();
+                         Lobibox.notify('error', {
+                             title: 'Error',
+                             msg: 'Ah ocurrido un error, intente nuevamente.'
+                         });
+                     }
+                };
+
+                return $.ajax(ajaxSettings);
+             }
+             else {
+                 $("#div-loader").hide();
+                return false;
+             }
+
+         });
+
+
+    </script>
+
 }
+
+
+

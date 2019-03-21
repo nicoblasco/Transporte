@@ -1,0 +1,603 @@
+﻿@model IEnumerable<Transporte.ViewModel.NotificationViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@{
+    string currentController = Html.ViewContext.RouteData.GetRequiredString("controller");
+    string extension = "(doc, docx)";
+}
+
+
+<style>
+
+    #divExtension {
+        color: darkgrey;
+        font-size: x-small;
+        padding-left: 5px;
+    }
+
+    #divLabelExtension {
+        display: -webkit-box;
+    }
+
+    .input-file p {
+
+    }
+</style>
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Notificaciones</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    @if (ViewBag.AltaModificacion)
+                    {
+                        <button type="button" id="btnNuevo" class="btn btn-primary" data-toggle="modal" data-target="#nuevoModal">
+                            Nuevo
+                        </button>
+                        <button type="button" id="btnEditar" class="btn btn-primary" data-toggle="modal" data-target="#editarModal">
+                            Editar
+                        </button>
+                    }
+                    @if (ViewBag.Baja)
+                    {
+                        <button type="button" id="btnBorrar" class="btn btn-primary" data-toggle="modal" data-target="#borrarModal">
+                            Borrar
+                        </button>
+                    }
+                </div>
+                <!-- /.panel-heading -->
+
+
+                <div class="panel-body">
+
+                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-Index">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Descripcion</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /#row -->
+</div>
+<!-- /#page-wrapper -->
+<!-- Progress Loader -->
+<div id="div-loader" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8; display: none">
+    <p style="position: absolute; color: White; top: 35%; left: 45%;">
+        <img src=@Url.Content("~/Images/loading.gif") alt="Loading...">
+    </p>
+</div>
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="nuevoModal" role="dialog">
+    <div class="modal-dialog">
+        <form id="form-create" method="post">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Nueva Notificación</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input id="input-Nombre" name="inputNombre" class="form-control" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción</label>
+                            <input id="input-Descripcion" name="inputDescripcion" class="form-control" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <div id="divArchivo">
+                                <label id="divLabelExtension">Documento<div id="divExtension"> @extension </div> </label>
+
+                                <div class="input-group input-file" name="fileVideo">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default btn-choose btn-sm" type="button">Elegir</button>
+                                    </span>
+                                    <input id="input-ArchivoActa" name="inputArchivoActa" type="text" class="form-control input-sm" placeholder='Selecciona el Documento...' />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default btn-reset btn-sm" type="button">Borrar</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="errors"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="editarModal" role="dialog">
+    <div class="modal-dialog">
+        <form id="form-edit" method="post">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Editar Notificación</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+
+                        <div class="form-group">
+                            <label>Id</label>
+                            <input id="input-Id" name="inputId" class="form-control" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input id="input-Nombre" name="inputNombre" class="form-control" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción</label>
+                            <input id="input-Descripcion" name="inputDescripcion" class="form-control" autocomplete="off">
+                        </div>
+
+                        @*<div id="divArchivo">
+                            <label id="divLabelExtension">Documento <div id="divExtension"> @extension </div> </label>
+                            <input style="display:none" id="hiddenArchivoBorrado" name="DocumentoBorrado" />
+                            <input style="display:none" id="Documento" name="Documento" />
+                            <div class="input-group input-file" name="fileVideo">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default btn-choose btn-sm" type="button">Elegir</button>
+                                </span>
+                                <input id="input-ArchivoActa" name="inputArchivoActa" type="text" class="form-control input-sm" placeholder='Selecciona el Documento...' />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default btn-reset btn-sm" type="button">Borrar</button>
+                                </span>
+                            </div>
+
+                            <p>@Html.ActionLink(" ", "Download", "Notifications", new { filePath = "variation-example", id = "linkInformeAdjunto" }, null)</p>
+
+                        </div>*@
+
+                        <div class="form-group">
+                            <div id="divArchivo">
+                                <label id="divLabelExtension">Documento<div id="divExtension"> @extension </div> </label>
+                                <input style="display:none" id="hiddenArchivoBorrado" name="DocumentoBorrado" />
+                                <input style="display:none" id="Documento" name="Documento" />
+                                <div class="input-group input-file" name="fileVideo">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default btn-choose btn-sm" type="button">Elegir</button>
+                                    </span>
+                                    <input id="input-ArchivoActa" name="inputArchivoActa" type="text" class="form-control input-sm" placeholder='Selecciona el Documento...' />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default btn-reset btn-sm" type="button">Borrar</button>
+                                    </span>
+                                </div>
+                                <p>@Html.ActionLink(" ", "Download", "Notifications", new { filePath = "variation-example", id = "linkInformeAdjunto" }, null)</p>
+                            </div>
+                            <div class="errors"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section scripts {
+
+
+    <script>
+
+    $(document).ready(function () {
+
+
+        habilitaBotones(false);
+
+
+        $('#dataTables-Index').DataTable({
+              "ajax":
+                  {
+                      url: "@Url.Action("Gets")",
+                      type: "post",
+                      dataSrc: ""
+                  },
+           "columns": [
+               { "data": "Id" },
+               { "data": "Nombre" },
+               { "data": "Descripcion" }
+           ],
+           responsive: true
+       });
+
+        $('#dataTables-Index tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                habilitaBotones(false);
+            }
+            else {
+                $('#dataTables-Index').DataTable().$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                habilitaBotones(true);
+
+            }
+        });
+
+    });
+
+
+
+
+    $('#btnBorrar').click(function () {
+
+
+        Lobibox.confirm({
+            title: 'Atención',
+            msg: "¿Esta seguro que desea eliminar la notificación?",
+            callback: function ($this, type, ev) {
+                if (type === 'yes') {
+                    Delete();
+                };
+            }
+
+        });
+    });
+
+
+    function Delete()
+    {
+        $("#div-loader").show();
+
+            //var id = $("#dataTables-Index").dataTable().$("tr.selected").attr('id');
+            var id =$('#dataTables-Index').find('tr.selected>td').first().text();
+            $.ajax({
+                    url: '@Url.Action("Delete")',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        "id": id
+                    }),
+                    contentType: 'application/json; charset=utf-8;',
+                    success: function (result) {
+                        $("#dataTables-Index").dataTable().fnReloadAjax();
+                        $("#div-loader").hide();
+                        Lobibox.notify('success', {
+                            title: 'Exito',
+                            msg: 'Los cambios se han grabado correctamente.'
+                        });
+                        habilitaBotones(false);
+                    },
+                    error: function (response) {
+                        $("#div-loader").hide();
+                            Lobibox.notify('error', {
+                                title: 'Error',
+                                msg: 'Ah ocurrido un error, intente nuevamente.'
+                            });
+                    }
+                });
+    }
+
+        $("#form-create").validate({
+            errorLabelContainer: '.errors',
+        rules: {
+            inputNombre: { required: true, minlength: 2, maxlength: 500 },
+            inputDescripcion: { required: true, minlength: 2, maxlength: 500 },
+            inputArchivoActa: { required: true }
+        },
+        messages: {
+            inputNombre: {
+                required: "El campo Nombre es requerido.",
+                minlength: "Introduzca al menos 2 caracteres.",
+                maxlength: "La longitud máxima permtida es de 500 caracteres."
+            },
+            inputDescripcion: {
+                required: "Este campo Descripción es requerido.",
+                minlength: "Introduzca al menos 2 caracteres.",
+                maxlength: "La longitud máxima permtida es de 500 caracteres."
+            },
+            inputArchivoActa: {
+                required: "El Documento es requerido."
+            }
+        },
+        submitHandler: function (form) {
+            $("#div-loader").show();
+            var object = new Object();
+            object.Nombre = $("#input-Nombre").val();
+            object.Descripcion = $("#input-Descripcion").val();
+            //var data = JSON.stringify(object);
+            var fileUpload = $(".input-ghost").get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            data.append("Nombre", $("#input-Nombre").val());
+            data.append("Descripcion", $("#input-Descripcion").val());
+            for (var i = 0; i < files.length; i++) {
+                data.append("File", files[i]);
+            }
+
+            //Antes de editar, verifico que no este duplicando el Rol
+            var isDuplicate = getDuplicates(0, object.Nombre);
+
+            if (isDuplicate) {
+                $("#div-loader").hide();
+                Lobibox.notify('warning', {
+                    title: 'Cuidado',
+                    msg: 'La notificacion ya existe, debe asignar otro nombre.'
+                });
+
+                return;
+            }
+
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Create")',
+                data: data,
+                    //contentType: 'application/json; charset=utf-8',
+                  contentType: false,
+                    //dataType: 'json',
+                processData: false,
+                    success: function (dataResponse) {
+                        $("#dataTables-Index").dataTable().fnReloadAjax();//Recargo la grilla
+                        $('#nuevoModal').modal('hide');
+                        $("#div-loader").hide();
+                        if (dataResponse.responseCode == 0)
+                            {
+                            $("#div-loader").hide();
+                            Lobibox.notify('success', {
+                                title: 'Exito',
+                                msg: 'Los cambios se han grabado correctamente.'
+                            });
+                        } else {
+                                Lobibox.notify('error', {
+                                    title: 'Error',
+                                    msg: 'Ah ocurrido un error, intente nuevamente.'
+                            });
+                        }
+                    },
+                    error: function (response) {
+                        $("#div-loader").hide();
+                            Lobibox.notify('error', {
+                                title: 'Error',
+                                msg: 'Ah ocurrido un error, intente nuevamente.'
+                            });
+                    }
+                });
+            },
+            errorElement: "p"
+    });
+
+
+        $("#form-edit").validate({            
+            errorLabelContainer: '.errors',
+            rules: {
+                inputNombre: { required: true, minlength: 2, maxlength: 500 },
+                inputDescripcion: { required: true, minlength: 2, maxlength: 500 },
+                inputArchivoActa: { required: true }
+            },
+            messages: {
+                inputNombre: {
+                    required: "El campo Nombre es requerido.",
+                    minlength: "Introduzca al menos 2 caracteres.",
+                    maxlength: "La longitud máxima permtida es de 500 caracteres."
+                },
+                inputDescripcion: {
+                    required: "Este campo Descripción es requerido.",
+                    minlength: "Introduzca al menos 2 caracteres.",
+                    maxlength: "La longitud máxima permtida es de 500 caracteres."
+                },
+                inputArchivoActa: {
+                    required: "El Documento es requerido."
+                }
+            },
+        submitHandler: function (form) {
+            $("#div-loader").show();
+
+            var object = new Object();
+            object.Id = $('#editarModal').find('input#input-Id').val();
+            object.Nombre = $('#editarModal').find('input#input-Nombre').val();
+            object.Descripcion = $('#editarModal').find('input#input-Descripcion').val();
+            
+            //var data = JSON.stringify(object);
+            var fileUpload = $('#editarModal').find(".input-ghost").get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            data.append("Id", $('#editarModal').find('input#input-Id').val());
+            data.append("Nombre", $('#editarModal').find('input#input-Nombre').val());
+            data.append("Descripcion", $('#editarModal').find('input#input-Descripcion').val());
+
+            for (var i = 0; i < files.length; i++) {
+                data.append("File", files[i]);
+            }
+
+            //Antes de editar, verifico que no este duplicando el Rol
+            var isDuplicate = getDuplicates(object.Id, object.Nombre);
+
+            if (isDuplicate)
+            {
+                $("#div-loader").hide();
+                Lobibox.notify('warning', {
+                    title: 'Cuidado',
+                    msg: 'El tipo de licencia ya existe, debe asignar otro nombre.'
+                });
+
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Edit")',
+                data: data,
+                //contentType: 'application/json; charset=utf-8',
+                contentType: false,
+                //dataType: 'json',
+                processData: false,
+                    success: function (dataResponse) {
+                        $("#dataTables-Index").dataTable().fnReloadAjax();//Recargo la grilla
+                        $('#editarModal').modal('hide');
+                        $("#div-loader").hide();
+                        if (dataResponse.responseCode == 0)
+                            {
+                            $("#div-loader").hide();
+                            Lobibox.notify('success', {
+                                title: 'Exito',
+                                msg: 'Los cambios se han grabado correctamente.'
+                            });
+                        } else {
+                                Lobibox.notify('error', {
+                                    title: 'Error',
+                                    msg: 'Ah ocurrido un error, intente nuevamente.'
+                            });
+                        }
+                        habilitaBotones(false);
+                    },
+                    error: function (response) {
+                        $("#div-loader").hide();
+                            Lobibox.notify('error', {
+                                title: 'Error',
+                                msg: 'Ah ocurrido un error, intente nuevamente.'
+                            });
+                    }
+                });
+            },
+            errorElement: "p"
+    });
+
+
+    //Completo el modal edit con los datos de la grilla
+    $('#editarModal').on('shown.bs.modal', function (e) {
+        var idObject = $('#dataTables-Index').find('tr.selected>td').first().text();
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Get")',
+            data: {
+                id: idObject
+            },
+            cache: false,
+            success: function (result) {
+                var link = "@Url.Action("Download", "Notifications", new { filePath = "_myid_" })";
+                $('#editarModal').find('input#input-Id').val(result.Id);
+                $('#editarModal').find('input#input-Nombre').val(result.Nombre);
+                $('#editarModal').find('input#input-Descripcion').val(result.Descripcion);
+                $('#editarModal').find('input#input-ArchivoActa').val(result.FileName);
+                $('#editarModal').find('a').attr("href", link.replace('_myid_', result.Documento));
+                $('#editarModal').find('a').text(result.FileName);
+                $('#editarModal').find('#divArchivo').children('p').show();
+            },
+            error: function (response) {
+                    Lobibox.notify('error', {
+                        title: 'Error',
+                        msg: 'Ah ocurrido un error, intente nuevamente.'
+                });
+                    $('#editarModal').modal('hide');
+            }
+        });
+
+
+    });
+
+
+    //Reinicio los modal
+    $('.modal').on('hidden.bs.modal', function (e) {
+        $(".modal-body input").val(""),
+            $(this).removeData('bs.modal');
+        $("form").validate().resetForm();
+    });
+
+    function getDuplicates(pid,pParam)
+    {
+        var isDuplicate = false;
+            $.ajax({
+                type: 'GET',
+                async: false ,
+            url: '@Url.Action("GetDuplicates")',
+            data: {
+                id: pid,
+                codigo: pParam
+            },
+            cache: false,
+            success: function (result) {
+                if (result.responseCode > 0)
+                    isDuplicate= true;
+                else
+                    isDuplicate= false;
+            }
+        });
+
+            return isDuplicate;
+    }
+
+    function habilitaBotones(boHabilita) {
+        if (boHabilita) {
+            $('#btnEditar').removeAttr("disabled");
+            $('#btnBorrar').removeAttr("disabled");
+        }
+        else {
+            $('#btnEditar').attr("disabled", true);
+            $('#btnBorrar').attr("disabled", true);
+        }
+
+    }
+
+        function bs_input_file() {
+            $(".input-file").before(
+                function () {
+                    if (!$(this).prev().hasClass('input-ghost')) {
+                        var element = $("<input type='file' accept='.doc,.docx' class='input-ghost' style='visibility:hidden; height:0'>");
+                        element.attr("name", $(this).attr("name"));
+                        element.change(function () {
+                            element.next(element).find('input').val((element.val()).split('\\').pop());
+                            $(this).parents('#divArchivo').children('p').hide();
+                            //$('#ActaAdjuntaBorrada').val('True');
+                            $(this).parents('#divArchivo').children('#hiddenArchivoBorrado').val('True');
+                        });
+                        $(this).find("button.btn-choose").click(function () {
+                            element.click();
+                        });
+                        $(this).find("button.btn-reset").click(function () {
+                            element.val(null);
+                            $(this).parents(".input-file").find('input').val('');
+                            $(this).parents('#divArchivo').children('p').hide();
+                            //$('#ActaAdjuntaBorrada').val('True');
+                            $(this).parents('#divArchivo').children('#hiddenArchivoBorrado').val('True');
+
+                        });
+                        $(this).find('input').css("cursor", "pointer");
+                        $(this).find('input').mousedown(function () {
+                            $(this).parents('.input-file').prev().click();
+                            return false;
+                        });
+                        return element;
+                    }
+                }
+            );
+        }
+        $(function () {
+            bs_input_file();
+        });
+    </script>
+}

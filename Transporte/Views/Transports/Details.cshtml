@@ -1,99 +1,538 @@
-﻿@model Transporte.Models.Transport
+﻿@model Transporte.ViewModel.TransportEditViewModel
 
 @{
-    ViewBag.Title = "Details";
+    /**/
+
+    ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //string Usuario = Model.Usuario == null ? null : Model.Usuario.Nombreusuario;
+
 }
 
-<h2>Details</h2>
+<style>
+    .btn-sm {
+        font-size: 12px;
+        height: 30px;
+        margin-bottom: 3px;
+    }
 
-<div>
-    <h4>Transport</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.TransportTypeId)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.TransportTypeId)
-        </dd>
+    .ck-sm {
+        font-size: 12px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TransportType)
-        </dt>
+    .select2 {
+        font-size: 12px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.TransportType)
-        </dd>
+    label {
+        font-size: 12px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Expediente)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Expediente)
-        </dd>
+    .sol-container {
+        padding: 0px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Dominio)
-        </dt>
+    .red {
+        color: #a94442;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Dominio)
-        </dd>
+    .color-well {
+        background-color: ghostwhite;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Observaciones)
-        </dt>
+    .btn-mas.fa-plus {
+        color: #FFFFFF;
+        background-color: #30ced6;
+        border-radius: 20px;
+        padding: 6px 1px 4px 1px;
+        font-size: 14px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Observaciones)
-        </dd>
+    .btn-mas {
+        cursor: pointer;
+        margin: 0px;
+        font-size: 18px;
+        text-align: center;
+        vertical-align: middle;
+        width: 25px;
+        height: 25px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.VtoPoliza)
-        </dt>
+    .fa {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.VtoPoliza)
-        </dd>
+    .btn-mas.fa-trash {
+        color: #FFFFFF;
+        background-color: #a02789;
+        border-radius: 20px;
+        padding: 6px 1px 4px 1px;
+        font-size: 14px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ReciboPagoSeguro)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ReciboPagoSeguro)
-        </dd>
+    .title {
+        color: black;
+        padding-top: 10px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.VtoVTV)
-        </dt>
+    .date-error {
+        background-color: #ff6666 !important; /* red */
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.VtoVTV)
-        </dd>
+    .date-warning {
+        background-color: #ffff99 !important; /* yellow */
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.VtoMatafuego)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.VtoMatafuego)
-        </dd>
+</style>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.VtoConstanciaAFIP)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.VtoConstanciaAFIP)
-        </dd>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.Id);
+    <div id="page-wrapper">
+        <div class="row">
+            <form id="form-create" role="form">
+                <div class="col-lg-12">
+                    <!-- /.Panel de Datos de Alta -->
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="well">
+                                <div class="well-body">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>Tipo</label>
+                                                @Html.DropDownListFor(model => model.TransportTypeId, new SelectList(ViewBag.listaTipos, "Id", "Descripcion"), "Seleccione...", new { @class = "form-control input-sm", id = "TransportTypeId" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Expediente</label>
+                                                @Html.EditorFor(model => model.Expediente, new { htmlAttributes = new { @class = "form-control input-sm", id = "Expediente" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>Dominio</label>
+                                                @Html.EditorFor(model => model.Dominio, new { htmlAttributes = new { @class = "form-control input-sm", id = "Dominio" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Marca</label>
+                                                @Html.EditorFor(model => model.Marca, new { htmlAttributes = new { @class = "form-control input-sm", id = "Marca" } })
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label>Modelo</label>
+                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "Modelo" } })
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label>Fecha Inscrip Inicial</label>
+                                                @*@Html.EditorFor(model => model.FechaInscripcionInicial, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "FechaInscripcionInicial", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.FechaInscripcionInicial, new { @Value = Model.FechaInscripcionInicial.HasValue ? Model.FechaInscripcionInicial.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width", id = "FechaInscripcionInicial", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Fecha Desinfección</label>
+                                                @*@Html.EditorFor(model => model.Desinfeccion, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "Desinfeccion", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.Desinfeccion, new { @Value = Model.Desinfeccion.HasValue ? Model.Desinfeccion.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width", id = "Desinfeccion", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Fecha Constatación</label>
+                                                @*@Html.EditorFor(model => model.Constatacion, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "Constatacion", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.Constatacion, new { @Value = Model.Constatacion.HasValue ? Model.Constatacion.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width", id = "Constatacion", @type = "datetime" })
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>Vto Poliza</label>
+                                                @*@Html.EditorFor(model => model.VtoPoliza, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoPoliza", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.VtoPoliza, new { @Value = Model.VtoPoliza.HasValue ? Model.VtoPoliza.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoPoliza", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>VTV</label>
+                                                @*@Html.EditorFor(model => model.VtoVTV, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoVTV", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.VtoVTV, new { @Value = Model.VtoVTV.HasValue ? Model.VtoVTV.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoVTV", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Vto Matafuego</label>
+                                                @*@Html.EditorFor(model => model.VtoMatafuego, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoMatafuego", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.VtoMatafuego, new { @Value = Model.VtoMatafuego.HasValue ? Model.VtoMatafuego.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoMatafuego", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Const.Opcion AFIP</label>
+                                                @*@Html.EditorFor(model => model.VtoConstanciaAFIP, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoConstanciaAFIP", @type = "datetime" } })*@
+                                                @Html.TextBoxFor(m => m.VtoConstanciaAFIP, new { @Value = Model.VtoConstanciaAFIP.HasValue ? Model.VtoConstanciaAFIP.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoConstanciaAFIP", @type = "datetime" })
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <label>Observacion</label>
+                                                @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control input-sm", id = "Observaciones" } })
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*       TITULARES        *@
+                                <div class="row">
+                                    <div class="col-lg-12 f-cost">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title">
+                                                    <h4 class="title"><b>Titular/es:</b></h4>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="copiedTitulares"></div>
+                                            @{int quedanTitulares = Model.Titulares.Count;}
+                                            @for (int i = 0; i < Model.Titulares.Count; i++)
+                                            {
+
+                                                <div id="PanelTitulares" class="card-body">
+                                                    @Html.HiddenFor(x => x.Titulares[i].Enable, new { @class = "enable" })
+                                                    @Html.HiddenFor(x => x.Titulares[i].Id)
+                                                    <div class="well color-well">
+                                                        <div class="well-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Nombre</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "nombre" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Apellido</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "apellido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>DNI</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 margin-top-15 text-right">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Domicilio Real</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].CalleReal, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleReal" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Domicilio Constituido</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].CalleConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleConstituido" } })
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Teléfono</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Telefono, new { htmlAttributes = new { @class = "form-control input-sm", id = "Telefono", @type = "number" } })
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>E-mail</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Email, new { htmlAttributes = new { @class = "form-control input-sm", id = "Email" } })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                quedanTitulares = quedanTitulares - 1;
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+                                @*       CHOFERES        *@
+                                <div class="row">
+                                    <div class="col-lg-12 f-cost">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title">
+                                                    <h4 class="title"><b>Chofer/es:</b></h4>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="copiedChoferes"></div>
+                                            @{int quedanChoferes = Model.Choferes.Count;}
+                                            @for (int i = 0; i < Model.Choferes.Count; i++)
+                                            {
+
+                                                <div id="PanelChoferes" class="card-body">
+                                                    @Html.HiddenFor(x => x.Choferes[i].Enable, new { @class = "enable" })
+                                                    @Html.HiddenFor(x => x.Choferes[i].Id)
+                                                    <div class="well color-well">
+                                                        <div class="well-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Nombre</label>
+                                                                        @Html.EditorFor(model => model.Choferes[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "Nombre" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Apellido</label>
+                                                                        @Html.EditorFor(model => model.Choferes[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "Apellido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>DNI</label>
+                                                                        @Html.EditorFor(model => model.Choferes[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="form-group">
+                                                                        <label>Fecha Vto Licencia</label>
+                                                                        @*@Html.EditorFor(model => model.Choferes[i].VtoLicencia, new { htmlAttributes = new { @class = "form-control input-sm  input-date input-width", id = "VtoLicencia"  } })*@
+                                                                        @Html.TextBoxFor(m => m.Choferes[i].VtoLicencia, new { @Value = Model.Choferes[i].VtoLicencia.HasValue ? Model.Choferes[i].VtoLicencia.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLicencia" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="form-group">
+                                                                        <label>Fecha Vto Libreta</label>
+                                                                        @*@Html.EditorFor(model => model.Choferes[i].VtoLibreta, new { htmlAttributes = new { @class = "form-control input-sm  input-date input-width", id = "VtoLibreta" } })*@
+                                                                        @Html.TextBoxFor(m => m.Choferes[i].VtoLibreta, new { @Value = Model.Choferes[i].VtoLibreta.HasValue ? Model.Choferes[i].VtoLibreta.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLibreta" })
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                quedanChoferes = quedanChoferes - 1;
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                @*CELADORES*@
+
+                                @if (Model.Celadores.Count  >0 )
+                                {
+                                    int quedanCeladores = Model.Celadores.Count;
+                                    <div class="row">
+                                    <div class="col-lg-12 f-cost">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title">
+                                                    <h4 class="title"><b>Celadora/s:</b></h4>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="copiedCeladores"></div>
+
+                                                
+                                                @for (int i = 0; i < Model.Celadores.Count; i++)
+                                                {
+
+                                                    <div id="PanelCeladores" class="card-body">
+                                                        @Html.HiddenFor(x => x.Celadores[i].Enable, new { @class = "enable" })
+                                                        @Html.HiddenFor(x => x.Celadores[i].Id)
+                                                        <div class="well color-well">
+                                                            <div class="well-body">
+                                                                <div class="row">
+                                                                    <div class="col-lg-2">
+                                                                        <div class="input-group">
+                                                                            <label>Nombre</label>
+                                                                            @Html.EditorFor(model => model.Celadores[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "Nombre" } })
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-2">
+                                                                        <div class="input-group">
+                                                                            <label>Apellido</label>
+                                                                            @Html.EditorFor(model => model.Celadores[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "Apellido" } })
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-2">
+                                                                        <div class="input-group">
+                                                                            <label>DNI</label>
+                                                                            @Html.EditorFor(model => model.Celadores[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-2">
+                                                                        <div class="form-group">
+                                                                            <label>Fecha Vto Libreta</label>
+                                                                            @Html.TextBoxFor(m => m.Celadores[i].VtoLibreta, new { @Value = Model.Celadores[i].VtoLibreta.HasValue ? Model.Celadores[i].VtoLibreta.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLibreta" })
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    quedanCeladores = quedanCeladores - 1;
+                                                }
+                                            
+                                        </div>
+
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <!-- /.col-lg-12 -->
+
+            </form>
+
+            <!-- /.form -->
+        </div>
+
+        <!-- /.ro -->
+    </div>
+    <!-- Progress Loader -->
+    <div id="div-loader" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8; display: none">
+        <p style="position: absolute; color: White; top: 35%; left: 45%;">
+            <img src="~/Images/loading.gif" alt="Loading..." />
+        </p>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
+    <script>
+
+        $(document).ready(function () {
+            //$('#dt-FechaIngreso').attr("readonly", "readonly")
+            //Datepicker
+            $.datetimepicker.setLocale('es');
+
+            $('.input-date').datetimepicker({
+                timepicker: false,
+                format: 'd/m/Y',
+                scrollInput: false,
+                date: new Date(Date.now()),
+                onChangeDateTime: function (dp, $input) {
+                    if ($input.val() != '')
+                        validateDate($input);
+                }
+            });
+
+
+
+            $("input").prop('disabled', true);
+            $("select").prop('disabled', true);
+
+
+
+            $(".conVencimiento").each(function () {
+                if ($(this).val()!='')
+                    validateDate($(this));
+            });
+
+
+
+            function validateDate(objeto) {
+                var fechaconVencimiento = convertToDate($(objeto).val());
+                var fechaActual = convertToDate(getNow());
+                var fechaPorVencer = convertToDate(getPorVencer());
+                if (fechaconVencimiento >= fechaActual && fechaconVencimiento <= fechaPorVencer) {
+                    $(objeto).addClass("date-warning")
+                }
+                else {
+                    $(objeto).removeClass("date-warning");
+                    $(objeto).removeClass("date-error");
+                }
+                if (fechaconVencimiento < fechaActual) {
+                    $(objeto).addClass("date-error");
+                }
+            }
+
+            function convertToDate(date) {
+                var parts = date.split("/");
+                return new Date(parts[2], parts[1] - 1, parts[0]);
+            }
+
+
+            function getNow() {
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+
+                var yyyy = today.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+                return today = dd + '/' + mm + '/' + yyyy;
+            }
+
+            function getPorVencer() {
+                var today = new Date();
+                today.setDate(today.getDate() + 7);
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+
+                var yyyy = today.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+                return today = dd + '/' + mm + '/' + yyyy;
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+}
+
+
+

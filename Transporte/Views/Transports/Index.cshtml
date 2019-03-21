@@ -45,6 +45,13 @@
 
 @section scripts {
     @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
+    @Scripts.Render("~/Scripts/dataTables.buttons.min.js")
+    @Scripts.Render("~/Scripts/buttons.flash.min.js")
+    @Scripts.Render("~/Scripts/jszip.min.js")
+    @Scripts.Render("~/Scripts/pdfmake.min.js")
+    @Scripts.Render("~/Scripts/vfs_fonts.js")
+    @Scripts.Render("~/Scripts/buttons.html5.min.js")
+    @Scripts.Render("~/Scripts/buttons.print.min.js")
     <script>
 
 
@@ -57,12 +64,39 @@
         var Ver = '@ViewBag.Ver';
         var ViewBagNroTurno = '@ViewBag.NroTurno';
         var Action;
+        
         if (ViewBagNroTurno == '')
             Action = "@Url.Action("GetsSearch")";
         else
             Action = "@Url.Action("GetSearchBy", new { Codigo = "_Switch" })".replace("_Switch", ViewBagNroTurno);
 
-            var table = $('#dataTables-Index').DataTable({
+
+        
+        var table = $('#dataTables-Index').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    footer: true,
+                    exportOptions: {
+                        columns: [1, 2, 3, 4, 5, 6, 7]
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    footer: true,
+                    exportOptions: {
+                        columns: [1, 2, 3, 4, 5, 6,7]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    footer: true,
+                    exportOptions: {
+                        columns: [1, 2, 3, 4, 5, 6, 7]
+                    }
+                }
+            ],
                 "ajax":
                 {
                     url: "_Action".replace("_Action",Action),
@@ -70,7 +104,8 @@
                     dataSrc: ""
                 },
                 "columns": [
-                    { "data": "id", defaultContent: '', className: 'px150' },
+                    { "data": "id", defaultContent: '', className: 'px100' },
+                    { "data": "FechaAlta", className: 'px200' },
                     { "data": "TransportType", className: 'px200' },
                     { "data": "Dominio", className: 'px200' },
                     { "data": "Marca", className: 'px200' },
@@ -89,11 +124,12 @@
                     //Agrego las
                     // Add a class to the cell in the first column
                     $(nRow).children(':nth-child(1)').addClass('td-btn');
-
+                    
                     //Agrego el boton
                     if (Ver == 'True') {
                         //Ver
                         $('td:eq(0)', nRow).append("<span class='fa fa-eye span-btn' type='button' value='C' data-toggle='tooltip' data-placement='top' title='Ver' id='btn_Ver'/> ");
+                        
                     }
 
                     if (Editar == 'True') {
@@ -107,10 +143,18 @@
                     }
 
 
-                }
-
+            },
+            "fnFooterCallback": function (nRow, aaData, iStart,
+                iEnd, aiDisplay) {
+                var cantidadRegistros = 0;
+                x = aaData;
+                $.each(x, function (key, value) {
+                    cantidadRegistros = cantidadRegistros + 1;
+                })
+                $(nRow).find('.foot').eq(0).html("Cantidad de Transportes: " + cantidadRegistros);
+               }             
             });
-
+            
 
         });
 
@@ -216,7 +260,7 @@
             $('.filters').slideToggle(400, function () {
                 $('#btn-filter').toggleClass('btn-ghost-neutral btn-neutral');
                 completarTags();
-                buscarTurnos();
+                buscar();
             });
         });
 
@@ -229,20 +273,23 @@
 
             //Limpio el combo del tag que cerro
             switch (idTag) {
-                case "tagTurno":
-                    $('#Turno').val('');
-                    break;
                 case "tagTipo":
-                    $('#ddlTipo').val('').change();
+                    $('#Tipo').val('').change();
                     break;
-                case "tagDNI":
-                    $('#DNI').val('');
+                case "tagExpediente":
+                    $('#Expediente').val('').change();
+                    break;
+                case "tagDominio":
+                    $('#Dominio').val('');
                     break;
                 case "tagApellido":
                     $('#Apellido').val('');
                     break;
-                case "tagNombre":
-                    $('#Nombre').val('');
+                case "tagDNI":
+                    $('#DNI').val('');
+                    break;
+                case "tagEstado":
+                    $('#Estado').val('').change();;
                     break;
                 case "tagFechaDesde":
                     $('#fecha-inicio').val('');
@@ -255,30 +302,32 @@
             }
 
 
-            buscarTurnos();
+            buscar();
         });
 
-        function buscarTurnos() {
+        function buscar() {
             $("#div-loader").show();
-            var NroTurno = $('#tagTurno').find('.tagId').text();
-            var DNI = $('#tagDNI').find('.tagId').text();
-            var Apellido = $('#tagApellido').find('.tagId').text();
-            var Nombre = $('#tagNombre').find('.tagId').text();
-            var FechaTurnoDesde = $('#tagFechaDesde').find('.tagId').text();
-            var FechaTurnoHasta = $('#tagFechaHasta').find('.tagId').text();
             var Tipo = $('#tagTipo').find('.tagId').text();
+            var Expediente = $('#tagExpediente').find('.tagId').text();
+            var Dominio = $('#tagDominio').find('.tagId').text();
+            var Apellido = $('#tagApellido').find('.tagId').text();
+            var DNI = $('#tagDNI').find('.tagId').text();
+            var Estado = $('#tagEstado').find('.tagId').text();
+            var FechaDesde = $('#tagFechaDesde').find('.tagId').text();
+            var FechaHasta = $('#tagFechaHasta').find('.tagId').text();
 
                     $.ajax({
                         type: "POST",
-                        url: "@Url.Action("SearchTurn", "Turns")",
+                        url: "@Url.Action("SearchTransport", "Transports")",
                         data: JSON.stringify({
-                            "NroTurno": NroTurno,
-                            "DNI": DNI,
+                            "Tipo": Tipo,
+                            "Expediente": Expediente,
+                            "Dominio": Dominio,
                             "Apellido": Apellido,
-                            "Nombre": Nombre,
-                            "FechaTurnoDesde": FechaTurnoDesde,
-                            "FechaTurnoHasta": FechaTurnoHasta,
-                            "Tipo": Tipo
+                            "DNI": DNI,
+                            "Estado": Estado,
+                            "FechaDesde": FechaDesde,
+                            "FechaHasta": FechaHasta
                         }),
                         dataType: "json",
                         contentType: 'application/json; charset=utf-8;',
@@ -302,26 +351,50 @@
 
             function completarTags() {
                 //Tomo el valor de cada uno de los combos
-                if ($('#Turno').val() != null && $('#Turno').val() != '') {
-                    $('#tagTurno').find('.tagId').text($('#Turno').val());
-                    $('#tagTurno').find('.tagValue').text($('#Turno').val());
-                    $('#tagTurno').css("display", "inline-block");
-                }
-                else {
-                    $('#tagTurno').find('.tagId').text('');
-                    $('#tagTurno').find('.tagValue').text('');
-                    $('#tagTurno').hide();
-                }
 
-                if ($('#ddlTipo').val() != null && $('#ddlTipo').val() != '') {
-                    $('#tagTipo').find('.tagId').text($('#ddlTipo').val());
-                    $('#tagTipo').find('.tagValue').text($("#ddlTipo option:selected").text());
+                if ($('#Tipo').val() != null && $('#Tipo').val() != '') {
+                    $('#tagTipo').find('.tagId').text($('#Tipo').val());
+                    $('#tagTipo').find('.tagValue').text($("#Tipo option:selected").text());
                     $('#tagTipo').css("display", "inline-block");
                 }
                 else {
                     $('#tagTipo').find('.tagId').text('');
                     $('#tagTipo').find('.tagValue').text('');
                     $('#tagTipo').hide();
+                }
+
+                if ($('#Expediente').val() != null && $('#Expediente').val() != '') {
+                    $('#tagExpediente').find('.tagId').text($('#Expediente').val());
+                    $('#tagExpediente').find('.tagValue').text($('#Expediente').val());
+                    $('#tagExpediente').css("display", "inline-block");
+                }
+                else {
+                    $('#tagExpediente').find('.tagId').text('');
+                    $('#tagExpediente').find('.tagValue').text('');
+                    $('#tagExpediente').hide();
+                }
+
+                if ($('#Dominio').val() != null && $('#Dominio').val() != '') {
+                    $('#tagDominio').find('.tagId').text($('#Dominio').val());
+                    $('#tagDominio').find('.tagValue').text($('#Dominio').val());
+                    $('#tagDominio').css("display", "inline-block");
+                }
+                else {
+                    $('#tagDominio').find('.tagId').text('');
+                    $('#tagDominio').find('.tagValue').text('');
+                    $('#tagDominio').hide();
+                }
+
+
+                if ($('#Apellido').val() != null && $('#Apellido').val() != '') {
+                    $('#tagApellido').find('.tagId').text($('#Apellido').val());
+                    $('#tagApellido').find('.tagValue').text($('#Apellido').val());
+                    $('#tagApellido').css("display", "inline-block");
+                }
+                else {
+                    $('#tagApellido').find('.tagId').text('');
+                    $('#tagApellido').find('.tagValue').text('');
+                    $('#tagApellido').hide();
                 }
 
                 if ($('#DNI').val() != null && $('#DNI').val() != '') {
@@ -335,28 +408,16 @@
                     $('#tagDNI').hide();
                 }
 
-                if ($('#Apellido').val() != null && $('#Apellido').val() != '') {
-                    $('#tagApellido').find('.tagId').text($('#Apellido').val());
-                    $('#tagApellido').find('.tagValue').text($('#Apellido').val());
-                    $('#tagApellido').css("display", "inline-block");
+                if ($('#Estado').val() != null && $('#Estado').val() != '') {
+                    $('#tagEstado').find('.tagId').text($('#Estado').val());
+                    $('#tagEstado').find('.tagValue').text($("#Estado option:selected").text());
+                    $('#tagEstado').css("display", "inline-block");
                 }
                 else {
-                    $('#tagApellido').find('.tagId').text('');
-                    $('#tagApellido').find('.tagValue').text('');
-                    $('#tagApellido').hide();
+                    $('#tagEstado').find('.tagId').text('');
+                    $('#tagEstado').find('.tagValue').text('');
+                    $('#tagEstado').hide();
                 }
-
-                if ($('#Nombre').val() != null && $('#Nombre').val() != '') {
-                    $('#tagNombre').find('.tagId').text($('#Nombre').val());
-                    $('#tagNombre').find('.tagValue').text($('#Nombre').val());
-                    $('#tagNombre').css("display", "inline-block");
-                }
-                else {
-                    $('#tagNombre').find('.tagId').text('');
-                    $('#tagNombre').find('.tagValue').text('');
-                    $('#tagNombre').hide();
-                }
-
                 if ($('#fecha-inicio').val() != null && $('#fecha-inicio').val() != '') {
                     $('#tagFechaDesde').find('.tagId').text($('#fecha-inicio').val());
                     $('#tagFechaDesde').find('.tagValue').text($('#fecha-inicio').val());
@@ -378,6 +439,7 @@
                     $('#tagFechaHasta').find('.tagValue').text('');
                     $('#tagFechaHasta').hide();
                 }
+
 
             }
 

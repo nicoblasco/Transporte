@@ -159,9 +159,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuditsController.cs" />
+    <Compile Include="Controllers\FieldsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ModulesController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
+    <Compile Include="Controllers\NotificationTagsController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\RolsController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -169,6 +172,7 @@
     <Compile Include="Controllers\TransportTypesController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\WindowsController.cs" />
+    <Compile Include="Enumerations\PersonType.cs" />
     <Compile Include="Enumerations\Status.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -180,9 +184,12 @@
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\Field.cs" />
     <Compile Include="Models\Audit.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Module.cs" />
+    <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\NotificationTag.cs" />
     <Compile Include="Models\Permission.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\PersonType.cs" />
@@ -198,11 +205,13 @@
     <Compile Include="Tags\AutenticadoAttribute.cs" />
     <Compile Include="Validations\DateGreaterThanAttribute.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\NotificationViewModel.cs" />
     <Compile Include="ViewModel\PermissionViewModel.cs" />
     <Compile Include="ViewModel\PersonViewModel.cs" />
     <Compile Include="ViewModel\RolViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\TransportCreateViewModel.cs" />
+    <Compile Include="ViewModel\TransportEditViewModel.cs" />
     <Compile Include="ViewModel\TransportIndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -527,14 +536,20 @@
     <Content Include="Views\Home\Ticket.cshtml" />
     <Content Include="Views\Shared\AccessDenied.cshtml" />
     <Content Include="Views\Shared\ErrorCustom12.cshtml" />
-    <Content Include="Views\Transports\Create.cshtml" />
-    <Content Include="Views\Transports\Delete.cshtml" />
-    <Content Include="Views\Transports\Details.cshtml" />
-    <Content Include="Views\Transports\Edit.cshtml" />
     <Content Include="Views\Transports\Index.cshtml" />
     <Content Include="Views\TransportTypes\Index.cshtml" />
     <Content Include="Views\Transports\_Filtros.cshtml" />
     <Content Include="Views\Transports\_Table.cshtml" />
+    <Content Include="Views\Notifications\Create.cshtml" />
+    <Content Include="Views\Notifications\Delete.cshtml" />
+    <Content Include="Views\Notifications\Details.cshtml" />
+    <Content Include="Views\Notifications\Edit.cshtml" />
+    <Content Include="Views\Notifications\Index.cshtml" />
+    <Content Include="Views\NotificationTags\Index.cshtml" />
+    <Content Include="Views\Fields\Index.cshtml" />
+    <Content Include="Views\Transports\Create.cshtml" />
+    <Content Include="Views\Transports\Details.cshtml" />
+    <Content Include="Views\Transports\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\upload\" />

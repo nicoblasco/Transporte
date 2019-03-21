@@ -115,7 +115,18 @@
                                         <a style="color: whitesmoke" href="@Url.Action("Index", "TransportTypes")">Tipos de Transporte</a>
                                     </li>
                                 }
-
+                                @if (PermissionViewModel.TienePermisoAcesso(WindowHelper.GetWindowId("ABM Maestros", "Notificaciones")))
+                                {
+                                    <li>
+                                        <a style="color: whitesmoke" href="@Url.Action("Index", "Notifications")">Alta de Notificaciones</a>
+                                    </li>
+                                }
+                                @*@if (PermissionViewModel.TienePermisoAcesso(WindowHelper.GetWindowId("ABM Maestros", "Tags")))
+                                {
+                                    <li>
+                                        <a style="color: whitesmoke" href="@Url.Action("Index", "NotificationTags")">Tags</a>
+                                    </li>
+                                }*@
                             </ul>
                         </li>
                         <li>
@@ -151,6 +162,12 @@
                                         <a style="color: whitesmoke" href="@Url.Action("Edit", "Settings")">Sistema</a>
                                     </li>
                                 }
+                                @*@if (PermissionViewModel.TienePermisoAcesso(WindowHelper.GetWindowId("Configuración", "Atributos")))
+                                {
+                                    <li>
+                                        <a style="color: whitesmoke" href="@Url.Action("Index", "Fields")">Atributos para Notificaciones</a>
+                                    </li>
+                                }*@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>

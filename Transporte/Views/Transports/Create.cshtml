@@ -93,7 +93,7 @@
 
     <div id="page-wrapper">
         <div class="row">
-            <form id="form-create" role="form" >
+            <form id="form-create" role="form">
                 <div class="col-lg-12">
                     <!-- /.Panel de Datos de Alta -->
                     <div class="panel panel-default">
@@ -104,62 +104,74 @@
                                         <div class="row">
                                             <div class="col-sm-2">
                                                 <label>Tipo</label><span class="red"> * </span>
-                                                @Html.DropDownListFor(model => model.TransportTypeId, new SelectList(ViewBag.listaTipos, "Id", "Descripcion"), "Seleccione...", new { @class = "form-control input-sm", id = "ddlTipoLicencia" })
+                                                @Html.DropDownListFor(model => model.TransportTypeId, new SelectList(ViewBag.listaTipos, "Id", "Descripcion"), "Seleccione...", new { @class = "form-control input-sm", id = "TransportTypeId" })
                                             </div>
 
                                             <div class="col-sm-2">
                                                 <label>Expediente</label><span class="red"> * </span>
-                                                @Html.EditorFor(model => model.Expediente, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
+                                                @Html.EditorFor(model => model.Expediente, new { htmlAttributes = new { @class = "form-control input-sm", id = "Expediente" } })
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-sm-2">
                                                 <label>Dominio</label><span class="red"> * </span>
-                                                @Html.EditorFor(model => model.Dominio, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
+                                                @Html.EditorFor(model => model.Dominio, new { htmlAttributes = new { @class = "form-control input-sm", id = "Dominio" } })
                                             </div>
 
                                             <div class="col-sm-2">
                                                 <label>Marca</label><span class="red"> * </span>
-                                                @Html.EditorFor(model => model.Marca, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
+                                                @Html.EditorFor(model => model.Marca, new { htmlAttributes = new { @class = "form-control input-sm", id = "Marca" } })
                                             </div>
                                             <div class="col-sm-2">
                                                 <label>Modelo</label><span class="red"> * </span>
-                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
+                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "Modelo" } })
                                             </div>
                                             <div class="col-sm-2">
                                                 <label>Fecha Inscrip Inicial</label><span class="red"> * </span>
-                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso", @type = "datetime" } })
+                                                @Html.EditorFor(model => model.FechaInscripcionInicial, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "FechaInscripcionInicial", @type = "datetime" } })
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label>Desinfección</label><span class="red"> * </span>
-                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso", @type = "datetime" } })
+                                                <label>Fecha Desinfección</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Desinfeccion, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "Desinfeccion", @type = "datetime" } })
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label>Constatación</label><span class="red"> * </span>
-                                                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso", @type = "datetime" } })
+                                                <label>Fecha Constatación</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.Constatacion, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "Constatacion", @type = "datetime" } })
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label>Vto Poliza</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.VtoPoliza, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoPoliza", @type = "datetime" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>VTV</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.VtoVTV, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoVTV", @type = "datetime" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Vto Matafuego</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.VtoMatafuego, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoMatafuego", @type = "datetime" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>Const.Opcion AFIP</label><span class="red"> * </span>
+                                                @Html.EditorFor(model => model.VtoConstanciaAFIP, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoConstanciaAFIP", @type = "datetime" } })
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <label>Observacion</label>
+                                                @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control input-sm", id = "Observaciones" } })
                                             </div>
 
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-2">
-                                        <label>Vto Poliza</label><span class="red"> * </span>
-                                        @Html.EditorFor(model => model.Dominio, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
-                                    </div>
-
-                                    <div class="col-sm-2">
-                                        <label>VTV</label><span class="red"> * </span>
-                                        @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso" } })
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <label>Const.Opcion AFIP</label><span class="red"> * </span>
-                                        @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control input-sm", id = "dt-FechaIngreso", @type = "datetime" } })
-                                    </div>
-
                                 </div>
 
                                 @*       TITULARES        *@
@@ -182,21 +194,22 @@
                                                             <div class="col-lg-3">
                                                                 <div class="input-group">
                                                                     <label>Nombre</label><span class="red"> * </span>
-                                                                    <input id="nombre" class="form-control input-sm" type="text" name="Persons[0].Nombre">
+                                                                    <input id="nombre" class="form-control input-sm" type="text" name="Titulares[0].Nombre">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-3">
                                                                 <div class="input-group">
                                                                     <label>Apellido</label><span class="red"> * </span>
-                                                                    <input id="apellido" class="form-control input-sm" type="text" name="Persons[0].Apellido">
+                                                                    <input id="apellido" class="form-control input-sm" type="text" name="Titulares[0].Apellido">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-2">
                                                                 <div class="input-group">
                                                                     <label>DNI</label><span class="red"> * </span>
-                                                                    <input id="DNI" class="form-control input-sm" type="text" name="Persons[0].DNI">
+                                                                    <input id="DNI" class="form-control input-sm" type="number" name="Titulares[0].DNI">
                                                                 </div>
                                                             </div>
+
                                                             <div class="col-lg-4 margin-top-15 text-right">
                                                                 <span id="AgregarTitular" class="btn-mas fa fa-plus"></span>
                                                                 <span id="QuitarTitular" class="btn-mas fa fa-trash"></span>
@@ -207,25 +220,27 @@
                                                             <div class="col-lg-3">
                                                                 <div class="input-group">
                                                                     <label>Domicilio Real</label><span class="red"> * </span>
-                                                                    <input id="nombre" class="form-control input-sm" type="text" name="Persons[0].Nombre">
+                                                                    <input id="CalleReal" class="form-control input-sm" type="text" name="Titulares[0].CalleReal">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-3">
                                                                 <div class="input-group">
                                                                     <label>Domicilio Constituido</label><span class="red"> * </span>
-                                                                    <input id="apellido" class="form-control input-sm" type="text" name="Persons[0].Apellido">
+                                                                    <input id="CalleConstituido" class="form-control input-sm" type="text" name="Titulares[0].CalleConstituido">
                                                                 </div>
                                                             </div>
+
                                                             <div class="col-lg-2">
                                                                 <div class="input-group">
                                                                     <label>Teléfono</label><span class="red"> * </span>
-                                                                    <input id="DNI" class="form-control input-sm" type="text" name="Persons[0].DNI">
+                                                                    <input id="Telefono" class="form-control input-sm" type="number" name="Titulares[0].Telefono">
                                                                 </div>
                                                             </div>
+
                                                             <div class="col-lg-3">
                                                                 <div class="input-group">
                                                                     <label>E-mail</label><span class="red"> * </span>
-                                                                    <input id="DNI" class="form-control input-sm" type="text" name="Persons[0].DNI">
+                                                                    <input id="Email" class="form-control input-sm" type="text" name="Titulares[0].Email">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -256,31 +271,31 @@
                                                             <div class="col-lg-2">
                                                                 <div class="input-group">
                                                                     <label>Nombre</label><span class="red"> * </span>
-                                                                    <input id="nombre" class="form-control input-sm" type="text" name="Persons[0].Nombre">
+                                                                    <input id="Nombre" class="form-control input-sm" type="text" name="Choferes[0].Nombre">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-2">
                                                                 <div class="input-group">
                                                                     <label>Apellido</label><span class="red"> * </span>
-                                                                    <input id="apellido" class="form-control input-sm" type="text" name="Persons[0].Apellido">
+                                                                    <input id="Apellido" class="form-control input-sm" type="text" name="Choferes[0].Apellido">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-2">
                                                                 <div class="input-group">
                                                                     <label>DNI</label><span class="red"> * </span>
-                                                                    <input id="DNI" class="form-control input-sm" type="text" name="Persons[0].DNI">
+                                                                    <input id="DNI" class="form-control input-sm" type="number" name="Choferes[0].DNI">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-2">
                                                                 <div class="form-group">
-                                                                    <label>Fecha Vto Licencia</label>
-                                                                    <input class="form-control input-sm input-date input-width" id="input-FechaDeNacimiento" type="text" name="inputFechaDeNacimiento">
+                                                                    <label>Fecha Vto Licencia</label><span class="red"> * </span>
+                                                                    <input class="form-control input-sm input-date input-width" id="VtoLicencia" type="text" name="Choferes[0].VtoLicencia">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-2">
                                                                 <div class="form-group">
                                                                     <label>Fecha Vto Libreta</label>
-                                                                    <input class="form-control input-sm input-date input-width" id="input-FechaDeNacimiento" type="text" name="inputFechaDeNacimiento">
+                                                                    <input class="form-control input-sm input-date input-width" id="VtoLibreta" type="text" name="Choferes[0].VtoLibreta">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-2 margin-top-15 text-right">
@@ -315,26 +330,26 @@
                                                         <div class="row">
                                                             <div class="col-lg-2">
                                                                 <div class="input-group">
-                                                                    <label>Nombre</label><span class="red"> * </span>
-                                                                    <input id="nombre" class="form-control input-sm" type="text" name="Persons[0].Nombre">
+                                                                    <label>Nombre</label>
+                                                                    <input id="nombre" class="form-control input-sm" type="text" name="Celadores[0].Nombre">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-2">
                                                                 <div class="input-group">
-                                                                    <label>Apellido</label><span class="red"> * </span>
-                                                                    <input id="apellido" class="form-control input-sm" type="text" name="Persons[0].Apellido">
+                                                                    <label>Apellido</label>
+                                                                    <input id="apellido" class="form-control input-sm" type="text" name="Celadores[0].Apellido">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-2">
                                                                 <div class="input-group">
-                                                                    <label>DNI</label><span class="red"> * </span>
-                                                                    <input id="DNI" class="form-control input-sm" type="text" name="Persons[0].DNI">
+                                                                    <label>DNI</label>
+                                                                    <input id="DNI" class="form-control input-sm" type="number" name="Celadores[0].DNI">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-2">
                                                                 <div class="form-group">
                                                                     <label>Fecha Vto Libreta</label>
-                                                                    <input class="form-control input-sm input-date input-width" id="input-FechaDeNacimiento" type="text" name="inputFechaDeNacimiento">
+                                                                    <input class="form-control input-sm input-date input-width" id="VtoLibreta" type="text" name="Celadores[0].VtoLibreta">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-4 margin-top-15 text-right">
@@ -351,13 +366,14 @@
                                 </div>
 
                             </div>
-                        </div>    
-                        <!-- /. FIN Panel de Datos del Turno -->
+                            <button type="submit" class="btn btn-primary" style="float: right;">Guardar</button>
+                        </div>
 
 
 
-                </div>
-                <!-- /.col-lg-12 -->
+
+                    </div>
+                    <!-- /.col-lg-12 -->
 
             </form>
 
@@ -366,7 +382,12 @@
 
         <!-- /.ro -->
     </div>
-
+    <!-- Progress Loader -->
+    <div id="div-loader" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8; display: none">
+        <p style="position: absolute; color: White; top: 35%; left: 45%;">
+            <img src="~/Images/loading.gif" alt="Loading..." />
+        </p>
+    </div>
 }
 
 
@@ -384,10 +405,6 @@
             format: 'd/m/Y',
             scrollInput: false,
             date: new Date(Date.now())
-        });
-
-        $('#input-FechaDeNacimiento').datetimepicker({
-            locale: 'es'
         });
 
         $('#QuitarTitular').hide();
@@ -445,15 +462,27 @@
         $(document).on('click', '#AgregarChofer', function () {
             //Busco el contenedor del boton que hizo click
 
+            $(this).parents('#PanelChoferes').find('.input-date').datetimepicker("destroy");
+
             var item = $(this).parents('#PanelChoferes').clone(true);
+
+            $(this).parents('#PanelChoferes').find('.input-date').datetimepicker({
+                timepicker: false,
+                format: 'd/m/Y',
+                scrollInput: false,
+                date: new Date(Date.now())
+            });
+
+            $(item).find('.input-date').datetimepicker({
+                timepicker: false,
+                format: 'd/m/Y',
+                scrollInput: false,
+                date: new Date(Date.now())
+            });
 
             $(this).closest('#AgregarChofer').hide();
             $(this).parents('#PanelChoferes').find('#QuitarChofer').show();
-
-            //var item = $("div#PanelNovedades.row-Hide").clone(true);
-            //var itemHide = $("div#PanelNovedades.row-Hide");
-
-
+            
 
             //Incremento el indice
             $(item).find('input').each(function () {
@@ -476,7 +505,7 @@
                 }));
             });
 
-
+            
 
             //Reemplazo el boton
             $(item).find('#QuitarChofer').hide();
@@ -493,13 +522,27 @@
         $(document).on('click', '#AgregarCelador', function () {
             //Busco el contenedor del boton que hizo click
 
+            $(this).parents('#PanelCeladores').find('.input-date').datetimepicker("destroy");
+
             var item = $(this).parents('#PanelCeladores').clone(true);
+
+            $(this).parents('#PanelCeladores').find('.input-date').datetimepicker({
+                timepicker: false,
+                format: 'd/m/Y',
+                scrollInput: false,
+                date: new Date(Date.now())
+            });
+
+            $(item).find('.input-date').datetimepicker({
+                timepicker: false,
+                format: 'd/m/Y',
+                scrollInput: false,
+                date: new Date(Date.now())
+            });
 
             $(this).closest('#AgregarCelador').hide();
             $(this).parents('#PanelCeladores').find('#QuitarCelador').show();
 
-            //var item = $("div#PanelNovedades.row-Hide").clone(true);
-            //var itemHide = $("div#PanelNovedades.row-Hide");
 
 
 
@@ -554,6 +597,221 @@
             $(this).parents('#PanelCeladores').remove();
 
         });
+
+
+        //VALIDACIONES
+
+        function validoRequeridos() {
+            var messageError = '';
+
+            if ($("#TransportTypeId").val() == '') {
+                messageError += "Tipo </br>";
+            }
+
+            if ($("#Expediente").val() == '') {
+                messageError += "Expediente </br>";
+            }
+
+            if ($("#Dominio").val() == '') {
+                messageError += "Dominio </br>";
+            }
+
+            if ($("#Marca").val() == '') {
+                messageError += "Marca </br>";
+            }
+
+            if ($("#FechaInscripcionInicial").val() == '') {
+                messageError += "Fecha Inscrip Inicial </br>";
+            }
+
+            if ($("#Desinfeccion").val() == '') {
+                messageError += "Fecha Desinfección </br>";
+            }
+
+            if ($("#Constatacion").val() == '') {
+                messageError += "Fecha Constatación </br>";
+            }
+
+            if ($("#VtoPoliza").val() == '') {
+                messageError += "Vto Poliza </br>";
+            }
+
+            if ($("#VtoVTV").val() == '') {
+                messageError += "VTV </br>";
+            }
+
+
+            if ($("#VtoMatafuego").val() == '') {
+                messageError += "Vto Matafuego </br>";
+            }
+
+            if ($("#VtoConstanciaAFIP").val() == '') {
+                messageError += "Const.Opcion AFIP </br>";
+            }
+
+            
+
+
+
+            $('#PanelTitulares:visible').each(function () {
+                if ($(this).find("#nombre").val() == '') {
+                    messageError += "Nombre </br>";
+                }
+                if ($(this).find("#apellido").val() == '') {
+                    messageError += "Apellido </br>";
+                }
+                if ($(this).find("#DNI").val() == '') {
+                    messageError += "DNI </br>";
+                }
+                if ($(this).find("#Telefono").val() == '') {
+                    messageError += "Teléfono </br>";
+                }
+                if ($(this).find("#CalleReal").val() == '') {
+                    messageError += "Domicilio Real </br>";
+                }
+                if ($(this).find("#CalleConstituido").val() == '') {
+                    messageError += "Domicilio Constituido </br>";
+                }
+                if ($(this).find("#Email").val() == '') {
+                    messageError += "E-mail </br>";
+                }
+
+            });
+
+
+            $('#PanelChoferes:visible').each(function () {
+                if ($(this).find("#nombre").val() == '') {
+                    messageError += "Nombre </br>";
+                }
+                if ($(this).find("#apellido").val() == '') {
+                    messageError += "Apellido </br>";
+                }
+                if ($(this).find("#DNI").val() == '') {
+                    messageError += "DNI </br>";
+                }
+                if ($(this).find("#VtoLicencia").val() == '') {
+                    messageError += "Fecha Vto Licencia </br>";
+                }
+                //if ($(this).find("#VtoLibreta").val() == '') {
+                //    messageError += "Fecha Vto Libreta </br>";
+                //}
+
+            });
+
+            //$('#PanelCeladores:visible').each(function () {
+            //    if ($(this).find("#nombre").val() == '') {
+            //        messageError += "Nombre </br>";
+            //    }
+            //    if ($(this).find("#apellido").val() == '') {
+            //        messageError += "Apellido </br>";
+            //    }
+            //    if ($(this).find("#DNI").val() == '') {
+            //        messageError += "DNI </br>";
+            //    }
+
+            //    //if ($(this).find("#VtoLibreta").val() == '') {
+            //    //    messageError += "Fecha Vto Libreta </br>";
+            //    //}
+
+            //});
+
+
+
+
+            if (messageError != '') {
+                messageError = "¡Debe completar los campos requeridos! ";// </br>+ messageError;
+            }
+
+            return messageError;
+
+        }
+
+
+         function validationIsTrue() {
+             //Devuelve si tiene alguno seleccionado
+             var valor1='';
+             valor1 = validoRequeridos();
+             if (valor1 != '') {
+                 Lobibox.notify('warning', {
+                     title: 'Advertencia',
+                     msg: valor1,
+                     height: 'auto'
+                 });
+                 return false;
+             }
+             else
+                 return true;
+
+         }
+
+
+        //SUBMIT
+         $("form").bind("keypress", function (e) {
+             if (e.keyCode == 13) {
+                 return false;
+             }
+         });
+
+         function serializerForm() {
+             var data = {};
+
+             $("form").serializeArray().map(function (x) {
+                 data[x.name] = x.value;
+             });
+
+             $("form").find('input:hidden[data-is-json]').each(function () {
+                 data[$(this).attr('id')] = $(this).data('json');
+             });
+
+             return data;
+         }
+
+
+
+         $("form").submit(function (e) {
+             $("#div-loader").show();
+             e.preventDefault();
+             if (validationIsTrue()) {
+                 var ajaxSettings = {
+                     type: 'POST',
+                     async: false,
+                     url: '@Url.Action("CreateTransport", "Transports")',
+                     data: serializerForm(),
+                     dataType: 'json',
+                     success: function (dataResponse) {
+                         $("#div-loader").hide();
+                         if (dataResponse.responseCode == 0) {
+                             $("#div-loader").hide();
+                             Lobibox.notify('success', {
+                                 title: 'Exito',
+                                 msg: 'Los cambios se han grabado correctamente.'
+                             });
+                         } else {
+                             Lobibox.notify('error', {
+                                 title: 'Error',
+                                 msg: 'Ah ocurrido un error, intente nuevamente.'
+                             });
+                         }
+                         window.location.href = '@Url.Action("Index", "Transports")';
+                     },
+                     error: function (x, y, z) {
+                         $("#div-loader").hide();
+                         Lobibox.notify('error', {
+                             title: 'Error',
+                             msg: 'Ah ocurrido un error, intente nuevamente.'
+                         });
+                     }
+                };
+
+                return $.ajax(ajaxSettings);
+             }
+             else {
+                 $("#div-loader").hide();
+                return false;
+             }
+
+         });
+
 
     </script>
 

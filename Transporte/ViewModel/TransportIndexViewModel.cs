@@ -10,6 +10,8 @@ namespace Transporte.ViewModel
         public int Id { get; set; }
         public string TransportType { get; set; }
 
+        public string FechaAlta { get; set; }
+
         public string Dominio { get; set; }
         public string Marca { get; set; }
         public string Modelo { get; set; }

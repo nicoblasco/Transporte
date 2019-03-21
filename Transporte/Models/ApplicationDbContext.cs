@@ -63,5 +63,11 @@ namespace Transporte.Models
         public System.Data.Entity.DbSet<Transporte.Models.Transport> Transports { get; set; }
 
         public System.Data.Entity.DbSet<Transporte.Models.TransportType> TransportTypes { get; set; }
+
+        public System.Data.Entity.DbSet<Transporte.Models.Notification> Notifications { get; set; }
+
+        public System.Data.Entity.DbSet<Transporte.Models.NotificationTag> NotificationTags { get; set; }
+
+        public System.Data.Entity.DbSet<Transporte.Models.Field> Fields { get; set; }
     }
 }

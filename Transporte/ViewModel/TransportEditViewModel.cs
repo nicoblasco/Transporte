@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web;
 using Transporte.Models;
-using TransportType = Transporte.Models.TransportType;
 
 namespace Transporte.ViewModel
 {
-    public class TransportCreateViewModel
+    public class TransportEditViewModel
     {
         public int Id { get; set; }
         public int TransportTypeId { get; set; }
         public virtual TransportType TransportType { get; set; }
         public string Expediente { get; set; }
 
-        public virtual ICollection<Person> Titulares { get; set; }
-        public virtual ICollection<Person> Choferes { get; set; }
-        public virtual ICollection<Person> Celadores { get; set; }
+        public  List<Person> Titulares { get; set; }
+        public List<Person> Choferes { get; set; }
+        public List<Person> Celadores { get; set; }
 
         public string Dominio { get; set; }
         public string Marca { get; set; }
@@ -39,6 +37,9 @@ namespace Transporte.ViewModel
 
         public int UsuarioId { get; set; }
         public virtual Usuario Usuario { get; set; }
+
+
+
 
     }
 }

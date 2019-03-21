@@ -9,17 +9,16 @@ using System.Web.Mvc;
 using Transporte.Helpers;
 using Transporte.Models;
 using Transporte.ViewModel;
-using TransportType = Transporte.Models.TransportType;
 
 namespace Transporte.Controllers
 {
-    public class TransportTypesController : Controller
+    public class FieldsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        public string ModuleDescription = "ABM Maestros";
-        public string WindowDescription = "Tipos de Transporte";
+        public string ModuleDescription = "Configuración";
+        public string WindowDescription = "Atributos";
+        
 
-        // GET: TransportTypes
         public ActionResult Index()
         {
             //Verifico los Permisos
@@ -27,10 +26,11 @@ namespace Transporte.Controllers
                 return View("~/Views/Shared/AccessDenied.cshtml");
             ViewBag.AltaModificacion = PermissionViewModel.TienePermisoAlta(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
             ViewBag.Baja = PermissionViewModel.TienePermisoBaja(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
-            return View(db.TransportTypes.ToList());
+
+            return View(db.Fields.ToList());
         }
 
-        
+
 
         [HttpPost]
         public JsonResult Gets()
@@ -38,7 +38,7 @@ namespace Transporte.Controllers
             //var list = new List<LicenseClass>();
             try
             {
-                var list = db.TransportTypes.Where(x => x.Enable == true).Select(c => new { c.Id, c.Descripcion }).ToList();
+                var list = db.Fields.Select(c => new { c.Id, c.Descripcion, c.Referencia, c.IsArray }).ToList();
 
                 return Json(list, JsonRequestBehavior.AllowGet);
             }
@@ -54,13 +54,13 @@ namespace Transporte.Controllers
         [HttpPost]
         public JsonResult Get(int id)
         {
-            TransportType types = new TransportType();
+            Field model = new Field();
             try
             {
-                types = db.TransportTypes.Find(id);
+                model = db.Fields.Find(id);
 
 
-                return Json(types, JsonRequestBehavior.AllowGet);
+                return Json(model, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
             {
@@ -76,9 +76,9 @@ namespace Transporte.Controllers
 
             try
             {
-                var result = from c in db.TransportTypes
+                var result = from c in db.Fields
                              where c.Id != id
-                             && c.Descripcion.ToUpper() == codigo.ToUpper() && c.Enable == true
+                             && c.Referencia.ToUpper() == codigo.ToUpper()
                              select c;
 
                 var responseObject = new
@@ -95,19 +95,18 @@ namespace Transporte.Controllers
             }
         }
 
-        public JsonResult Create(TransportType clase)
+        public JsonResult Create(Field clase)
         {
             if (clase == null)
             {
                 return Json(new { responseCode = "-10" });
             }
 
-            clase.Enable = true;
-            db.TransportTypes.Add(clase);
+            db.Fields.Add(clase);
             db.SaveChanges();
 
             //Audito
-            AuditHelper.Auditar("Alta", clase.Id.ToString(), "TransportTypes", ModuleDescription, WindowDescription);
+            AuditHelper.Auditar("Alta", clase.Id.ToString(), "Fields", ModuleDescription, WindowDescription);
 
             var responseObject = new
             {
@@ -118,18 +117,17 @@ namespace Transporte.Controllers
         }
 
 
-        public JsonResult Edit(TransportType clase)
+        public JsonResult Edit(Field clase)
         {
             if (clase == null)
             {
                 return Json(new { responseCode = "-10" });
             }
-            clase.Enable = true;
             db.Entry(clase).State = EntityState.Modified;
             db.SaveChanges();
 
             //Audito
-            AuditHelper.Auditar("Modificacion", clase.Id.ToString(), "TransportTypes", ModuleDescription, WindowDescription);
+            AuditHelper.Auditar("Modificacion", clase.Id.ToString(), "Fields", ModuleDescription, WindowDescription);
 
             var responseObject = new
             {
@@ -147,23 +145,20 @@ namespace Transporte.Controllers
                 return Json(new { responseCode = "-10" });
             }
 
-            TransportType  clase = db.TransportTypes.Find(id);
-            clase.Enable = false;
-            db.Entry(clase).State = EntityState.Modified;
+            Field clase = db.Fields.Find(id);
+            db.Entry(clase).State = EntityState.Deleted;
             db.SaveChanges();
 
             //Audito
-            AuditHelper.Auditar("Baja", id.ToString(), "TransportTypes", ModuleDescription, WindowDescription);
+            AuditHelper.Auditar("Baja", id.ToString(), "Fields", ModuleDescription, WindowDescription);
 
             var responseObject = new
             {
                 responseCode = 0
             };
-
             return Json(responseObject);
-
-
         }
+
 
         protected override void Dispose(bool disposing)
         {
