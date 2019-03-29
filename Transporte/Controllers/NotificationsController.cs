@@ -21,6 +21,9 @@ namespace Transporte.Controllers
         public string ModuleDescription = "ABM Maestros";
         public string WindowDescription = "Notificaciones";
 
+        public string header = "<!DOCTYPE html><html><head><meta name='viewport' content='width=device-width'/><title></title></head><body><div>";
+        public string footer = "</div></body></html>";
+
         // GET: TransportTypes
         public ActionResult Index()
         {            
@@ -30,7 +33,7 @@ namespace Transporte.Controllers
                 return View("~/Views/Shared/AccessDenied.cshtml");
             ViewBag.AltaModificacion = PermissionViewModel.TienePermisoAlta(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
             ViewBag.Baja = PermissionViewModel.TienePermisoBaja(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
-
+            ViewBag.Atributos = db.NotificationTags.Select(c => new { c.Tag, c.NombreAtributo }).OrderBy(x=>x.NombreAtributo).ToList();
             var list = db.Notifications.Select(c => new { c.Id, c.Nombre, c.Descripcion, c.Documento }).ToList();
             List<NotificationViewModel> notificationViewModels = new List<NotificationViewModel>();
             foreach (var item in list)
@@ -39,11 +42,9 @@ namespace Transporte.Controllers
                 {
                     Descripcion = item.Descripcion,
                     Documento = item.Documento,
-                    DocumentoBorrado = false,
                     Id = item.Id,
                     Nombre = item.Nombre
                 };
-                notification.FileName = Path.GetFileName(item.Documento);
 
                 notificationViewModels.Add(notification);
             }
@@ -66,12 +67,10 @@ namespace Transporte.Controllers
                     NotificationViewModel notification = new NotificationViewModel
                     {
                         Descripcion = item.Descripcion,
-                        Documento = item.Documento,
-                        DocumentoBorrado = false,
+                        Documento = item.Documento,                        
                         Id = item.Id,
                         Nombre = item.Nombre
                     };
-                    notification.FileName = Path.GetFileName(item.Documento);
 
                     notificationViewModels.Add(notification);
                 }
@@ -99,11 +98,9 @@ namespace Transporte.Controllers
                 {
                     Descripcion = clase.Descripcion,
                     Documento = clase.Documento,
-                    DocumentoBorrado = false,
                     Id = clase.Id,
                     Nombre = clase.Nombre
                 };
-                notification.FileName = Path.GetFileName(clase.Documento);
                 return Json(notification, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
@@ -157,8 +154,7 @@ namespace Transporte.Controllers
                 Nombre = clase.Nombre
             };
 
-            if (clase.File != null)
-                notification.Documento = SaveFile(clase.File, "Notificaciones", clase.Nombre);
+            notification.Documento = header + clase.Documento + footer;
 
             db.Notifications.Add(notification);
             db.SaveChanges();
@@ -190,8 +186,6 @@ namespace Transporte.Controllers
             notification.Descripcion = clase.Descripcion;
             notification.Documento = clase.Documento;
 
-            if (clase.File != null)
-                notification.Documento = SaveFile(clase.File, "Notificaciones", clase.Nombre);
 
 
             db.Entry(notification).State = EntityState.Modified;

@@ -91,8 +91,6 @@
     .date-warning {
         background-color: #ffff99 !important; /* yellow */
     }
-
-
 </style>
 
 
@@ -117,6 +115,17 @@
                                                 <label>Tipo</label>
                                                 @Html.DropDownListFor(model => model.TransportTypeId, new SelectList(ViewBag.listaTipos, "Id", "Descripcion"), "Seleccione...", new { @class = "form-control input-sm", id = "TransportTypeId" })
                                             </div>
+
+                                            <div class="col-sm-2">
+                                                <label>N° Parada</label>
+                                                @Html.EditorFor(model => model.ParadaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "ParadaNro" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>N° Plaza</label>
+                                                @Html.EditorFor(model => model.PlazaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "PlazaNro" } })
+                                            </div>
+
 
                                             <div class="col-sm-2">
                                                 <label>Expediente</label>
@@ -214,13 +223,13 @@
                                                     <div class="well color-well">
                                                         <div class="well-body">
                                                             <div class="row">
-                                                                <div class="col-lg-3">
+                                                                <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <label>Nombre</label>
                                                                         @Html.EditorFor(model => model.Titulares[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "nombre" } })
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-3">
+                                                                <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <label>Apellido</label>
                                                                         @Html.EditorFor(model => model.Titulares[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "apellido" } })
@@ -232,24 +241,6 @@
                                                                         @Html.EditorFor(model => model.Titulares[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-4 margin-top-15 text-right">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row">
-                                                                <div class="col-lg-3">
-                                                                    <div class="input-group">
-                                                                        <label>Domicilio Real</label>
-                                                                        @Html.EditorFor(model => model.Titulares[i].CalleReal, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleReal" } })
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-3">
-                                                                    <div class="input-group">
-                                                                        <label>Domicilio Constituido</label>
-                                                                        @Html.EditorFor(model => model.Titulares[i].CalleConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleConstituido" } })
-                                                                    </div>
-                                                                </div>
-
                                                                 <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <label>Teléfono</label>
@@ -263,6 +254,36 @@
                                                                         @Html.EditorFor(model => model.Titulares[i].Email, new { htmlAttributes = new { @class = "form-control input-sm", id = "Email" } })
                                                                     </div>
                                                                 </div>
+                                                                <div class="col-lg-1 margin-top-15 text-right">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Domicilio Real</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].CalleReal, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleReal" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Partido Real</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].PartidoReal, new { htmlAttributes = new { @class = "form-control input-sm", id = "PartidoReal" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Domicilio Constituido</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].CalleConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleConstituido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Partido Constituido</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].PartidoConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "PartidoConstituido" } })
+                                                                    </div>
+                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -341,22 +362,22 @@
 
                                 @*CELADORES*@
 
-                                @if (Model.Celadores.Count  >0 )
+                                @if (Model.Celadores.Count > 0)
                                 {
                                     int quedanCeladores = Model.Celadores.Count;
                                     <div class="row">
-                                    <div class="col-lg-12 f-cost">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <div class="card-title">
-                                                    <h4 class="title"><b>Celadora/s:</b></h4>
+                                        <div class="col-lg-12 f-cost">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div class="card-title">
+                                                        <h4 class="title"><b>Celadora/s:</b></h4>
+                                                    </div>
                                                 </div>
-                                            </div>
 
 
-                                            <div id="copiedCeladores"></div>
+                                                <div id="copiedCeladores"></div>
 
-                                                
+
                                                 @for (int i = 0; i < Model.Celadores.Count; i++)
                                                 {
 
@@ -397,13 +418,18 @@
                                                     </div>
                                                     quedanCeladores = quedanCeladores - 1;
                                                 }
-                                            
-                                        </div>
 
+                                            </div>
+
+                                        </div>
                                     </div>
-                                </div>
                                 }
+                                    <input type="button"  id="btnSalir" class="btn btn-default" style="float: right;" value="Salir" onclick="location.href='@Url.Action("Index")'" />
+                                <button type="button" id="btnNuevo" class="btn btn-primary" data-toggle="modal" data-target="#notificacionModal">
+                                    Generar Notificación
+                                </button>
                             </div>
+
                         </div>
 
 
@@ -419,6 +445,37 @@
 
         <!-- /.ro -->
     </div>
+
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="notificacionModal" role="dialog">
+        <div class="modal-dialog">
+            <form id="form-create" method="post" autocomplete="off">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Seleccione la notificación</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" autocomplete="off">
+                            <div class="form-group">
+                                <label>Seleccione Documento</label>
+                                @Html.DropDownList("selectNotification", new SelectList(ViewBag.listaNotificaciones, "Id", "Nombre"), new { @class = "form-control noDisabled" })
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        @Html.ActionLink("Generar", "Reporte", "Transports", new { filePath = "variation-example", id = "linkInformeAdjunto", @type="button", @class= "btn btn-primary" })
+                        @*<button type="submit" id="btnImprimir" class="btn btn-primary">Imprimir</button>*@
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Progress Loader -->
     <div id="div-loader" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8; display: none">
         <p style="position: absolute; color: White; top: 35%; left: 45%;">
@@ -434,6 +491,8 @@
     <script>
 
         $(document).ready(function () {
+            var DiasPorVencer = '@ViewBag.DiasPorVencer';
+
             //$('#dt-FechaIngreso').attr("readonly", "readonly")
             //Datepicker
             $.datetimepicker.setLocale('es');
@@ -453,11 +512,14 @@
 
             $("input").prop('disabled', true);
             $("select").prop('disabled', true);
+            $(".noDisabled").prop('disabled', false);
+            $("#btnSalir").prop('disabled', false);
+            
 
 
 
             $(".conVencimiento").each(function () {
-                if ($(this).val()!='')
+                if ($(this).val() != '')
                     validateDate($(this));
             });
 
@@ -502,7 +564,7 @@
 
             function getPorVencer() {
                 var today = new Date();
-                today.setDate(today.getDate() + 7);
+                today.setDate(today.getDate() + parseInt(DiasPorVencer));
                 var dd = today.getDate();
                 var mm = today.getMonth() + 1; //January is 0!
 
@@ -519,9 +581,77 @@
 
 
 
+    @*$("#form-create").validate({
+        rules: {
+            selectNotification: { required: true}
+        },
+        messages: {
+            inputDescripcion: {
+                required: "Este campo es requerido."
+            }
+        },
+        submitHandler: function (form) {
+            $("#div-loader").show();
+            var object = new Object();
+            object.Id = $('#Id').val();
+            object.NotificationId = $("#selectNotification option:selected").val();
+            var data = JSON.stringify(object);
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Report")',
+                    data: data,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function (dataResponse) {
+                        $('#notificacionModal').modal('hide');
+                        $("#div-loader").hide();
+                        if (dataResponse.responseCode == 0)
+                            {
+                            $("#div-loader").hide();
+                            Lobibox.notify('success', {
+                                title: 'Exito',
+                                msg: 'El Reporte se ha generado correctamente.'
+                            });
+                        } else {
+                                Lobibox.notify('error', {
+                                    title: 'Error',
+                                    msg: 'Ah ocurrido un error, intente nuevamente.'
+                            });
+                        }
+                    },
+                    error: function (response) {
+                        $("#div-loader").hide();
+                            Lobibox.notify('error', {
+                                title: 'Error',
+                                msg: 'Ah ocurrido un error, intente nuevamente.'
+                            });
+                    }
+                });
+            },
+            errorElement: "p"
+    });*@
 
 
 
+        $('#notificacionModal').on('shown.bs.modal', function (e) {
+
+            GetNotificationUrl();
+        });
+
+        $('#selectNotification').on('change', function (e) {
+            GetNotificationUrl();
+        });
+
+        function GetNotificationUrl() {
+            var idObject = $("#selectNotification option:selected").val();
+            var idTransport = $('#Id').val();
+
+            var link = "@Html.Raw(@Url.Action("Report", "Transports", new { @TransportId = "_myTid_", @NotificacionId = "_myid_" }))";
+            var link2 = link.replace('_myid_', idObject);
+
+            $('#notificacionModal').find('a').attr("href", link2.replace('_myTid_', idTransport));
+        }
 
 
 

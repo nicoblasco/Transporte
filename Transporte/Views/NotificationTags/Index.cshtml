@@ -8,7 +8,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Tipos Tag</h1>
+            <h1 class="page-header">Atributos para las notificaciones</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -42,8 +42,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Descripcion</th>
-                                <th>Tag</th>
+                                <th>Nombre</th>
                                 <th>Atributo</th>
                             </tr>
                         </thead>
@@ -76,22 +75,17 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Nueva Tag</h4>
+                    <h4 class="modal-title">Nuevo Atributo</h4>
                 </div>
                 <div class="modal-body">
                     <form role="form">
                         <div class="form-group">
-                            <label>Descripción</label>
-                            <input id="input-Descripcion" name="inputDescripcion" class="form-control" autocomplete="off">
+                            <label>Nombre</label>
+                            <input id="input-Nombre" name="inputNombre" class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label>Descripción</label>
-                            <input id="input-Tag" name="inputTag" class="form-control" autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <label>Atributo</label>
-                            @Html.DropDownList("NombreAtributo", new SelectList(ViewBag.listaAtributos, "Name", "Name"), new { @class = "form-control" })
-
+                            <label>Tag</label>
+                            @Html.DropDownList("NombreAtributo", new SelectList(ViewBag.listaAtributos, "Code", "Name"), new { @class = "form-control" })
                         </div>
                     </form>
                 </div>
@@ -122,16 +116,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Descripción</label>
-                            <input id="input-Descripcion" name="inputDescripcion" class="form-control" autocomplete="off">
+                            <label>Nombre</label>
+                            <input id="input-Nombre" name="inputNombre" class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label>Descripción</label>
-                            <input id="input-Tag" name="inputTag" class="form-control" autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <label>Atributo</label>
-                            @Html.DropDownList("NombreAtributo", new SelectList(ViewBag.listaAtributos, "Name", "Name"), new { @class = "form-control" })
+                            <label>Tag</label>
+                            @Html.DropDownList("NombreAtributo", new SelectList(ViewBag.listaAtributos, "Code", "Name"), new { @class = "form-control" })
                         </div>
                     </form>
                 </div>
@@ -165,7 +155,7 @@
                   },
            "columns": [
                { "data": "Id" },
-               { "data": "Descripcion" },
+               { "data": "NombreAtributo" },
                { "data": "Tag" },
            ],
            responsive: true
@@ -194,7 +184,7 @@
 
         Lobibox.confirm({
             title: 'Atención',
-            msg: "¿Esta seguro que desea eliminar el Tag?",
+            msg: "¿Esta seguro que desea eliminar el Atributo?",
             callback: function ($this, type, ev) {
                 if (type === 'yes') {
                     Delete();
@@ -239,27 +229,20 @@
 
     $("#form-create").validate({
         rules: {
-            inputDescripcion: { required: true, minlength: 2, maxlength: 30 },
-            inputTag: { required: true, minlength: 3, maxlength: 20 },
+            inputNombre: { required: true, minlength: 3, maxlength: 50 }
         },
         messages: {
-            inputDescripcion: {
-                required: "Este campo es requerido.",
-                minlength: "Introduzca al menos 2 caracteres.",
-                maxlength: "La longitud máxima permtida es de 30 caracteres."
-            },
-            inputTag: {
+            inputNombre: {
                 required: "Este campo es requerido.",
                 minlength: "Introduzca al menos 3 caracteres.",
-                maxlength: "La longitud máxima permtida es de 20 caracteres."
+                maxlength: "La longitud máxima permtida es de 50 caracteres."
             }
         },
         submitHandler: function (form) {
             $("#div-loader").show();
             var object = new Object();
-            object.Descripcion = $("#input-Descripcion").val();
-            object.Tag = $("#input-Tag").val();
-            object.NombreAtributo = $("#NombreAtributo option:selected").val();
+            object.NombreAtributo = $("#input-Nombre").val();
+            object.Tag = $("#NombreAtributo option:selected").val();
             var data = JSON.stringify(object);
 
 
@@ -270,7 +253,7 @@
                 $("#div-loader").hide();
                 Lobibox.notify('warning', {
                     title: 'Cuidado',
-                    msg: 'El tipo de Transporte ya existe, debe asignar otro nombre.'
+                    msg: 'El Atributo ya existe, debe asignar otro nombre.'
                 });
 
                 return;
@@ -316,15 +299,13 @@
 
     $("#form-edit").validate({
         rules: {
-            inputDescripcion: {
-                required: "Este campo es requerido.",
-                minlength: "Introduzca al menos 2 caracteres.",
-                maxlength: "La longitud máxima permtida es de 30 caracteres."
-            },
-            inputTag: {
+            inputNombre: { required: true, minlength: 3, maxlength: 50 }
+        },
+        messages: {
+            inputNombre: {
                 required: "Este campo es requerido.",
                 minlength: "Introduzca al menos 3 caracteres.",
-                maxlength: "La longitud máxima permtida es de 20 caracteres."
+                maxlength: "La longitud máxima permtida es de 50 caracteres."
             }
         },
         submitHandler: function (form) {
@@ -332,9 +313,8 @@
 
             var object = new Object();
             object.Id = $('#editarModal').find('input#input-Id').val();
-            object.Descripcion = $('#editarModal').find('input#input-Descripcion').val();
-            object.Tag = $('#editarModal').find('input#input-Tag').val();
-            object.NombreAtributo = $("#NombreAtributo option:selected").val();
+            object.NombreAtributo = $('#editarModal').find('input#input-Nombre').val();
+            object.Tag = $('#editarModal').find("#NombreAtributo option:selected").val();
             var data = JSON.stringify(object);
 
             //Antes de editar, verifico que no este duplicando el Rol
@@ -345,7 +325,7 @@
                 $("#div-loader").hide();
                 Lobibox.notify('warning', {
                     title: 'Cuidado',
-                    msg: 'El tipo de licencia ya existe, debe asignar otro nombre.'
+                    msg: 'El atributo ya existe, debe asignar otro.'
                 });
 
                 return;
@@ -402,9 +382,8 @@
             cache: false,
             success: function (result) {
                 $('#editarModal').find('input#input-Id').val(result.Id);
-                $('#editarModal').find('input#input-Descripcion').val(result.Descripcion);
-                $('#editarModal').find('input#input-Tag').val(result.Descripcion);
-                $('#editarModal').find('#NombreAtributo').val(result.NombreAtributo);
+                $('#editarModal').find('input#input-Nombre').val(result.NombreAtributo);
+                $('#editarModal').find('#NombreAtributo').val(result.Tag);
             },
             error: function (response) {
                     Lobibox.notify('error', {

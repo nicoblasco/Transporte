@@ -8,8 +8,9 @@ namespace Transporte.Models
     public class NotificationTag
     {
         public int Id { get; set; }
-        public string Descripcion { get; set; }
+
         public string NombreAtributo { get; set; }
+        
         public string Tag { get; set; }
     }
 }

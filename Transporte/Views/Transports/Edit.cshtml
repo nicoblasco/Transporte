@@ -118,6 +118,16 @@
                                             </div>
 
                                             <div class="col-sm-2">
+                                                <label>N° Parada</label>
+                                                @Html.EditorFor(model => model.ParadaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "ParadaNro" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>N° Plaza</label>
+                                                @Html.EditorFor(model => model.PlazaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "PlazaNro" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
                                                 <label>Expediente</label><span class="red"> * </span>
                                                 @Html.EditorFor(model => model.Expediente, new { htmlAttributes = new { @class = "form-control input-sm", id = "Expediente" } })
                                             </div>
@@ -206,80 +216,97 @@
                                             @{int quedanTitulares = Model.Titulares.Count;}
                                             @for (int i = 0; i < Model.Titulares.Count; i++)
                                             {
-                                                
-                                            <div id="PanelTitulares" class="card-body">
-                                                @Html.HiddenFor(x => x.Titulares[i].Enable, new { @class = "enable" })
-                                                @Html.HiddenFor(x => x.Titulares[i].Id)
-                                                <div class="well color-well">
-                                                    <div class="well-body">
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="input-group">
-                                                                    <label>Nombre</label><span class="red"> * </span>
-                                                                    @Html.EditorFor(model => model.Titulares[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "nombre" } })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="input-group">
-                                                                    <label>Apellido</label><span class="red"> * </span>
-                                                                    @Html.EditorFor(model => model.Titulares[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "apellido" } })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-2">
-                                                                <div class="input-group">
-                                                                    <label>DNI</label><span class="red"> * </span>
-                                                                    @Html.EditorFor(model => model.Titulares[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-4 margin-top-15 text-right">
-                                                                @if (quedanTitulares == Model.Titulares.Count)
-                                                                {
-                                                                    <span id="AgregarTitular" class="btn-mas fa fa-plus"></span>
-                                                                    <span id="QuitarTitular" class="btn-mas fa fa-trash" style="display:none"></span>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <span id="AgregarTitular" class="btn-mas fa fa-plus" style="display:none"></span>
-                                                                    <span id="QuitarTitular" class="btn-mas fa fa-trash"></span>
 
-                                                                }
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="input-group">
-                                                                    <label>Domicilio Real</label><span class="red"> * </span>
-                                                                    @Html.EditorFor(model => model.Titulares[i].CalleReal, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleReal" } })
+                                                <div id="PanelTitulares" class="card-body">
+                                                    @Html.HiddenFor(x => x.Titulares[i].Enable, new { @class = "enable" })
+                                                    @Html.HiddenFor(x => x.Titulares[i].Id)
+                                                    <div class="well color-well">
+                                                        <div class="well-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Nombre</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "nombre" } })
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="input-group">
-                                                                    <label>Domicilio Constituido</label><span class="red"> * </span>
-                                                                    @Html.EditorFor(model => model.Titulares[i].CalleConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleConstituido" } })
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Apellido</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "apellido" } })
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>DNI</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Teléfono</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Telefono, new { htmlAttributes = new { @class = "form-control input-sm", id = "Telefono", @type = "number" } })
+                                                                    </div>
+                                                                </div>
 
-                                                            <div class="col-lg-2">
-                                                                <div class="input-group">
-                                                                    <label>Teléfono</label><span class="red"> * </span>
-                                                                    @Html.EditorFor(model => model.Titulares[i].Telefono, new { htmlAttributes = new { @class = "form-control input-sm", id = "Telefono", @type = "number" } })
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>E-mail</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Email, new { htmlAttributes = new { @class = "form-control input-sm", id = "Email" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1 margin-top-15 text-right">
+                                                                    @if (quedanTitulares == Model.Titulares.Count)
+                                                                    {
+                                                                        <span id="AgregarTitular" class="btn-mas fa fa-plus"></span>
+                                                                        <span id="QuitarTitular" class="btn-mas fa fa-trash" style="display:none"></span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span id="AgregarTitular" class="btn-mas fa fa-plus" style="display:none"></span>
+                                                                        <span id="QuitarTitular" class="btn-mas fa fa-trash"></span>
+
+                                                                    }
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-lg-3">
-                                                                <div class="input-group">
-                                                                    <label>E-mail</label><span class="red"> * </span>
-                                                                    @Html.EditorFor(model => model.Titulares[i].Email, new { htmlAttributes = new { @class = "form-control input-sm", id = "Email" } })
+                                                            <div class="row">
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Domicilio Real</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].CalleReal, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleReal" } })
+                                                                    </div>
                                                                 </div>
+
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Partido Real</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].PartidoReal, new { htmlAttributes = new { @class = "form-control input-sm", id = "PartidoReal" } })
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Domicilio Constituido</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].CalleConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleConstituido" } })
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-3">
+                                                                    <div class="input-group">
+                                                                        <label>Partido Constituido</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].PartidoConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "PartidoConstituido" } })
+                                                                    </div>
+                                                                </div>
+
+
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                                 quedanTitulares = quedanTitulares - 1;
                                             }
-                                            </div>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -298,63 +325,63 @@
                                             @{int quedanChoferes = Model.Choferes.Count;}
                                             @for (int i = 0; i < Model.Choferes.Count; i++)
                                             {
-                                                
-                                            <div id="PanelChoferes" class="card-body">
-                                                @Html.HiddenFor(x => x.Choferes[i].Enable, new { @class = "enable" })
-                                                @Html.HiddenFor(x => x.Choferes[i].Id)
-                                                <div class="well color-well">
-                                                    <div class="well-body">
-                                                        <div class="row">
-                                                            <div class="col-lg-2">
-                                                                <div class="input-group">
-                                                                    <label>Nombre</label><span class="red"> * </span>
-                                                                    @Html.EditorFor(model => model.Choferes[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "Nombre" } })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-2">
-                                                                <div class="input-group">
-                                                                    <label>Apellido</label><span class="red"> * </span>
-                                                                    @Html.EditorFor(model => model.Choferes[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "Apellido" } })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-2">
-                                                                <div class="input-group">
-                                                                    <label>DNI</label><span class="red"> * </span>
-                                                                    @Html.EditorFor(model => model.Choferes[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-2">
-                                                                <div class="form-group">
-                                                                    <label>Fecha Vto Licencia</label><span class="red"> * </span>
-                                                                    @*@Html.EditorFor(model => model.Choferes[i].VtoLicencia, new { htmlAttributes = new { @class = "form-control input-sm  input-date input-width", id = "VtoLicencia"  } })*@
-                                                                    @Html.TextBoxFor(m => m.Choferes[i].VtoLicencia, new { @Value = Model.Choferes[i].VtoLicencia.HasValue ? Model.Choferes[i].VtoLicencia.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLicencia" })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-2">
-                                                                <div class="form-group">
-                                                                    <label>Fecha Vto Libreta</label>
-                                                                    @*@Html.EditorFor(model => model.Choferes[i].VtoLibreta, new { htmlAttributes = new { @class = "form-control input-sm  input-date input-width", id = "VtoLibreta" } })*@
-                                                                    @Html.TextBoxFor(m => m.Choferes[i].VtoLibreta, new { @Value = Model.Choferes[i].VtoLibreta.HasValue ? Model.Choferes[i].VtoLibreta.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLibreta" })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-2 margin-top-15 text-right">
 
-                                                                @if (quedanChoferes == Model.Choferes.Count)
-                                                                {
-                                                                    <span id="AgregarChofer" class="btn-mas fa fa-plus"></span>
-                                                                    <span id="QuitarChofer" class="btn-mas fa fa-trash" style="display:none"></span>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <span id="AgregarChofer" class="btn-mas fa fa-plus" style="display:none"></span>
-                                                                    <span id="QuitarChofer" class="btn-mas fa fa-trash"></span>
+                                                <div id="PanelChoferes" class="card-body">
+                                                    @Html.HiddenFor(x => x.Choferes[i].Enable, new { @class = "enable" })
+                                                    @Html.HiddenFor(x => x.Choferes[i].Id)
+                                                    <div class="well color-well">
+                                                        <div class="well-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Nombre</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Choferes[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "Nombre" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Apellido</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Choferes[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "Apellido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>DNI</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Choferes[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="form-group">
+                                                                        <label>Fecha Vto Licencia</label><span class="red"> * </span>
+                                                                        @*@Html.EditorFor(model => model.Choferes[i].VtoLicencia, new { htmlAttributes = new { @class = "form-control input-sm  input-date input-width", id = "VtoLicencia"  } })*@
+                                                                        @Html.TextBoxFor(m => m.Choferes[i].VtoLicencia, new { @Value = Model.Choferes[i].VtoLicencia.HasValue ? Model.Choferes[i].VtoLicencia.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLicencia" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="form-group">
+                                                                        <label>Fecha Vto Libreta</label>
+                                                                        @*@Html.EditorFor(model => model.Choferes[i].VtoLibreta, new { htmlAttributes = new { @class = "form-control input-sm  input-date input-width", id = "VtoLibreta" } })*@
+                                                                        @Html.TextBoxFor(m => m.Choferes[i].VtoLibreta, new { @Value = Model.Choferes[i].VtoLibreta.HasValue ? Model.Choferes[i].VtoLibreta.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLibreta" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2 margin-top-15 text-right">
 
-                                                                }
+                                                                    @if (quedanChoferes == Model.Choferes.Count)
+                                                                    {
+                                                                        <span id="AgregarChofer" class="btn-mas fa fa-plus"></span>
+                                                                        <span id="QuitarChofer" class="btn-mas fa fa-trash" style="display:none"></span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span id="AgregarChofer" class="btn-mas fa fa-plus" style="display:none"></span>
+                                                                        <span id="QuitarChofer" class="btn-mas fa fa-trash"></span>
+
+                                                                    }
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                                 quedanChoferes = quedanChoferes - 1;
                                             }
                                         </div>
@@ -374,7 +401,7 @@
 
 
                                             <div id="copiedCeladores"></div>
-                                            @if (Model.Celadores.Count ==0)
+                                            @if (Model.Celadores.Count == 0)
                                             {
 
 
@@ -421,54 +448,54 @@
                                                 int quedanCeladores = Model.Celadores.Count;
                                                 for (int i = 0; i < Model.Celadores.Count; i++)
                                                 {
-                                                    
-                                                <div id="PanelCeladores" class="card-body">
-                                                    @Html.HiddenFor(x => x.Celadores[i].Enable, new { @class = "enable" })
-                                                    @Html.HiddenFor(x => x.Celadores[i].Id)
-                                                    <div class="well color-well">
-                                                        <div class="well-body">
-                                                            <div class="row">
-                                                                <div class="col-lg-2">
-                                                                    <div class="input-group">
-                                                                        <label>Nombre</label>
-                                                                        @Html.EditorFor(model => model.Celadores[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "Nombre" } })
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-2">
-                                                                    <div class="input-group">
-                                                                        <label>Apellido</label>                                                                        
-                                                                        @Html.EditorFor(model => model.Celadores[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "Apellido" } })
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-2">
-                                                                    <div class="input-group">
-                                                                        <label>DNI</label>                                                                        
-                                                                        @Html.EditorFor(model => model.Celadores[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-2">
-                                                                    <div class="form-group">
-                                                                        <label>Fecha Vto Libreta</label>
-                                                                        @Html.TextBoxFor(m => m.Celadores[i].VtoLibreta, new { @Value = Model.Celadores[i].VtoLibreta.HasValue ? Model.Celadores[i].VtoLibreta.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLibreta" })
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-4 margin-top-15 text-right">
-                                                                    @if (quedanCeladores == Model.Celadores.Count)
-                                                                    {
-                                                                        <span id="AgregarCelador" class="btn-mas fa fa-plus"></span>
-                                                                        <span id="QuitarCelador" class="btn-mas fa fa-trash" style="display:none"></span>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <span id="AgregarCelador" class="btn-mas fa fa-plus" style="display:none"></span>
-                                                                        <span id="QuitarCelador" class="btn-mas fa fa-trash"></span>
 
-                                                                    }
+                                                    <div id="PanelCeladores" class="card-body">
+                                                        @Html.HiddenFor(x => x.Celadores[i].Enable, new { @class = "enable" })
+                                                        @Html.HiddenFor(x => x.Celadores[i].Id)
+                                                        <div class="well color-well">
+                                                            <div class="well-body">
+                                                                <div class="row">
+                                                                    <div class="col-lg-2">
+                                                                        <div class="input-group">
+                                                                            <label>Nombre</label>
+                                                                            @Html.EditorFor(model => model.Celadores[i].Nombre, new { htmlAttributes = new { @class = "form-control input-sm", id = "Nombre" } })
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-2">
+                                                                        <div class="input-group">
+                                                                            <label>Apellido</label>
+                                                                            @Html.EditorFor(model => model.Celadores[i].Apellido, new { htmlAttributes = new { @class = "form-control input-sm", id = "Apellido" } })
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-2">
+                                                                        <div class="input-group">
+                                                                            <label>DNI</label>
+                                                                            @Html.EditorFor(model => model.Celadores[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-2">
+                                                                        <div class="form-group">
+                                                                            <label>Fecha Vto Libreta</label>
+                                                                            @Html.TextBoxFor(m => m.Celadores[i].VtoLibreta, new { @Value = Model.Celadores[i].VtoLibreta.HasValue ? Model.Celadores[i].VtoLibreta.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width  conVencimiento", id = "VtoLibreta" })
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-4 margin-top-15 text-right">
+                                                                        @if (quedanCeladores == Model.Celadores.Count)
+                                                                        {
+                                                                            <span id="AgregarCelador" class="btn-mas fa fa-plus"></span>
+                                                                            <span id="QuitarCelador" class="btn-mas fa fa-trash" style="display:none"></span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span id="AgregarCelador" class="btn-mas fa fa-plus" style="display:none"></span>
+                                                                            <span id="QuitarCelador" class="btn-mas fa fa-trash"></span>
+
+                                                                        }
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
                                                     quedanCeladores = quedanCeladores - 1;
                                                 }
                                             }
@@ -478,7 +505,8 @@
                                 </div>
 
                             </div>
-                            <button type="submit" class="btn btn-primary" style="float: right;">Guardar</button>
+                            <input type="button" class="btn btn-default" style="float: right;" value="Salir" onclick="location.href='@Url.Action("Index")'" />
+                            <button type="submit" class="btn btn-primary" style="float: right; margin-right:10px">Guardar</button>
                         </div>
 
 
@@ -509,6 +537,7 @@
     <script>
 
         $(document).ready(function () {
+            var DiasPorVencer = '@ViewBag.DiasPorVencer';
             //$('#dt-FechaIngreso').attr("readonly", "readonly")
             //Datepicker
             $.datetimepicker.setLocale('es');
@@ -576,7 +605,7 @@
 
             function getPorVencer() {
                 var today = new Date();
-                today.setDate(today.getDate() + 7);
+                today.setDate(today.getDate() + parseInt(DiasPorVencer));
                 var dd = today.getDate();
                 var mm = today.getMonth() + 1; //January is 0!
 
@@ -854,6 +883,14 @@
                 }
                 if ($(this).find("#Email").val() == '') {
                     messageError += "E-mail </br>";
+                }
+
+                if ($(this).find("#PartidoReal").val() == '') {
+                    messageError += "Partido Constituido </br>";
+                }
+
+                if ($(this).find("#PartidoConstituido").val() == '') {
+                    messageError += "Partido Constituido </br>";
                 }
 
             });

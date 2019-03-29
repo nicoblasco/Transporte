@@ -13,10 +13,11 @@ namespace Transporte.ViewModel
         public string Nombre { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Requerido")]
         public string Descripcion { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Requerido")]
         public string Documento { get; set; }
-        public bool DocumentoBorrado { get; set; }
+        //public bool DocumentoBorrado { get; set; }
 
-        public string FileName { get; set; }
-        public HttpPostedFileBase File { set; get; }
+        //public string FileName { get; set; }
+        //public HttpPostedFileBase File { set; get; }
     }
 }

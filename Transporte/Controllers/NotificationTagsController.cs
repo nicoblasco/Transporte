@@ -26,12 +26,24 @@ namespace Transporte.Controllers
                 return View("~/Views/Shared/AccessDenied.cshtml");
             ViewBag.AltaModificacion = PermissionViewModel.TienePermisoAlta(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
             ViewBag.Baja = PermissionViewModel.TienePermisoBaja(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
-
-            var names = typeof(Transport).GetProperties()
+            List<ObjectViewModel> objectView = new List<ObjectViewModel>();
+            var names = typeof(TransportReportViewModel).GetProperties()
+                        .Where(x => x.PropertyType.Name == "String")
                         .Select(property => property.Name)
                         .ToArray();
 
-            ViewBag.listaAtributos = names;
+            foreach (var item in names)
+            {
+                ObjectViewModel ob = new ObjectViewModel
+                {
+                    Code = "@Model." + item,
+                    Name = item
+
+                };
+                objectView.Add(ob);
+            }
+
+            ViewBag.listaAtributos = objectView.OrderBy(x=>x.Code).ToList();
 
             return View(db.NotificationTags.ToList());
         }
@@ -44,7 +56,7 @@ namespace Transporte.Controllers
             //var list = new List<LicenseClass>();
             try
             {
-                var list = db.NotificationTags.Select(c => new { c.Id, c.Descripcion, c.NombreAtributo, c.Tag }).ToList();
+                var list = db.NotificationTags.Select(c => new { c.Id, c.NombreAtributo, c.Tag }).ToList();
 
                 return Json(list, JsonRequestBehavior.AllowGet);
             }

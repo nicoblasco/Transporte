@@ -31,6 +31,10 @@ namespace Transporte.Models
         public DateTime? VtoMatafuego { get; set; }
         public DateTime? VtoConstanciaAFIP { get; set; }
 
+        
+        public string ParadaNro { get; set; }
+        public string PlazaNro { get; set; }
+
         public DateTime FechaAlta { get; set; }
 
         public int UsuarioId { get; set; }

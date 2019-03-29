@@ -108,9 +108,21 @@
                                             </div>
 
                                             <div class="col-sm-2">
+                                                <label>N° Parada</label>
+                                                @Html.EditorFor(model => model.ParadaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "ParadaNro" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <label>N° Plaza</label>
+                                                @Html.EditorFor(model => model.PlazaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "PlazaNro" } })
+                                            </div>
+
+                                            <div class="col-sm-2">
                                                 <label>Expediente</label><span class="red"> * </span>
                                                 @Html.EditorFor(model => model.Expediente, new { htmlAttributes = new { @class = "form-control input-sm", id = "Expediente" } })
                                             </div>
+
+
                                         </div>
 
                                         <div class="row">
@@ -165,10 +177,14 @@
                                                 @Html.EditorFor(model => model.VtoConstanciaAFIP, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoConstanciaAFIP", @type = "datetime" } })
                                             </div>
 
+
+
                                             <div class="col-sm-12">
                                                 <label>Observacion</label>
                                                 @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control input-sm", id = "Observaciones" } })
                                             </div>
+
+
 
                                         </div>
                                     </div>
@@ -191,13 +207,13 @@
                                                 <div class="well color-well">
                                                     <div class="well-body">
                                                         <div class="row">
-                                                            <div class="col-lg-3">
+                                                            <div class="col-lg-2">
                                                                 <div class="input-group">
                                                                     <label>Nombre</label><span class="red"> * </span>
                                                                     <input id="nombre" class="form-control input-sm" type="text" name="Titulares[0].Nombre">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-3">
+                                                            <div class="col-lg-2">
                                                                 <div class="input-group">
                                                                     <label>Apellido</label><span class="red"> * </span>
                                                                     <input id="apellido" class="form-control input-sm" type="text" name="Titulares[0].Apellido">
@@ -207,26 +223,6 @@
                                                                 <div class="input-group">
                                                                     <label>DNI</label><span class="red"> * </span>
                                                                     <input id="DNI" class="form-control input-sm" type="number" name="Titulares[0].DNI">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-lg-4 margin-top-15 text-right">
-                                                                <span id="AgregarTitular" class="btn-mas fa fa-plus"></span>
-                                                                <span id="QuitarTitular" class="btn-mas fa fa-trash"></span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="input-group">
-                                                                    <label>Domicilio Real</label><span class="red"> * </span>
-                                                                    <input id="CalleReal" class="form-control input-sm" type="text" name="Titulares[0].CalleReal">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="input-group">
-                                                                    <label>Domicilio Constituido</label><span class="red"> * </span>
-                                                                    <input id="CalleConstituido" class="form-control input-sm" type="text" name="Titulares[0].CalleConstituido">
                                                                 </div>
                                                             </div>
 
@@ -243,6 +239,40 @@
                                                                     <input id="Email" class="form-control input-sm" type="text" name="Titulares[0].Email">
                                                                 </div>
                                                             </div>
+
+                                                            <div class="col-lg-1 margin-top-15 text-right">
+                                                                <span id="AgregarTitular" class="btn-mas fa fa-plus"></span>
+                                                                <span id="QuitarTitular" class="btn-mas fa fa-trash"></span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Domicilio Real</label><span class="red"> * </span>
+                                                                    <input id="CalleReal" class="form-control input-sm" type="text" name="Titulares[0].CalleReal">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Partido Real</label><span class="red"> * </span>
+                                                                    <input id="PartidoReal" class="form-control input-sm" type="text" name="Titulares[0].PartidoReal">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Domicilio Constituido</label><span class="red"> * </span>
+                                                                    <input id="CalleConstituido" class="form-control input-sm" type="text" name="Titulares[0].CalleConstituido">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-3">
+                                                                <div class="input-group">
+                                                                    <label>Partido Constituido</label><span class="red"> * </span>
+                                                                    <input id="PartidoConstituido" class="form-control input-sm" type="text" name="Titulares[0].PartidoConstituido">
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -366,7 +396,9 @@
                                 </div>
 
                             </div>
-                            <button type="submit" class="btn btn-primary" style="float: right;">Guardar</button>
+                            <input type="button" class="btn btn-default" style="float: right;" value="Salir" onclick="location.href='@Url.Action("Index")'" />
+                            <button type="submit" class="btn btn-primary" style="float: right; margin-right:10px">Guardar</button>
+
                         </div>
 
 
@@ -395,7 +427,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
     <script>
-
+        var DiasPorVencer = '@ViewBag.DiasPorVencer';
         //$('#dt-FechaIngreso').attr("readonly", "readonly")
         //Datepicker
         $.datetimepicker.setLocale('es');
@@ -672,6 +704,15 @@
                 if ($(this).find("#CalleConstituido").val() == '') {
                     messageError += "Domicilio Constituido </br>";
                 }
+
+                if ($(this).find("#PartidoReal").val() == '') {
+                    messageError += "Partido Constituido </br>";
+                }
+
+                if ($(this).find("#PartidoConstituido").val() == '') {
+                    messageError += "Partido Constituido </br>";
+                }
+
                 if ($(this).find("#Email").val() == '') {
                     messageError += "E-mail </br>";
                 }

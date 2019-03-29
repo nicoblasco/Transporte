@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Transporte.Enumerations;
 using Transporte.Helpers;
@@ -12,6 +11,14 @@ using Transporte.Models;
 using Transporte.ViewModel;
 using PersonType = Transporte.Enumerations.PersonType;
 using TransportType = Transporte.Models.TransportType;
+
+using Person = Transporte.Models.Person;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
+using iTextSharp.text.html.simpleparser;
+using RazorEngine.Templating;
+using RazorEngine;
 
 namespace Transporte.Controllers
 {
@@ -28,7 +35,7 @@ namespace Transporte.Controllers
             ViewBag.Editar = PermissionViewModel.TienePermisoAlta(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
             ViewBag.Ver = PermissionViewModel.TienePermisoAlta(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
             ViewBag.Baja = PermissionViewModel.TienePermisoBaja(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
-
+            ViewBag.listaNotificaciones = new List<Notification>(db.Notifications.ToList());
             ViewBag.listaTipos = new List<TransportType>(db.TransportTypes.Where(x => x.Enable == true).ToList());
 
             return View();
@@ -112,19 +119,19 @@ namespace Transporte.Controllers
 
             try
             {
-           
-                    var lista = db.Transports
-                    .Where(x => x.Enable == true)
-                    .Where(x => !string.IsNullOrEmpty(Tipo) ? (x.TransportType.Id == TipoId && x.TransportType.Descripcion != null) : true)
-                    .Where(x => !string.IsNullOrEmpty(Expediente) ? (x.Expediente == Expediente && x.Expediente != null) : true)
-                    .Where(x => !string.IsNullOrEmpty(Dominio) ? (x.Dominio == Dominio && x.Dominio != null) : true)
-                    .Where(x => !string.IsNullOrEmpty(Apellido) ? (x.Persons.Where(y=>y.PersonTypeId==TitularId.Value).FirstOrDefault().Apellido == Apellido) : true)
-                    .Where(x => !string.IsNullOrEmpty(DNI) ? (x.Persons.Where(y => y.PersonTypeId == TitularId.Value).FirstOrDefault().Dni == DNI) : true)
-                    .Where(x => !string.IsNullOrEmpty(Expediente) ? (x.Expediente == Expediente && x.Expediente != null) : true)
-                    .Where(x => !string.IsNullOrEmpty(FechaDesde) ? (x.FechaAlta >= dtFechaDesde && x.FechaAlta != null) : true)
-                    .Where(x => !string.IsNullOrEmpty(FechaHasta) ? (x.FechaAlta <= dtFechaHasta && x.FechaAlta != null) : true)
-                    .Select(c => new { c.Id, c.TransportType, c.Dominio, c.Marca, c.Modelo, c.Expediente, c.VtoPoliza, c.VtoConstanciaAFIP, c.VtoMatafuego, c.VtoVTV, c.Persons, c.FechaAlta  }).OrderByDescending(x => x.Id).Take(1000);
-                    ;
+
+                var lista = db.Transports
+                .Where(x => x.Enable == true)
+                .Where(x => !string.IsNullOrEmpty(Tipo) ? (x.TransportType.Id == TipoId && x.TransportType.Descripcion != null) : true)
+                .Where(x => !string.IsNullOrEmpty(Expediente) ? (x.Expediente == Expediente && x.Expediente != null) : true)
+                .Where(x => !string.IsNullOrEmpty(Dominio) ? (x.Dominio == Dominio && x.Dominio != null) : true)
+                .Where(x => !string.IsNullOrEmpty(Apellido) ? (x.Persons.Where(y => y.PersonTypeId == TitularId.Value).FirstOrDefault().Apellido == Apellido) : true)
+                .Where(x => !string.IsNullOrEmpty(DNI) ? (x.Persons.Where(y => y.PersonTypeId == TitularId.Value).FirstOrDefault().Dni == DNI) : true)
+                .Where(x => !string.IsNullOrEmpty(Expediente) ? (x.Expediente == Expediente && x.Expediente != null) : true)
+                .Where(x => !string.IsNullOrEmpty(FechaDesde) ? (x.FechaAlta >= dtFechaDesde && x.FechaAlta != null) : true)
+                .Where(x => !string.IsNullOrEmpty(FechaHasta) ? (x.FechaAlta <= dtFechaHasta && x.FechaAlta != null) : true)
+                .Select(c => new { c.Id, c.TransportType, c.Dominio, c.Marca, c.Modelo, c.Expediente, c.VtoPoliza, c.VtoConstanciaAFIP, c.VtoMatafuego, c.VtoVTV, c.Persons, c.FechaAlta }).OrderByDescending(x => x.Id).Take(1000);
+                ;
 
                 foreach (var item in lista)
                 {
@@ -140,7 +147,7 @@ namespace Transporte.Controllers
 
 
                     string strEstado = GetEstado(t);
-                    if (String.IsNullOrEmpty(Estado) || Estado==strEstado)
+                    if (String.IsNullOrEmpty(Estado) || Estado == strEstado)
                     {
                         //Si filtro por estado, solo agrega el que coincide
                         //Si no filtro por estado que agregue todo
@@ -154,7 +161,7 @@ namespace Transporte.Controllers
                             Modelo = item.Modelo,
                             TransportType = item.TransportType.Descripcion,
                             FechaAlta = item.FechaAlta.ToString("dd/MM/yyyy HH:mm:ss")
-                            
+
                         };
 
                         transports.Add(transport);
@@ -193,7 +200,7 @@ namespace Transporte.Controllers
                  (VerificoVencimientoPersona(transport.Persons) == Status.PorVencer))
                 return estadoPorVencer;
 
-           
+
             return estadoCorrecto;
         }
         private Status VerificoVencimiento(DateTime? date)
@@ -297,8 +304,8 @@ namespace Transporte.Controllers
         {
             if (!PermissionViewModel.TienePermisoAcesso(WindowHelper.GetWindowId(ModuleDescription, WindowDescription)))
                 return View("~/Views/Shared/AccessDenied.cshtml");
-
-            ViewBag.listaTipos = new List<TransportType>(db.TransportTypes.Where(x=>x.Enable==true).ToList());
+            ViewBag.DiasPorVencer = db.Settings.Where(x => x.Clave == "DIASANTESDEVENCER").Select(x => x.Numero1).FirstOrDefault() ?? 0;
+            ViewBag.listaTipos = new List<TransportType>(db.TransportTypes.Where(x => x.Enable == true).ToList());
             return View();
         }
 
@@ -333,7 +340,9 @@ namespace Transporte.Controllers
                     VtoConstanciaAFIP = transportViewModel.VtoConstanciaAFIP,
                     VtoMatafuego = transportViewModel.VtoMatafuego,
                     VtoPoliza = transportViewModel.VtoPoliza,
-                    VtoVTV = transportViewModel.VtoVTV
+                    VtoVTV = transportViewModel.VtoVTV,
+                    ParadaNro = transportViewModel.ParadaNro,
+                    PlazaNro = transportViewModel.PlazaNro
 
                 };
 
@@ -359,7 +368,7 @@ namespace Transporte.Controllers
                         chofer.PersonTypeId = GetPersonTypeId(PersonType.Chofer);
                         chofer.Enable = true;
                         transport.Persons.Add(chofer);
-                        
+
                     }
                 }
 
@@ -370,7 +379,7 @@ namespace Transporte.Controllers
                         celadora.PersonTypeId = GetPersonTypeId(PersonType.Celadora);
                         celadora.Enable = true;
                         transport.Persons.Add(celadora);
-                        }
+                    }
                 }
 
                 db.Transports.Add(transport);
@@ -383,7 +392,7 @@ namespace Transporte.Controllers
                 };
 
                 return Json(responseObject);
-                }
+            }
             catch (Exception)
             {
 
@@ -394,6 +403,7 @@ namespace Transporte.Controllers
 
         public ActionResult Edit(int id)
         {
+            ViewBag.DiasPorVencer = db.Settings.Where(x => x.Clave == "DIASANTESDEVENCER").Select(x => x.Numero1).FirstOrDefault() ?? 0;
             if (!PermissionViewModel.TienePermisoAcesso(WindowHelper.GetWindowId(ModuleDescription, WindowDescription)))
                 return View("~/Views/Shared/AccessDenied.cshtml");
 
@@ -413,7 +423,7 @@ namespace Transporte.Controllers
                 Dominio = transport.Dominio,
                 Expediente = transport.Expediente,
                 FechaInscripcionInicial = transport.FechaInscripcionInicial,
-                Id= transport.Id,
+                Id = transport.Id,
                 Marca = transport.Marca,
                 Modelo = transport.Modelo,
                 Observaciones = transport.Observaciones,
@@ -423,12 +433,14 @@ namespace Transporte.Controllers
                 VtoMatafuego = transport.VtoMatafuego,
                 VtoPoliza = transport.VtoPoliza,
                 VtoVTV = transport.VtoVTV,
+                ParadaNro = transport.ParadaNro,
+                PlazaNro = transport.PlazaNro
             };
 
             editViewModel.Titulares = new List<Person>();
             editViewModel.Choferes = new List<Person>();
             editViewModel.Celadores = new List<Person>();
-            foreach (var item in transport.Persons.Where(x=>x.Enable==true))
+            foreach (var item in transport.Persons.Where(x => x.Enable == true))
             {
 
                 switch (GetPersonTypeCode(item.PersonTypeId))
@@ -461,6 +473,7 @@ namespace Transporte.Controllers
 
         public ActionResult Details(int id)
         {
+            ViewBag.DiasPorVencer = db.Settings.Where(x => x.Clave == "DIASANTESDEVENCER").Select(x => x.Numero1).FirstOrDefault() ?? 0;
             if (!PermissionViewModel.TienePermisoAcesso(WindowHelper.GetWindowId(ModuleDescription, WindowDescription)))
                 return View("~/Views/Shared/AccessDenied.cshtml");
 
@@ -471,6 +484,7 @@ namespace Transporte.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.listaNotificaciones = new List<Notification>(db.Notifications.ToList());
             ViewBag.listaTipos = new List<TransportType>(db.TransportTypes.Where(x => x.Enable == true).ToList());
 
             TransportEditViewModel editViewModel = new TransportEditViewModel
@@ -490,6 +504,8 @@ namespace Transporte.Controllers
                 VtoMatafuego = transport.VtoMatafuego,
                 VtoPoliza = transport.VtoPoliza,
                 VtoVTV = transport.VtoVTV,
+                ParadaNro = transport.ParadaNro,
+                PlazaNro = transport.PlazaNro
             };
 
             editViewModel.Titulares = new List<Person>();
@@ -532,7 +548,7 @@ namespace Transporte.Controllers
             {
 
 
-                if (transportViewModel == null || transportViewModel.Id ==0)
+                if (transportViewModel == null || transportViewModel.Id == 0)
                 {
                     return Json(new { responseCode = "-10" });
                 }
@@ -553,10 +569,12 @@ namespace Transporte.Controllers
                 transport.VtoMatafuego = transportViewModel.VtoMatafuego;
                 transport.VtoPoliza = transportViewModel.VtoPoliza;
                 transport.VtoVTV = transportViewModel.VtoVTV;
+                transport.ParadaNro = transportViewModel.ParadaNro;
+                transport.PlazaNro = transportViewModel.PlazaNro;
 
 
                 //Borro los que ya no estan
-                    //Creo una lista auxiliar
+                //Creo una lista auxiliar
                 transport.Persons = new List<Person>();
                 List<Person> auxPerson = new List<Person>();
                 auxPerson.AddRange(transport.Persons);
@@ -569,16 +587,16 @@ namespace Transporte.Controllers
                     if (!existe)
                         existe = transportViewModel.Choferes == null ? false : transportViewModel.Choferes.Any(x => x.Id == item.Id);
                     if (!existe)
-                        existe = transportViewModel.Celadores==null?false:transportViewModel.Celadores.Any(x => x.Id == item.Id);
+                        existe = transportViewModel.Celadores == null ? false : transportViewModel.Celadores.Any(x => x.Id == item.Id);
 
                     //Lo borro de la lista original
                     if (!existe)
                     {
                         transport.Persons.Remove(item);
-                        Person person = db.People.Find(item.Id);
+                        Models.Person person = db.People.Find(item.Id);
                         db.People.Remove(person);
                     }
-                        
+
                 }
 
 
@@ -606,6 +624,8 @@ namespace Transporte.Controllers
                                         item.CalleReal = titular.CalleReal;
                                         item.Dni = titular.Dni;
                                         item.Email = titular.Email;
+                                        item.PartidoConstituido = titular.PartidoConstituido;
+                                        item.PartidoReal = titular.PartidoReal;
                                     }
                                 }
                             }
@@ -622,7 +642,7 @@ namespace Transporte.Controllers
                         }
                     }
                 }
-                
+
                 if (transportViewModel.Choferes != null)
                 {
                     foreach (var chofer in transportViewModel.Choferes)
@@ -646,6 +666,8 @@ namespace Transporte.Controllers
                                         item.CalleReal = chofer.CalleReal;
                                         item.Dni = chofer.Dni;
                                         item.Email = chofer.Email;
+                                        item.PartidoConstituido = chofer.PartidoConstituido;
+                                        item.PartidoReal = chofer.PartidoReal;
                                     }
                                 }
                             }
@@ -692,6 +714,8 @@ namespace Transporte.Controllers
                                         item.CalleReal = celadora.CalleReal;
                                         item.Dni = celadora.Dni;
                                         item.Email = celadora.Email;
+                                        item.PartidoConstituido = celadora.PartidoConstituido;
+                                        item.PartidoReal = celadora.PartidoReal;
                                     }
                                 }
                             }
@@ -734,7 +758,7 @@ namespace Transporte.Controllers
 
         private int GetPersonTypeId(PersonType personType)
         {
-            string code="";
+            string code = "";
 
             switch (personType)
             {
@@ -770,6 +794,168 @@ namespace Transporte.Controllers
         {
             return db.PersonTypes.Find(Id).Code;
         }
+
+
+
+
+        public FileResult ReportArray(int[] TransportId, int NotificacionId)
+        {
+
+            List<string> contenidoText = new List<string>();
+            Notification notification = db.Notifications.Find(NotificacionId);
+
+            for (int i = 0; i < TransportId.Length ; i++)
+            {
+                contenidoText.AddRange( ArmarHtml(TransportId[i], notification));
+            }
+
+
+
+            return Export(contenidoText, notification.Nombre);
+
+        }
+
+        public FileResult Report(int TransportId, int NotificacionId)
+        {
+
+            List<string> contenidoText = new List<string>();
+            Notification notification = db.Notifications.Find(NotificacionId);
+
+
+            contenidoText = ArmarHtml(TransportId, notification);
+
+
+            return Export(contenidoText, notification.Nombre);
+
+        }
+
+
+        private List<string> ArmarHtml(int TransportId, Notification notification)
+        {
+          
+            Transport transport = db.Transports.Find(TransportId);
+
+
+
+        TransportReportViewModel reportViewModel = new TransportReportViewModel
+        {
+            Constatacion = transport.Constatacion?.ToString("dd/MM/yyyy"),
+            Desinfeccion = transport.Desinfeccion?.ToString("dd/MM/yyyy"),
+            Dominio = transport.Dominio,
+            Expediente = transport.Expediente,
+            FechaInscripcionInicial = transport.FechaInscripcionInicial?.ToString("dd/MM/yyyy"),
+            Id = transport.Id,
+            Marca = transport.Marca,
+            Modelo = transport.Modelo,
+            Observaciones = transport.Observaciones,
+            ReciboPagoSeguro = transport.ReciboPagoSeguro,
+            VtoConstanciaAFIP = transport.VtoConstanciaAFIP?.ToString("dd/MM/yyyy"),
+            VtoMatafuego = transport.VtoMatafuego?.ToString("dd/MM/yyyy"),
+            VtoPoliza = transport.VtoPoliza?.ToString("dd/MM/yyyy"),
+            VtoVTV = transport.VtoVTV?.ToString("dd/MM/yyyy"),
+            FechaAlta = transport.FechaAlta.ToString("dd/MM/yyyy"),
+            TipoTransporte = transport.TransportType.Descripcion,
+            ParadaNro = transport.ParadaNro,
+            PlazaNro = transport.PlazaNro
+
+        };
+
+        reportViewModel.Titulares = new List<Person>();
+        reportViewModel.Choferes = new List<Person>();
+        foreach (var item in transport.Persons.Where(x => x.Enable == true))
+        {
+
+            switch (GetPersonTypeCode(item.PersonTypeId))
+            {
+                case "TI":
+                    {
+                        reportViewModel.Titulares.Add(item);// = new List<Person> { item };
+                        break;
+                    }
+                case "CH":
+                    {
+                        reportViewModel.Choferes.Add(item);
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+        }
+
+        int c = 0;
+        foreach (var item in reportViewModel.Choferes)
+        {
+            if (c == 0)
+            {
+                reportViewModel.ChoferNombre = item.Apellido;
+            }
+            else
+            {
+                reportViewModel.ChoferNombre = reportViewModel.ChoferNombre + " y del Sr." + item.Apellido;
+            }
+            c = c + 1;
+        }
+
+        string templateText = notification.Documento;
+
+        List<string> contenidoText = new List<string>();
+
+        foreach (var item in reportViewModel.Titulares)
+        {
+
+            reportViewModel.NombreTitular = item.Nombre;
+            reportViewModel.ApellidoTitular = item.Apellido;
+            reportViewModel.CalleConstituidoTitular = item.CalleConstituido;
+            reportViewModel.CalleRealTitular = item.CalleConstituido;
+            reportViewModel.TelefonoTitular = item.Telefono;
+            reportViewModel.EmailTitular = item.Email;
+            reportViewModel.DniTitular = item.Dni;
+            reportViewModel.PartidoConstituidoTitular = item.PartidoConstituido;
+            reportViewModel.PartidoRealTitular = item.PartidoReal;
+
+
+
+
+            if (Engine.Razor.IsTemplateCached(notification.Id.ToString(), null))
+            {
+                contenidoText.Add(Engine.Razor.Run(notification.Id.ToString(), null, reportViewModel));
+            }
+            else
+            {
+                contenidoText.Add(Engine.Razor.RunCompile(templateText, notification.Id.ToString(), null, reportViewModel));
+            }
+        }
+
+        return contenidoText;
+    }
+
+
+
+        [HttpPost]
+        public FileResult Export(List<string> GridHtml, string name)
+        {
+            using (MemoryStream stream = new System.IO.MemoryStream())
+            {
+                
+                Document pdfDoc = new Document(PageSize.A4, 50f, 50f, 100f, 100f);
+                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+                pdfDoc.Open();
+                foreach (var item in GridHtml)
+                {
+                    StringReader sr = new StringReader(item);
+                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
+                    pdfDoc.NewPage();
+                }
+
+                pdfDoc.Close();
+                return File(stream.ToArray(), "application/pdf", name+".pdf");
+            }
+        }
+
+
+
+
 
         protected override void Dispose(bool disposing)
         {

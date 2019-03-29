@@ -6,10 +6,9 @@
 }
 @{
     string currentController = Html.ViewContext.RouteData.GetRequiredString("controller");
-    string extension = "(doc, docx)";
 }
 
-
+<link href="~/Content/summernote/summernote.css" rel="stylesheet" />
 <style>
 
     #divExtension {
@@ -23,7 +22,6 @@
     }
 
     .input-file p {
-
     }
 </style>
 
@@ -94,7 +92,7 @@
     <div class="modal-dialog">
         <form id="form-create" method="post">
             <!-- Modal content-->
-            <div class="modal-content">
+            <div class="modal-content" style="width:900px">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Nueva Notificación</h4>
@@ -110,21 +108,16 @@
                             <input id="input-Descripcion" name="inputDescripcion" class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <div id="divArchivo">
-                                <label id="divLabelExtension">Documento<div id="divExtension"> @extension </div> </label>
-
-                                <div class="input-group input-file" name="fileVideo">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default btn-choose btn-sm" type="button">Elegir</button>
-                                    </span>
-                                    <input id="input-ArchivoActa" name="inputArchivoActa" type="text" class="form-control input-sm" placeholder='Selecciona el Documento...' />
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default btn-reset btn-sm" type="button">Borrar</button>
-                                    </span>
-                                </div>
+                            <div class="col-lg-8" style="padding-left: 0px;">
+                                @Html.DropDownList("NombreAtributo", new SelectList(ViewBag.Atributos, "Tag", "NombreAtributo"), new { @class = "form-control" })
                             </div>
-                            <div class="errors"></div>
+                            <button type="button" id="AgregarAttributoCreate" class="btn btn-primary">Agregar Atributo</button>
                         </div>
+                        <div class="form-group">
+                            <label>Contenido</label>
+                            <textarea id="summernote" name="editordata"></textarea>
+                        </div>
+                        <div class="errors"></div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -140,7 +133,7 @@
     <div class="modal-dialog">
         <form id="form-edit" method="post">
             <!-- Modal content-->
-            <div class="modal-content">
+            <div class="modal-content"  style="width:900px">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Editar Notificación</h4>
@@ -161,42 +154,13 @@
                             <input id="input-Descripcion" name="inputDescripcion" class="form-control" autocomplete="off">
                         </div>
 
-                        @*<div id="divArchivo">
-                            <label id="divLabelExtension">Documento <div id="divExtension"> @extension </div> </label>
-                            <input style="display:none" id="hiddenArchivoBorrado" name="DocumentoBorrado" />
-                            <input style="display:none" id="Documento" name="Documento" />
-                            <div class="input-group input-file" name="fileVideo">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default btn-choose btn-sm" type="button">Elegir</button>
-                                </span>
-                                <input id="input-ArchivoActa" name="inputArchivoActa" type="text" class="form-control input-sm" placeholder='Selecciona el Documento...' />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default btn-reset btn-sm" type="button">Borrar</button>
-                                </span>
-                            </div>
 
-                            <p>@Html.ActionLink(" ", "Download", "Notifications", new { filePath = "variation-example", id = "linkInformeAdjunto" }, null)</p>
-
-                        </div>*@
 
                         <div class="form-group">
-                            <div id="divArchivo">
-                                <label id="divLabelExtension">Documento<div id="divExtension"> @extension </div> </label>
-                                <input style="display:none" id="hiddenArchivoBorrado" name="DocumentoBorrado" />
-                                <input style="display:none" id="Documento" name="Documento" />
-                                <div class="input-group input-file" name="fileVideo">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default btn-choose btn-sm" type="button">Elegir</button>
-                                    </span>
-                                    <input id="input-ArchivoActa" name="inputArchivoActa" type="text" class="form-control input-sm" placeholder='Selecciona el Documento...' />
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default btn-reset btn-sm" type="button">Borrar</button>
-                                    </span>
-                                </div>
-                                <p>@Html.ActionLink(" ", "Download", "Notifications", new { filePath = "variation-example", id = "linkInformeAdjunto" }, null)</p>
-                            </div>
-                            <div class="errors"></div>
+                            <label>Contenido</label>
+                            <textarea id="summernote" name="editordata"></textarea>
                         </div>
+                        <div class="errors"></div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -212,10 +176,25 @@
 @section scripts {
 
 
+    @Scripts.Render("~/Scripts/summernote/summernote.js")
+    @Scripts.Render("~/Scripts/summernote/lang/summernote-es-ES.js")
     <script>
 
     $(document).ready(function () {
 
+        $('#summernote').summernote({
+            lang: 'es-ES',
+            height: 250,
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ]
+        });
 
         habilitaBotones(false);
 
@@ -250,7 +229,16 @@
 
     });
 
+        
+        $('#AgregarAttributoCreate').click(function () {
+            var tag =  $("#NombreAtributo option:selected").val();
+            $('#summernote').summernote('insertText', tag);
+        });
 
+        $('#AgregarAttributoEdit').click(function () {
+            var tag= $('#editarModal')("#NombreAtributo option:selected").val();
+            $('#editarModal').find('#summernote').summernote('insertText', tag);
+        });
 
 
     $('#btnBorrar').click(function () {
@@ -328,15 +316,10 @@
             var object = new Object();
             object.Nombre = $("#input-Nombre").val();
             object.Descripcion = $("#input-Descripcion").val();
-            //var data = JSON.stringify(object);
-            var fileUpload = $(".input-ghost").get(0);
-            var files = fileUpload.files;
-            var data = new FormData();
-            data.append("Nombre", $("#input-Nombre").val());
-            data.append("Descripcion", $("#input-Descripcion").val());
-            for (var i = 0; i < files.length; i++) {
-                data.append("File", files[i]);
-            }
+            object.Documento = $("#summernote").val();
+            var data = JSON.stringify(object);
+
+
 
             //Antes de editar, verifico que no este duplicando el Rol
             var isDuplicate = getDuplicates(0, object.Nombre);
@@ -356,10 +339,8 @@
                 type: 'POST',
                 url: '@Url.Action("Create")',
                 data: data,
-                    //contentType: 'application/json; charset=utf-8',
-                  contentType: false,
-                    //dataType: 'json',
-                processData: false,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
                     success: function (dataResponse) {
                         $("#dataTables-Index").dataTable().fnReloadAjax();//Recargo la grilla
                         $('#nuevoModal').modal('hide');
@@ -391,12 +372,12 @@
     });
 
 
-        $("#form-edit").validate({            
+        $("#form-edit").validate({
             errorLabelContainer: '.errors',
             rules: {
                 inputNombre: { required: true, minlength: 2, maxlength: 500 },
                 inputDescripcion: { required: true, minlength: 2, maxlength: 500 },
-                inputArchivoActa: { required: true }
+                editordata: { required: true }
             },
             messages: {
                 inputNombre: {
@@ -409,7 +390,7 @@
                     minlength: "Introduzca al menos 2 caracteres.",
                     maxlength: "La longitud máxima permtida es de 500 caracteres."
                 },
-                inputArchivoActa: {
+                editordata: {
                     required: "El Documento es requerido."
                 }
             },
@@ -420,18 +401,8 @@
             object.Id = $('#editarModal').find('input#input-Id').val();
             object.Nombre = $('#editarModal').find('input#input-Nombre').val();
             object.Descripcion = $('#editarModal').find('input#input-Descripcion').val();
-            
-            //var data = JSON.stringify(object);
-            var fileUpload = $('#editarModal').find(".input-ghost").get(0);
-            var files = fileUpload.files;
-            var data = new FormData();
-            data.append("Id", $('#editarModal').find('input#input-Id').val());
-            data.append("Nombre", $('#editarModal').find('input#input-Nombre').val());
-            data.append("Descripcion", $('#editarModal').find('input#input-Descripcion').val());
-
-            for (var i = 0; i < files.length; i++) {
-                data.append("File", files[i]);
-            }
+            object.Documento = $('#editarModal').find('#summernote').val();
+            var data = JSON.stringify(object);
 
             //Antes de editar, verifico que no este duplicando el Rol
             var isDuplicate = getDuplicates(object.Id, object.Nombre);
@@ -441,7 +412,7 @@
                 $("#div-loader").hide();
                 Lobibox.notify('warning', {
                     title: 'Cuidado',
-                    msg: 'El tipo de licencia ya existe, debe asignar otro nombre.'
+                    msg: 'La notificacion ya existe, debe asignar otro nombre.'
                 });
 
                 return;
@@ -451,10 +422,8 @@
                 type: 'POST',
                 url: '@Url.Action("Edit")',
                 data: data,
-                //contentType: 'application/json; charset=utf-8',
-                contentType: false,
-                //dataType: 'json',
-                processData: false,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
                     success: function (dataResponse) {
                         $("#dataTables-Index").dataTable().fnReloadAjax();//Recargo la grilla
                         $('#editarModal').modal('hide');
@@ -499,14 +468,27 @@
             },
             cache: false,
             success: function (result) {
-                var link = "@Url.Action("Download", "Notifications", new { filePath = "_myid_" })";
                 $('#editarModal').find('input#input-Id').val(result.Id);
                 $('#editarModal').find('input#input-Nombre').val(result.Nombre);
                 $('#editarModal').find('input#input-Descripcion').val(result.Descripcion);
-                $('#editarModal').find('input#input-ArchivoActa').val(result.FileName);
-                $('#editarModal').find('a').attr("href", link.replace('_myid_', result.Documento));
-                $('#editarModal').find('a').text(result.FileName);
-                $('#editarModal').find('#divArchivo').children('p').show();
+                
+                $('#editarModal').find('#summernote').val(result.Documento).summernote({
+                    lang: 'es-ES',
+                    height: 250,
+                    toolbar: [
+                        // [groupName, [list of button]]
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['font', ['strikethrough', 'superscript', 'subscript']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']]
+                    ]
+                });
+
+
+               // $('#editarModal').find('#summernote').val(result.Documento).summernote('code');
+
             },
             error: function (response) {
                     Lobibox.notify('error', {
@@ -522,8 +504,10 @@
 
 
     //Reinicio los modal
-    $('.modal').on('hidden.bs.modal', function (e) {
+        $('.modal').on('hidden.bs.modal', function (e) {
+            $('#summernote').summernote('reset');
         $(".modal-body input").val(""),
+            $(".modal-body input").val(""),
             $(this).removeData('bs.modal');
         $("form").validate().resetForm();
     });
@@ -563,41 +547,5 @@
 
     }
 
-        function bs_input_file() {
-            $(".input-file").before(
-                function () {
-                    if (!$(this).prev().hasClass('input-ghost')) {
-                        var element = $("<input type='file' accept='.doc,.docx' class='input-ghost' style='visibility:hidden; height:0'>");
-                        element.attr("name", $(this).attr("name"));
-                        element.change(function () {
-                            element.next(element).find('input').val((element.val()).split('\\').pop());
-                            $(this).parents('#divArchivo').children('p').hide();
-                            //$('#ActaAdjuntaBorrada').val('True');
-                            $(this).parents('#divArchivo').children('#hiddenArchivoBorrado').val('True');
-                        });
-                        $(this).find("button.btn-choose").click(function () {
-                            element.click();
-                        });
-                        $(this).find("button.btn-reset").click(function () {
-                            element.val(null);
-                            $(this).parents(".input-file").find('input').val('');
-                            $(this).parents('#divArchivo').children('p').hide();
-                            //$('#ActaAdjuntaBorrada').val('True');
-                            $(this).parents('#divArchivo').children('#hiddenArchivoBorrado').val('True');
-
-                        });
-                        $(this).find('input').css("cursor", "pointer");
-                        $(this).find('input').mousedown(function () {
-                            $(this).parents('.input-file').prev().click();
-                            return false;
-                        });
-                        return element;
-                    }
-                }
-            );
-        }
-        $(function () {
-            bs_input_file();
-        });
     </script>
 }

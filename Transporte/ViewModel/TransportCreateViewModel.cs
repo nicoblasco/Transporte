@@ -40,5 +40,8 @@ namespace Transporte.ViewModel
         public int UsuarioId { get; set; }
         public virtual Usuario Usuario { get; set; }
 
+        public string ParadaNro { get; set; }
+        public string PlazaNro { get; set; }
+
     }
 }

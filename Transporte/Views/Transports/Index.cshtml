@@ -30,6 +30,33 @@
     }
 }
 
+<div class="modal fade" id="notificacionModal" role="dialog">
+    <div class="modal-dialog">
+        <form id="form-create" method="post" autocomplete="off">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Seleccione la notificación</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" autocomplete="off">
+                        <div class="form-group">
+                            <label>Seleccione Documento</label>
+                            @Html.DropDownList("selectNotification", new SelectList(ViewBag.listaNotificaciones, "Id", "Nombre"), new { @class = "form-control noDisabled" })
+                        </div>
+                    </form>
+                </div>
+                <div id="divcollection" style="display:none"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    @Html.ActionLink("Generar", "Reporte", "Transports", new { filePath = "variation-example", id = "linkInformeAdjunto", @type = "button", @class = "btn btn-primary" })
+                    @*<button type="submit" id="btnImprimir" class="btn btn-primary">Imprimir</button>*@
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <!-- Progress Loader -->
 <div id="div-loader" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8; display: none">
@@ -64,19 +91,22 @@
         var Ver = '@ViewBag.Ver';
         var ViewBagNroTurno = '@ViewBag.NroTurno';
         var Action;
-        
+        var ArrayIds = [];
+
         if (ViewBagNroTurno == '')
             Action = "@Url.Action("GetsSearch")";
         else
             Action = "@Url.Action("GetSearchBy", new { Codigo = "_Switch" })".replace("_Switch", ViewBagNroTurno);
 
 
-        
+
         var table = $('#dataTables-Index').DataTable({
             dom: 'Bfrtip',
             buttons: [
                 {
                     extend: 'copyHtml5',
+                    text: 'Copiar Grilla',
+                    //className: "btn btn-secondary",
                     footer: true,
                     exportOptions: {
                         columns: [1, 2, 3, 4, 5, 6, 7]
@@ -84,6 +114,8 @@
                 },
                 {
                     extend: 'excelHtml5',
+                    text: 'Exportar Grilla a Excel',
+                    //className: "btn btn-secondary",
                     footer: true,
                     exportOptions: {
                         columns: [1, 2, 3, 4, 5, 6,7]
@@ -91,9 +123,26 @@
                 },
                 {
                     extend: 'pdfHtml5',
+                    text: 'Exportar Grilla a PDF',
                     footer: true,
                     exportOptions: {
                         columns: [1, 2, 3, 4, 5, 6, 7]
+                    }
+                },
+                {
+                    text: 'Notificar a Seleccionados',
+                    className: "btnNotificar",
+                    //className: "btn btn-secondary",
+                    action: function (e, dt, node, config) {
+                        popupNotificacion();
+                    }
+                },
+                {
+                    text: 'Seleccionar Todos',
+                    className: "btnSeleccionarTodos",
+                    //className: "btn btn-secondary",
+                    action: function (e, dt, node, config) {
+                        seleccionarTodos();
                     }
                 }
             ],
@@ -104,7 +153,7 @@
                     dataSrc: ""
                 },
                 "columns": [
-                    { "data": "id", defaultContent: '', className: 'px100' },
+                    { "data": "id", defaultContent: '', className: 'px150' },
                     { "data": "FechaAlta", className: 'px200' },
                     { "data": "TransportType", className: 'px200' },
                     { "data": "Dominio", className: 'px200' },
@@ -124,25 +173,44 @@
                     //Agrego las
                     // Add a class to the cell in the first column
                     $(nRow).children(':nth-child(1)').addClass('td-btn');
-                    
+
                     //Agrego el boton
                     if (Ver == 'True') {
                         //Ver
-                        $('td:eq(0)', nRow).append("<span class='fa fa-eye span-btn' type='button' value='C' data-toggle='tooltip' data-placement='top' title='Ver' id='btn_Ver'/> ");
-                        
+                        $('td:eq(0)', nRow).append("<span class='fa fa-eye span-btn padding-boton' type='button' value='C' data-toggle='tooltip' data-placement='top' title='Ver' id='btn_Ver'/> ");
+
                     }
 
                     if (Editar == 'True') {
                         //Modificar
-                        $('td:eq(0)', nRow).append("<span class='fa fa-pencil span-btn' type='button' value='E' data-toggle='tooltip' data-placement='top' title='Modificar' id='btn_Editar' />");
+                        $('td:eq(0)', nRow).append("<span class='fa fa-pencil span-btn padding-boton' type='button' value='E' data-toggle='tooltip' data-placement='top' title='Modificar' id='btn_Editar' />");
                     }
                     if (Baja == 'True') {
                         //Borrar
 
-                        $('td:eq(0)', nRow).append("<span data-toggle='modal' data-target='#eliminar-modal'><span class='fa fa-trash span-btn-dtl' type='button' value='D' data-toggle='tooltip' data-placement='top' title='Eliminar' id='btn_Eliminar' /></span>");
+                        $('td:eq(0)', nRow).append("<span data-toggle='modal' class='padding-boton' data-target='#eliminar-modal'><span class='fa fa-trash span-btn-dtl' type='button' value='D' data-toggle='tooltip' data-placement='top' title='Eliminar' id='btn_Eliminar' /></span>");
+                    }
+
+                    if (Ver == 'True') {
+                        //Borrar
+
+                        $('td:eq(0)', nRow).append("<span data-toggle='modal' ><span class='fa fa-print span-btn'  type='button' value='D' data-toggle='tooltip' data-placement='top' title='Selecciona para Imprimir' id='btn_Imprimir' /></span>");
                     }
 
 
+
+
+            },
+            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                if (aData.Estado == "VENCIDO") {
+                    $('td', nRow).addClass('danger');
+                }
+                else if (aData.Estado == "POR VENCER") {
+                    $('td', nRow).addClass('warning');
+                }
+                else if (aData.Estado == "CORRECTO") {
+                    $('td', nRow).addClass('success');
+                }
             },
             "fnFooterCallback": function (nRow, aaData, iStart,
                 iEnd, aiDisplay) {
@@ -152,13 +220,13 @@
                     cantidadRegistros = cantidadRegistros + 1;
                 })
                 $(nRow).find('.foot').eq(0).html("Cantidad de Transportes: " + cantidadRegistros);
-               }             
+               }
             });
-            
+
 
         });
 
-        $(document).on('click', '#btn-crear', function () {
+     $(document).on('click', '#btn-crear', function () {
         var baseUrl = "@Url.Action("Create", "Transports")";
         window.location.href = baseUrl;
     });
@@ -177,9 +245,138 @@
 
 
 
+    $(document).on('click', '#btn_Imprimir', function () {
+        if ($(this).hasClass('span-btn')) {
+            $(this).removeClass('span-btn');
+            $(this).addClass('span-btn-print');
+
+
+        }
+        else {
+            $(this).removeClass('span-btn-print');
+            $(this).addClass('span-btn');
+        }
+
+        });
+
+        $(document).on('click', '#linkInformeAdjunto', function () {
+            $('#notificacionModal').modal('hide');
+            Lobibox.notify('success', {
+                title: 'Exito',
+                msg: 'El archivo se descargara en unos segundos'
+            });
+        });
+        
+
     $(document).on('click', '#btn_Eliminar', function () {
         Delete(this);
     });
+
+
+        function seleccionarTodos() {
+            var seleccionarTodos = false;
+            if ($(".btnSeleccionarTodos").hasClass("TodosSeleccionados")) {
+                $(".btnSeleccionarTodos").removeClass("TodosSeleccionados");
+                seleccionarTodos = false;
+            }
+            else {
+                $(".btnSeleccionarTodos").addClass("TodosSeleccionados");
+                seleccionarTodos = true;
+            }
+                
+
+            var table = $('#dataTables-Index').DataTable();
+            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                //var data = this.data();
+                var nodo = $(this.node()).find('#btn_Imprimir');
+                if (seleccionarTodos)//Si tiene que seleccionar todos
+                {                    
+                    if (nodo.hasClass('span-btn')) {
+                        nodo.removeClass('span-btn');
+                        nodo.addClass('span-btn-print');
+                    }
+                }
+                else {
+                    if (nodo.hasClass('span-btn-print')) {
+                        nodo.removeClass('span-btn-print');
+                        nodo.addClass('span-btn');
+                    }
+                }
+            })
+        }
+
+        function popupNotificacion() {
+            $("#div-loader").show();
+            var table = $('#dataTables-Index').DataTable();
+            var ids = [];
+            table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+                var data = this.data();
+                if ($(this.node()).find('#btn_Imprimir').hasClass('span-btn-print')) {
+                    ids.push(data.Id);
+                }
+            });
+            if (ids.length === 0) {
+                $("#div-loader").hide();
+                Lobibox.notify('warning', {
+                    title: 'Cuidado',
+                    msg: 'Debe hacer click en al menos un registro (icono impresora)'
+                });
+            }
+            else {
+                $("#div-loader").hide();
+                ArrayIds = [];
+                ArrayIds = ids;
+
+                $('#notificacionModal').modal('toggle');
+               // alert(ids);
+
+                //$('#divcollection').append(ids);
+                //$('#divcollection').data(ids);
+            };
+
+        }
+
+
+        $('#notificacionModal').on('shown.bs.modal', function (e) {
+            
+                GetNotificationUrl();
+        });
+
+        $('#selectNotification').on('change', function (e) {
+                GetNotificationUrl();
+        });
+
+        function GetNotificationUrl() {
+            var idObject = $("#selectNotification option:selected").val();
+           // var ids = ArrayIds;//$('#notificacionModal').find('#divcollection').val();
+            var link;
+
+            if (ArrayIds.length > 0) {
+//                link = "@Html.Raw(@Url.Action("ReportArray", "Transports") + "?" + string.Join("&", new int[] { 1, 2, 3 }.Select(x => "TransportId=" + x)))";
+                //Armo la url con los ids seleccionados
+                link = "/Transports/ReportArray?";
+                for (var i = 0; i < ArrayIds.length; i++) {
+                    if (i > 0) {
+                        link+="&";
+                    }
+                    link+= "TransportId=" + ArrayIds[i];
+
+                }
+                link += "&NotificacionId=" + idObject;
+            }
+            else {
+                link = null;
+            }
+
+            
+            
+            $('#notificacionModal').find('a').attr("href", link);
+
+            @*var link = "@Html.Raw(@Url.Action("ReportArray", "Transports", new { @TransportId = "_myTid_", @NotificacionId = "_myid_" }))";
+            var link2 = link.replace('_myid_', idObject);
+
+            $('#notificacionModal').find('a').attr("href", link2.replace('_myTid_', ArrayIds));*@
+        }
 
 
         function Delete(a) {

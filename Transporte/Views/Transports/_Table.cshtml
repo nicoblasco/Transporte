@@ -9,7 +9,7 @@
         overflow: hidden !important;
         white-space: normal !important;
         height: auto !important;
-        width: 400px !important;
+        width: 201px !important;
         /* border-right-width: 0px; */
     }
 
@@ -33,6 +33,20 @@
         width: 20px;
     }
 
+    .span-btn-print {
+        color: darkgreen;
+        cursor: pointer;
+        /* margin: 0px; */
+        font-size: 18px;
+        text-align: center;
+        vertical-align: middle;
+        width: 20px;
+    }
+
+    .padding-boton {
+        padding-right:10px!important;
+    }
+
     .dataTables-Index {
         table-layout: fixed;
     }
@@ -52,6 +66,8 @@
         max-width: 50px;
         word-wrap: break-word;
     }
+
+
 </style>
 @*@if (PermissionViewModel.TienePermisoAcesso(WindowHelper.GetWindowId("Turnos", "Buscar")))
     {*@
@@ -67,7 +83,7 @@
                     <table id="dataTables-Index" class="display nowrap table table-striped table-bordered table-hover" style="font-size:11px">
                         <thead>
                             <tr>
-                                <th class="px100">Acción</th>
+                                <th class="px200">Acción</th>
                                 <th>Fecha Alta</th>
                                 <th>Tipo Transporte</th>
                                 <th>Dominio</th>
