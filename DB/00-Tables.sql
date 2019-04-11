@@ -1,27 +1,7 @@
-USE [Transito]
+USE [Transporte]
 GO
 
-/****** Object:  Table [dbo].[__MigrationHistory]    Script Date: 26/01/2019 15:27:22 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[__MigrationHistory](
-	[MigrationId] [nvarchar](150) NOT NULL,
-	[ContextKey] [nvarchar](300) NOT NULL,
-	[Model] [varbinary](max) NOT NULL,
-	[ProductVersion] [nvarchar](32) NOT NULL,
- CONSTRAINT [PK_dbo.__MigrationHistory] PRIMARY KEY CLUSTERED 
-(
-	[MigrationId] ASC,
-	[ContextKey] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[Audits]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Audits]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -43,38 +23,7 @@ CREATE TABLE [dbo].[Audits](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[CallCenterTurns]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[CallCenterTurns](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[DNI] [nvarchar](max) NULL,
-	[Nombre] [nvarchar](max) NULL,
-	[Apellido] [nvarchar](max) NULL,
-	[TipoTramite] [nvarchar](max) NULL,
-	[FechaTurno] [datetime] NOT NULL,
-	[Fecha] [datetime] NOT NULL,
-	[Asignado] [bit] NOT NULL,
-	[Gestion] [nvarchar](max) NULL,
-	[Tel_Particular] [nvarchar](max) NULL,
-	[Tel_Celular] [nvarchar](max) NULL,
-	[Estado] [nvarchar](max) NULL,
-	[Barrio] [nvarchar](max) NULL,
-	[Vencimiento_licencia] [nvarchar](max) NULL,
-	[FechaModificacion] [datetime] NULL,
-	[UsuarioId] [int] NULL,
- CONSTRAINT [PK_dbo.CallCenterTurns] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[Countries]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Countries]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -92,100 +41,26 @@ CREATE TABLE [dbo].[Countries](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[LicenseClasses]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Fields]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[LicenseClasses](
+CREATE TABLE [dbo].[Fields](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Codigo] [nvarchar](max) NULL,
+	[Referencia] [nvarchar](max) NULL,
 	[Descripcion] [nvarchar](max) NULL,
-	[Enable] [bit] NOT NULL,
- CONSTRAINT [PK_dbo.LicenseClasses] PRIMARY KEY CLUSTERED 
+	[IsArray] [bit] NOT NULL,
+ CONSTRAINT [PK_dbo.Fields] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[LicenseLicenseClasses]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[LicenseLicenseClasses](
-	[LicenseClass_Id] [int] NOT NULL,
-	[License_Id] [int] NOT NULL,
- CONSTRAINT [PK_dbo.LicenseLicenseClasses] PRIMARY KEY CLUSTERED 
-(
-	[License_Id] ASC,
-	[LicenseClass_Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[Licenses]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[Licenses](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[PersonId] [int] NOT NULL,
-	[FechaOtorgamiento] [datetime] NULL,
-	[FechaVencimiento] [datetime] NULL,
-	[TypesLicenseId] [int] NULL,
-	[Estado] [nvarchar](max) NULL,
-	[FechaRecibo] [datetime] NULL,
-	[FechaRetiro] [datetime] NULL,
-	[Firma] [nvarchar](max) NULL,
-	[TurnId] [int] NULL,
- CONSTRAINT [PK_dbo.Licenses] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[MedicalPersons]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[MedicalPersons](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[PersonId] [int] NOT NULL,
-	[TurnId] [int] NOT NULL,
-	[Avoi] [int] NOT NULL,
-	[Avod] [int] NOT NULL,
-	[Fuma] [bit] NOT NULL,
-	[Profesional] [bit] NOT NULL,
-	[ConduceConAnteojos] [bit] NOT NULL,
-	[VisionMonocular] [bit] NOT NULL,
-	[Discromatopsia] [bit] NOT NULL,
-	[HTA] [bit] NOT NULL,
-	[DBT] [bit] NOT NULL,
-	[GAA] [bit] NOT NULL,
-	[AcidoUrico] [bit] NOT NULL,
-	[Colesterol] [bit] NOT NULL,
-	[Observacion] [nvarchar](max) NULL,
- CONSTRAINT [PK_dbo.MedicalPersons] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[Modules]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Modules]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -203,7 +78,44 @@ CREATE TABLE [dbo].[Modules](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[People]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Notifications]    Script Date: 29/03/2019 12:38:50 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Notifications](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Nombre] [nvarchar](max) NULL,
+	[Descripcion] [nvarchar](max) NULL,
+	[Documento] [nvarchar](max) NULL,
+ CONSTRAINT [PK_dbo.Notifications] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+/****** Object:  Table [dbo].[NotificationTags]    Script Date: 29/03/2019 12:38:50 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[NotificationTags](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[NombreAtributo] [nvarchar](max) NULL,
+	[Tag] [nvarchar](max) NULL,
+ CONSTRAINT [PK_dbo.NotificationTags] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+/****** Object:  Table [dbo].[People]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -212,20 +124,20 @@ GO
 
 CREATE TABLE [dbo].[People](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[TransportId] [int] NOT NULL,
+	[PersonTypeId] [int] NOT NULL,
 	[Nombre] [nvarchar](max) NULL,
 	[Apellido] [nvarchar](max) NULL,
 	[Dni] [nvarchar](max) NULL,
-	[FechaNacimiento] [datetime] NULL,
-	[Tel_Particular] [nvarchar](max) NULL,
-	[Tel_Celular] [nvarchar](max) NULL,
-	[Barrio] [nvarchar](max) NULL,
-	[Vencimiento_licencia] [datetime] NULL,
-	[Calle] [nvarchar](max) NULL,
-	[StreetId] [int] NULL,
-	[Altura] [nvarchar](max) NULL,
-	[CountryId] [int] NULL,
-	[CalleNro] [nvarchar](max) NULL,
+	[CalleReal] [nvarchar](max) NULL,
+	[CalleConstituido] [nvarchar](max) NULL,
+	[Telefono] [nvarchar](max) NULL,
 	[Email] [nvarchar](max) NULL,
+	[VtoLicencia] [datetime] NULL,
+	[VtoLibreta] [datetime] NULL,
+	[Enable] [bit] NOT NULL,
+	[PartidoReal] [nvarchar](max) NULL,
+	[PartidoConstituido] [nvarchar](max) NULL,
  CONSTRAINT [PK_dbo.People] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -233,7 +145,7 @@ CREATE TABLE [dbo].[People](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[Permissions]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Permissions]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -255,48 +167,25 @@ CREATE TABLE [dbo].[Permissions](
 ) ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[Processes]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[PersonTypes]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Processes](
+CREATE TABLE [dbo].[PersonTypes](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [nvarchar](max) NULL,
-	[FechaInicio] [datetime] NOT NULL,
-	[FechaFin] [datetime] NULL,
-	[Detalle] [nvarchar](max) NULL,
- CONSTRAINT [PK_dbo.Processes] PRIMARY KEY CLUSTERED 
+	[Descripcion] [nvarchar](max) NULL,
+	[Code] [nvarchar](max) NULL,
+ CONSTRAINT [PK_dbo.PersonTypes] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[ProcessLogs]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[ProcessLogs](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Fecha] [datetime] NOT NULL,
-	[Name] [nvarchar](max) NULL,
-	[IsOk] [bit] NOT NULL,
-	[ErrorDescripcion] [nvarchar](max) NULL,
-	[ProcessId] [int] NOT NULL,
- CONSTRAINT [PK_dbo.ProcessLogs] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[Rols]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Rols]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -316,44 +205,7 @@ CREATE TABLE [dbo].[Rols](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[Sectors]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[Sectors](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Descripcion] [nvarchar](max) NULL,
-	[Medico] [bit] NOT NULL,
- CONSTRAINT [PK_dbo.Sectors] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[SectorWorkflows]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[SectorWorkflows](
-	[Orden] [int] NOT NULL,
-	[SectorID] [int] NOT NULL,
-	[WorkflowID] [int] NOT NULL,
- CONSTRAINT [PK_dbo.SectorWorkflows] PRIMARY KEY CLUSTERED 
-(
-	[WorkflowID] ASC,
-	[SectorID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[Settings]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Settings]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -378,25 +230,7 @@ CREATE TABLE [dbo].[Settings](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[Status]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[Status](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Orden] [int] NOT NULL,
-	[Descripcion] [nvarchar](max) NULL,
- CONSTRAINT [PK_dbo.Status] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[Streets]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Streets]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -417,101 +251,60 @@ CREATE TABLE [dbo].[Streets](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[Terminals]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Transports]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Terminals](
+CREATE TABLE [dbo].[Transports](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[TransportTypeId] [int] NOT NULL,
+	[Expediente] [nvarchar](max) NULL,
+	[Dominio] [nvarchar](max) NULL,
+	[Observaciones] [nvarchar](max) NULL,
+	[VtoPoliza] [datetime] NULL,
+	[ReciboPagoSeguro] [nvarchar](max) NULL,
+	[VtoVTV] [datetime] NULL,
+	[VtoMatafuego] [datetime] NULL,
+	[VtoConstanciaAFIP] [datetime] NULL,
+	[Marca] [nvarchar](max) NULL,
+	[Modelo] [nvarchar](max) NULL,
+	[FechaInscripcionInicial] [datetime] NULL,
+	[Desinfeccion] [datetime] NULL,
+	[Constatacion] [datetime] NULL,
+	[FechaAlta] [datetime] NOT NULL,
+	[UsuarioId] [int] NOT NULL,
+	[Enable] [bit] NOT NULL,
+	[ParadaNro] [nvarchar](max) NULL,
+	[PlazaNro] [nvarchar](max) NULL,
+ CONSTRAINT [PK_dbo.Transports] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+/****** Object:  Table [dbo].[TransportTypes]    Script Date: 29/03/2019 12:38:50 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[TransportTypes](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Descripcion] [nvarchar](max) NULL,
-	[IP] [nvarchar](max) NULL,
-	[SectorID] [int] NOT NULL,
 	[Enable] [bit] NOT NULL,
- CONSTRAINT [PK_dbo.Terminals] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_dbo.TransportTypes] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[Trackings]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[Trackings](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[TurnID] [int] NOT NULL,
-	[TerminalID] [int] NULL,
-	[SectorID] [int] NOT NULL,
-	[UsuarioID] [int] NULL,
-	[FechaIngreso] [datetime] NULL,
-	[FechaSalida] [datetime] NULL,
-	[Tiempo] [time](7) NULL,
-	[FechaCreacion] [datetime] NOT NULL,
-	[CantidadDeLlamados] [int] NOT NULL,
-	[StatusID] [int] NULL,
-	[Alerta] [bit] NOT NULL,
-	[Enable] [bit] NOT NULL,
- CONSTRAINT [PK_dbo.Trackings] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[Turns]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[Turns](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Turno] [nvarchar](max) NULL,
-	[TypesLicenseID] [int] NOT NULL,
-	[PersonID] [int] NOT NULL,
-	[FechaIngreso] [datetime] NOT NULL,
-	[Secuencia] [int] NOT NULL,
-	[FechaTurno] [datetime] NOT NULL,
-	[FechaSalida] [datetime] NULL,
-	[Tiempo] [time](7) NULL,
-	[Enable] [bit] NOT NULL,
-	[CallCenterTurnId] [int] NULL,
- CONSTRAINT [PK_dbo.Turns] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[TypesLicenses]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[TypesLicenses](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Descripcion] [nvarchar](max) NULL,
-	[Codigo] [nvarchar](max) NULL,
-	[Referencia] [nvarchar](max) NULL,
-	[NumeroInicial] [int] NOT NULL,
- CONSTRAINT [PK_dbo.TypesLicenses] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-/****** Object:  Table [dbo].[Usuarios]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Usuarios]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -533,7 +326,7 @@ CREATE TABLE [dbo].[Usuarios](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[Windows]    Script Date: 26/01/2019 15:27:23 ******/
+/****** Object:  Table [dbo].[Windows]    Script Date: 29/03/2019 12:38:50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -554,69 +347,16 @@ CREATE TABLE [dbo].[Windows](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[Workflows]    Script Date: 26/01/2019 15:27:23 ******/
-SET ANSI_NULLS ON
+ALTER TABLE [dbo].[People] ADD  DEFAULT ((0)) FOR [Enable]
 GO
 
-SET QUOTED_IDENTIFIER ON
+ALTER TABLE [dbo].[Transports] ADD  DEFAULT ('1900-01-01T00:00:00.000') FOR [FechaAlta]
 GO
 
-CREATE TABLE [dbo].[Workflows](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[TypesLicenseID] [int] NOT NULL,
- CONSTRAINT [PK_dbo.Workflows] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+ALTER TABLE [dbo].[Transports] ADD  DEFAULT ((0)) FOR [UsuarioId]
 GO
 
-ALTER TABLE [dbo].[CallCenterTurns] ADD  DEFAULT ('1900-01-01T00:00:00.000') FOR [FechaTurno]
-GO
-
-ALTER TABLE [dbo].[CallCenterTurns] ADD  DEFAULT ('1900-01-01T00:00:00.000') FOR [Fecha]
-GO
-
-ALTER TABLE [dbo].[CallCenterTurns] ADD  DEFAULT ((0)) FOR [Asignado]
-GO
-
-ALTER TABLE [dbo].[Countries] ADD  DEFAULT ((0)) FOR [Predeterminado]
-GO
-
-ALTER TABLE [dbo].[Processes] ADD  DEFAULT ('1900-01-01T00:00:00.000') FOR [FechaInicio]
-GO
-
-ALTER TABLE [dbo].[ProcessLogs] ADD  DEFAULT ((0)) FOR [ProcessId]
-GO
-
-ALTER TABLE [dbo].[Rols] ADD  DEFAULT ((0)) FOR [IsAdmin]
-GO
-
-ALTER TABLE [dbo].[Sectors] ADD  DEFAULT ((0)) FOR [Medico]
-GO
-
-ALTER TABLE [dbo].[Trackings] ADD  DEFAULT ('1900-01-01T00:00:00.000') FOR [FechaCreacion]
-GO
-
-ALTER TABLE [dbo].[Trackings] ADD  DEFAULT ((0)) FOR [CantidadDeLlamados]
-GO
-
-ALTER TABLE [dbo].[Trackings] ADD  DEFAULT ((0)) FOR [Alerta]
-GO
-
-ALTER TABLE [dbo].[Trackings] ADD  DEFAULT ((0)) FOR [Enable]
-GO
-
-ALTER TABLE [dbo].[Turns] ADD  DEFAULT ((0)) FOR [Secuencia]
-GO
-
-ALTER TABLE [dbo].[Turns] ADD  DEFAULT ('1900-01-01T00:00:00.000') FOR [FechaTurno]
-GO
-
-ALTER TABLE [dbo].[Turns] ADD  DEFAULT ((0)) FOR [Enable]
-GO
-
-ALTER TABLE [dbo].[TypesLicenses] ADD  DEFAULT ((0)) FOR [NumeroInicial]
+ALTER TABLE [dbo].[Transports] ADD  DEFAULT ((0)) FOR [Enable]
 GO
 
 ALTER TABLE [dbo].[Audits]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Audits_dbo.Usuarios_UsuarioId] FOREIGN KEY([UsuarioId])
@@ -633,76 +373,18 @@ GO
 ALTER TABLE [dbo].[Audits] CHECK CONSTRAINT [FK_dbo.Audits_dbo.Windows_WindowId]
 GO
 
-ALTER TABLE [dbo].[CallCenterTurns]  WITH CHECK ADD  CONSTRAINT [FK_dbo.CallCenterTurns_dbo.Usuarios_UsuarioId] FOREIGN KEY([UsuarioId])
-REFERENCES [dbo].[Usuarios] ([UsuarioId])
+ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_dbo.People_dbo.PersonTypes_PersonTypeId] FOREIGN KEY([PersonTypeId])
+REFERENCES [dbo].[PersonTypes] ([Id])
 GO
 
-ALTER TABLE [dbo].[CallCenterTurns] CHECK CONSTRAINT [FK_dbo.CallCenterTurns_dbo.Usuarios_UsuarioId]
+ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_dbo.People_dbo.PersonTypes_PersonTypeId]
 GO
 
-ALTER TABLE [dbo].[LicenseLicenseClasses]  WITH CHECK ADD  CONSTRAINT [FK_dbo.LicenseClassLicenses_dbo.LicenseClasses_LicenseClass_Id] FOREIGN KEY([LicenseClass_Id])
-REFERENCES [dbo].[LicenseClasses] ([Id])
-ON DELETE CASCADE
+ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_dbo.People_dbo.Transports_TransportId] FOREIGN KEY([TransportId])
+REFERENCES [dbo].[Transports] ([Id])
 GO
 
-ALTER TABLE [dbo].[LicenseLicenseClasses] CHECK CONSTRAINT [FK_dbo.LicenseClassLicenses_dbo.LicenseClasses_LicenseClass_Id]
-GO
-
-ALTER TABLE [dbo].[LicenseLicenseClasses]  WITH CHECK ADD  CONSTRAINT [FK_dbo.LicenseClassLicenses_dbo.Licenses_License_Id] FOREIGN KEY([License_Id])
-REFERENCES [dbo].[Licenses] ([Id])
-ON DELETE CASCADE
-GO
-
-ALTER TABLE [dbo].[LicenseLicenseClasses] CHECK CONSTRAINT [FK_dbo.LicenseClassLicenses_dbo.Licenses_License_Id]
-GO
-
-ALTER TABLE [dbo].[Licenses]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Licenses_dbo.People_PersonId] FOREIGN KEY([PersonId])
-REFERENCES [dbo].[People] ([Id])
-GO
-
-ALTER TABLE [dbo].[Licenses] CHECK CONSTRAINT [FK_dbo.Licenses_dbo.People_PersonId]
-GO
-
-ALTER TABLE [dbo].[Licenses]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Licenses_dbo.Turns_TurnId] FOREIGN KEY([TurnId])
-REFERENCES [dbo].[Turns] ([Id])
-GO
-
-ALTER TABLE [dbo].[Licenses] CHECK CONSTRAINT [FK_dbo.Licenses_dbo.Turns_TurnId]
-GO
-
-ALTER TABLE [dbo].[Licenses]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Licenses_dbo.TypesLicenses_TypesLicenseId] FOREIGN KEY([TypesLicenseId])
-REFERENCES [dbo].[TypesLicenses] ([Id])
-GO
-
-ALTER TABLE [dbo].[Licenses] CHECK CONSTRAINT [FK_dbo.Licenses_dbo.TypesLicenses_TypesLicenseId]
-GO
-
-ALTER TABLE [dbo].[MedicalPersons]  WITH CHECK ADD  CONSTRAINT [FK_dbo.MedicalPersons_dbo.People_PersonId] FOREIGN KEY([PersonId])
-REFERENCES [dbo].[People] ([Id])
-GO
-
-ALTER TABLE [dbo].[MedicalPersons] CHECK CONSTRAINT [FK_dbo.MedicalPersons_dbo.People_PersonId]
-GO
-
-ALTER TABLE [dbo].[MedicalPersons]  WITH CHECK ADD  CONSTRAINT [FK_dbo.MedicalPersons_dbo.Turns_TurnId] FOREIGN KEY([TurnId])
-REFERENCES [dbo].[Turns] ([Id])
-GO
-
-ALTER TABLE [dbo].[MedicalPersons] CHECK CONSTRAINT [FK_dbo.MedicalPersons_dbo.Turns_TurnId]
-GO
-
-ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_dbo.People_dbo.Countries_CountryId] FOREIGN KEY([CountryId])
-REFERENCES [dbo].[Countries] ([Id])
-GO
-
-ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_dbo.People_dbo.Countries_CountryId]
-GO
-
-ALTER TABLE [dbo].[People]  WITH CHECK ADD  CONSTRAINT [FK_dbo.People_dbo.Streets_StreetId] FOREIGN KEY([StreetId])
-REFERENCES [dbo].[Streets] ([Id])
-GO
-
-ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_dbo.People_dbo.Streets_StreetId]
+ALTER TABLE [dbo].[People] CHECK CONSTRAINT [FK_dbo.People_dbo.Transports_TransportId]
 GO
 
 ALTER TABLE [dbo].[Permissions]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Permissions_dbo.Rols_RolId] FOREIGN KEY([RolId])
@@ -719,95 +401,25 @@ GO
 ALTER TABLE [dbo].[Permissions] CHECK CONSTRAINT [FK_dbo.Permissions_dbo.Windows_WindowId]
 GO
 
-ALTER TABLE [dbo].[ProcessLogs]  WITH CHECK ADD  CONSTRAINT [FK_dbo.ProcessLogs_dbo.Processes_ProcessId] FOREIGN KEY([ProcessId])
-REFERENCES [dbo].[Processes] ([Id])
-GO
-
-ALTER TABLE [dbo].[ProcessLogs] CHECK CONSTRAINT [FK_dbo.ProcessLogs_dbo.Processes_ProcessId]
-GO
-
-ALTER TABLE [dbo].[Rols]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Rols_dbo.Windows_Window_Id] FOREIGN KEY([WindowId])
+ALTER TABLE [dbo].[Rols]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Rols_dbo.Windows_WindowId] FOREIGN KEY([WindowId])
 REFERENCES [dbo].[Windows] ([Id])
 GO
 
-ALTER TABLE [dbo].[Rols] CHECK CONSTRAINT [FK_dbo.Rols_dbo.Windows_Window_Id]
+ALTER TABLE [dbo].[Rols] CHECK CONSTRAINT [FK_dbo.Rols_dbo.Windows_WindowId]
 GO
 
-ALTER TABLE [dbo].[SectorWorkflows]  WITH CHECK ADD  CONSTRAINT [FK_dbo.SectorWorkflows_dbo.Sectors_Sector_Id] FOREIGN KEY([SectorID])
-REFERENCES [dbo].[Sectors] ([Id])
+ALTER TABLE [dbo].[Transports]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Transports_dbo.TransportTypes_TransportTypeId] FOREIGN KEY([TransportTypeId])
+REFERENCES [dbo].[TransportTypes] ([Id])
 GO
 
-ALTER TABLE [dbo].[SectorWorkflows] CHECK CONSTRAINT [FK_dbo.SectorWorkflows_dbo.Sectors_Sector_Id]
+ALTER TABLE [dbo].[Transports] CHECK CONSTRAINT [FK_dbo.Transports_dbo.TransportTypes_TransportTypeId]
 GO
 
-ALTER TABLE [dbo].[SectorWorkflows]  WITH CHECK ADD  CONSTRAINT [FK_dbo.SectorWorkflows_dbo.Workflows_Workflow_Id] FOREIGN KEY([WorkflowID])
-REFERENCES [dbo].[Workflows] ([Id])
-GO
-
-ALTER TABLE [dbo].[SectorWorkflows] CHECK CONSTRAINT [FK_dbo.SectorWorkflows_dbo.Workflows_Workflow_Id]
-GO
-
-ALTER TABLE [dbo].[Terminals]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Terminals_dbo.Sectors_SectorID] FOREIGN KEY([SectorID])
-REFERENCES [dbo].[Sectors] ([Id])
-GO
-
-ALTER TABLE [dbo].[Terminals] CHECK CONSTRAINT [FK_dbo.Terminals_dbo.Sectors_SectorID]
-GO
-
-ALTER TABLE [dbo].[Trackings]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Trackings_dbo.Sectors_SectorID] FOREIGN KEY([SectorID])
-REFERENCES [dbo].[Sectors] ([Id])
-GO
-
-ALTER TABLE [dbo].[Trackings] CHECK CONSTRAINT [FK_dbo.Trackings_dbo.Sectors_SectorID]
-GO
-
-ALTER TABLE [dbo].[Trackings]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Trackings_dbo.Status_StatusID] FOREIGN KEY([StatusID])
-REFERENCES [dbo].[Status] ([Id])
-GO
-
-ALTER TABLE [dbo].[Trackings] CHECK CONSTRAINT [FK_dbo.Trackings_dbo.Status_StatusID]
-GO
-
-ALTER TABLE [dbo].[Trackings]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Trackings_dbo.Terminals_TerminalID] FOREIGN KEY([TerminalID])
-REFERENCES [dbo].[Terminals] ([Id])
-GO
-
-ALTER TABLE [dbo].[Trackings] CHECK CONSTRAINT [FK_dbo.Trackings_dbo.Terminals_TerminalID]
-GO
-
-ALTER TABLE [dbo].[Trackings]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Trackings_dbo.Turns_TurnID] FOREIGN KEY([TurnID])
-REFERENCES [dbo].[Turns] ([Id])
-GO
-
-ALTER TABLE [dbo].[Trackings] CHECK CONSTRAINT [FK_dbo.Trackings_dbo.Turns_TurnID]
-GO
-
-ALTER TABLE [dbo].[Trackings]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Trackings_dbo.Usuarios_UsuarioID] FOREIGN KEY([UsuarioID])
+ALTER TABLE [dbo].[Transports]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Transports_dbo.Usuarios_UsuarioId] FOREIGN KEY([UsuarioId])
 REFERENCES [dbo].[Usuarios] ([UsuarioId])
 GO
 
-ALTER TABLE [dbo].[Trackings] CHECK CONSTRAINT [FK_dbo.Trackings_dbo.Usuarios_UsuarioID]
-GO
-
-ALTER TABLE [dbo].[Turns]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Turns_dbo.CallCenterTurns_CallCenterTurnId] FOREIGN KEY([CallCenterTurnId])
-REFERENCES [dbo].[CallCenterTurns] ([Id])
-GO
-
-ALTER TABLE [dbo].[Turns] CHECK CONSTRAINT [FK_dbo.Turns_dbo.CallCenterTurns_CallCenterTurnId]
-GO
-
-ALTER TABLE [dbo].[Turns]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Turns_dbo.People_PersonID] FOREIGN KEY([PersonID])
-REFERENCES [dbo].[People] ([Id])
-GO
-
-ALTER TABLE [dbo].[Turns] CHECK CONSTRAINT [FK_dbo.Turns_dbo.People_PersonID]
-GO
-
-ALTER TABLE [dbo].[Turns]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Turns_dbo.TypesLicenses_TypesLicenseID] FOREIGN KEY([TypesLicenseID])
-REFERENCES [dbo].[TypesLicenses] ([Id])
-GO
-
-ALTER TABLE [dbo].[Turns] CHECK CONSTRAINT [FK_dbo.Turns_dbo.TypesLicenses_TypesLicenseID]
+ALTER TABLE [dbo].[Transports] CHECK CONSTRAINT [FK_dbo.Transports_dbo.Usuarios_UsuarioId]
 GO
 
 ALTER TABLE [dbo].[Usuarios]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Usuarios_dbo.Rols_RolId] FOREIGN KEY([RolId])
@@ -822,12 +434,5 @@ REFERENCES [dbo].[Modules] ([Id])
 GO
 
 ALTER TABLE [dbo].[Windows] CHECK CONSTRAINT [FK_dbo.Windows_dbo.Modules_ModuleId]
-GO
-
-ALTER TABLE [dbo].[Workflows]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Workflows_dbo.TypesLicenses_TypesLicenseID] FOREIGN KEY([TypesLicenseID])
-REFERENCES [dbo].[TypesLicenses] ([Id])
-GO
-
-ALTER TABLE [dbo].[Workflows] CHECK CONSTRAINT [FK_dbo.Workflows_dbo.TypesLicenses_TypesLicenseID]
 GO
 
