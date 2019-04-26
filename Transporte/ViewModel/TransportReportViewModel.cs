@@ -53,5 +53,15 @@ namespace Transporte.ViewModel
         public string PlazaNro { get; set; }
         public string ChoferNombre { get; set; }
 
+        public string VtoPagoSeguro { get; set; }
+        public string SubTipoTransporte { get; set; }
+        public string NroAgencia { get; set; }
+
+        public string NombreAgencia { get; set; }
+
+        public string FechaHabilitacionAgencia { get; set; }
+        public string FechasVencidas { get; set; }
+        public string FechasPorVencer { get; set; }
+
     }
 }

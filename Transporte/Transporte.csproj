@@ -181,6 +181,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AgenciesController.cs" />
     <Compile Include="Controllers\AuditsController.cs" />
     <Compile Include="Controllers\FieldsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Agency.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Field.cs" />
     <Compile Include="Models\Audit.cs" />
@@ -227,6 +229,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tags\AutenticadoAttribute.cs" />
     <Compile Include="Validations\DateGreaterThanAttribute.cs" />
+    <Compile Include="ViewModel\AgencyViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\NotificationViewModel.cs" />
     <Compile Include="ViewModel\ObjectViewModel.cs" />
@@ -478,6 +481,7 @@
     <Content Include="Scripts\jquery.dataTables.js" />
     <Content Include="Scripts\jquery.datetimepicker.full.min.js" />
     <Content Include="Scripts\jquery.form.js" />
+    <Content Include="Scripts\jquery.mask.js" />
     <Content Include="Scripts\jquery.multi-select.js" />
     <Content Include="Scripts\jquery.multiselect.js" />
     <Content Include="Scripts\jquery.playSound.js" />
@@ -635,6 +639,7 @@
     <Content Include="Views\Notifications\Reports\CedulaDeNotificacion.cshtml" />
     <Content Include="Views\Notifications\IndexConAdjunto.cshtml" />
     <Content Include="Views\NotificationTags\Index.cshtml" />
+    <Content Include="Views\Agencies\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\upload\" />

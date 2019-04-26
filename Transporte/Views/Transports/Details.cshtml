@@ -116,6 +116,29 @@
                                                 @Html.DropDownListFor(model => model.TransportTypeId, new SelectList(ViewBag.listaTipos, "Id", "Descripcion"), "Seleccione...", new { @class = "form-control input-sm", id = "TransportTypeId" })
                                             </div>
 
+                                            <div class="col-sm-2" id="divSubType">
+                                                <label>Sub Tipo</label><span class="red"> * </span>
+                                                @*<select name="SubType" id="SubType" class="form-control input-sm">
+                                                    <option value="" selected>Seleccione...</option>
+                                                    <option value="PRIMARIO">Primario</option>
+                                                    <option value="OTRO">Otro</option>
+                                                </select>*@
+
+                                                @Html.DropDownListFor(model => model.SubType, new SelectList(
+                                                new List<Object>{new { value = "" , text = "Seleccione..."  },
+                                                                 new { value = "PRIMARIO" , text = "Primario"  },
+                                                                 new { value = "OTRO" , text = "Otro" }
+                                                                                 },
+                                                "value",
+                                                "text",
+                                                 1), new { id = "SubType", @class = "form-control input-sm" })   
+                                            </div>
+
+                                            <div class="col-sm-4" id="divAgencia">
+                                                <label>Agencia</label><span class="red"> * </span>
+                                                @Html.DropDownListFor(model => model.AgencyId, new SelectList(ViewBag.listaAgencias, "Id", "Fullname"), "Seleccione...", new { @class = "form-control input-sm", id = "AgencyId" })
+                                            </div>
+
                                             <div class="col-sm-2">
                                                 <label>N° Parada</label>
                                                 @Html.EditorFor(model => model.ParadaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "ParadaNro" } })
@@ -192,6 +215,11 @@
                                                 @Html.TextBoxFor(m => m.VtoConstanciaAFIP, new { @Value = Model.VtoConstanciaAFIP.HasValue ? Model.VtoConstanciaAFIP.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoConstanciaAFIP", @type = "datetime" })
                                             </div>
 
+                                            <div class="col-sm-2">
+                                                <label>Vto Pago Seguro</label><span class="red"> * </span>
+                                                @Html.TextBoxFor(m => m.VtoPagoSeguro, new { @Value = Model.VtoPagoSeguro.HasValue ? Model.VtoPagoSeguro.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoPagoSeguro", @type = "datetime" })
+                                            </div>
+
                                             <div class="col-sm-12">
                                                 <label>Observacion</label>
                                                 @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control input-sm", id = "Observaciones" } })
@@ -244,7 +272,7 @@
                                                                 <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <label>Teléfono</label>
-                                                                        @Html.EditorFor(model => model.Titulares[i].Telefono, new { htmlAttributes = new { @class = "form-control input-sm", id = "Telefono", @type = "number" } })
+                                                                        @Html.EditorFor(model => model.Titulares[i].Telefono, new { htmlAttributes = new { @class = "form-control input-sm", id = "Telefono", @type = "text" } })
                                                                     </div>
                                                                 </div>
 
@@ -515,6 +543,23 @@
             $(".noDisabled").prop('disabled', false);
             $("#btnSalir").prop('disabled', false);
             
+
+            if ($('#TransportTypeId option:selected').text() == 'Escolar') {
+                $('#divSubType').show();
+
+            }
+            else {
+                $('#divSubType').hide();
+            };
+
+
+            if ($('#TransportTypeId option:selected').text() == 'Remis') {
+                $('#divAgencia').show();
+
+            }
+            else {
+                $('#divAgencia').hide();
+            };
 
 
 

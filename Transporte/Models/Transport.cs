@@ -11,6 +11,8 @@ namespace Transporte.Models
         public int Id { get; set; }
         public int TransportTypeId { get; set; }
         public virtual TransportType TransportType { get; set; }
+
+        public string SubType { get; set; }
         public string Expediente { get; set; }
 
         public virtual ICollection<Person> Persons { get; set; }
@@ -26,12 +28,15 @@ namespace Transporte.Models
         public DateTime? VtoPoliza { get; set; }
         public string ReciboPagoSeguro { get; set; }
 
+        
         public DateTime? VtoVTV { get; set; }
 
         public DateTime? VtoMatafuego { get; set; }
         public DateTime? VtoConstanciaAFIP { get; set; }
+        public DateTime? VtoPagoSeguro { get; set; }
+        public int? AgencyId { get; set; }
+        public virtual Agency Agency { get; set; }
 
-        
         public string ParadaNro { get; set; }
         public string PlazaNro { get; set; }
 

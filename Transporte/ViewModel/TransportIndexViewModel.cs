@@ -18,5 +18,8 @@ namespace Transporte.ViewModel
         public string Expediente { get; set; }
       
         public string Estado { get; set; }
+
+        public string NombreTitular { get; set; }
+        public string DniTitular { get; set; }
     }
 }

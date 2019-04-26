@@ -1,34 +1,14 @@
-﻿@model IEnumerable<Transporte.ViewModel.NotificationViewModel>
+﻿@model IEnumerable<Transporte.ViewModel.AgencyViewModel>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-}
-@{
-    string currentController = Html.ViewContext.RouteData.GetRequiredString("controller");
 }
 
-<link href="~/Content/summernote/summernote.css" rel="stylesheet" />
-<style>
-
-    #divExtension {
-        color: darkgrey;
-        font-size: x-small;
-        padding-left: 5px;
-    }
-
-    #divLabelExtension {
-        display: -webkit-box;
-    }
-
-    .input-file p {
-    }
-</style>
 
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Notificaciones</h1>
+            <h1 class="page-header">Agencias</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -62,8 +42,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Descripcion</th>
+                                <th>Nro de Agencia</th>
+                                <th>Nombre de Fantasía</th>
+                                <th>Fecha de Habilitación</th>
                             </tr>
                         </thead>
                     </table>
@@ -92,32 +73,27 @@
     <div class="modal-dialog">
         <form id="form-create" method="post">
             <!-- Modal content-->
-            <div class="modal-content" style="width:900px">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Nueva Notificación</h4>
+                    <h4 class="modal-title">Nueva Agencia</h4>
                 </div>
                 <div class="modal-body">
                     <form role="form">
                         <div class="form-group">
-                            <label>Nombre</label>
+                            <label>Nro de Agencia</label>
+                            <input id="input-Nro" name="inputNro" class="form-control" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre de Fantasía</label>
                             <input id="input-Nombre" name="inputNombre" class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label>Descripción</label>
-                            <input id="input-Descripcion" name="inputDescripcion" class="form-control" autocomplete="off">
+                            <label>Fecha de Habilitación</label>
+                            <input id="input-Fecha" type="text" name="inputFecha" class="form-control input-date" autocomplete="off">
                         </div>
-                        <div class="form-group">
-                            <div class="col-lg-8" style="padding-left: 0px;">
-                                @Html.DropDownList("NombreAtributo", new SelectList(ViewBag.Atributos, "Tag", "NombreAtributo"), new { @class = "form-control" })
-                            </div>
-                            <button type="button" id="AgregarAttributoCreate" class="btn btn-primary">Agregar Atributo</button>
-                        </div>
-                        <div class="form-group">
-                            <label>Contenido</label>
-                            <textarea id="summernote" name="editordata"></textarea>
-                        </div>
-                        <div class="errors"></div>
+
+
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -133,10 +109,10 @@
     <div class="modal-dialog">
         <form id="form-edit" method="post">
             <!-- Modal content-->
-            <div class="modal-content"  style="width:900px">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Editar Notificación</h4>
+                    <h4 class="modal-title">Editar Agencia</h4>
                 </div>
                 <div class="modal-body">
                     <form role="form">
@@ -145,27 +121,19 @@
                             <label>Id</label>
                             <input id="input-Id" name="inputId" class="form-control" disabled>
                         </div>
+
                         <div class="form-group">
-                            <label>Nombre</label>
+                            <label>Nro de Agencia</label>
+                            <input id="input-Nro" name="inputNro" class="form-control" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre de Fantasía</label>
                             <input id="input-Nombre" name="inputNombre" class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label>Descripción</label>
-                            <input id="input-Descripcion" name="inputDescripcion" class="form-control" autocomplete="off">
+                            <label>Fecha de Habilitación</label>
+                            <input id="input-Fecha" type="text" name="inputFecha" class="form-control input-date" autocomplete="off">
                         </div>
-
-                        <div class="form-group">
-                            <div class="col-lg-8" style="padding-left: 0px;">
-                                @Html.DropDownList("NombreAtributo", new SelectList(ViewBag.Atributos, "Tag", "NombreAtributo"), new { @class = "form-control" })
-                            </div>
-                            <button type="button" id="AgregarAttributoEdit" class="btn btn-primary">Agregar Atributo</button>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Contenido</label>
-                            <textarea id="summernote" name="editordata"></textarea>
-                        </div>
-                        <div class="errors"></div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -180,26 +148,11 @@
 
 @section scripts {
 
-
-    @Scripts.Render("~/Scripts/summernote/summernote.js")
-    @Scripts.Render("~/Scripts/summernote/lang/summernote-es-ES.js")
+    @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
     <script>
 
     $(document).ready(function () {
 
-        $('#summernote').summernote({
-            lang: 'es-ES',
-            height: 250,
-            toolbar: [
-                // [groupName, [list of button]]
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strikethrough', 'superscript', 'subscript']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['height', ['height']]
-            ]
-        });
 
         habilitaBotones(false);
 
@@ -213,11 +166,27 @@
                   },
            "columns": [
                { "data": "Id" },
+               { "data": "NroAgencia" },
                { "data": "Nombre" },
-               { "data": "Descripcion" }
+               { "data": "FechaHabilitacion" },
            ],
            responsive: true
-       });
+        });
+
+
+        //Datepicker
+        $.datetimepicker.setLocale('es');
+
+        $('.input-date').datetimepicker({
+            timepicker: false,
+            format: 'd/m/Y',
+            scrollInput: false,
+            date: new Date(Date.now())
+        });
+
+        $('#input-Fecha').datetimepicker({
+            locale: 'es'
+        });
 
         $('#dataTables-Index tbody').on('click', 'tr', function () {
             if ($(this).hasClass('selected')) {
@@ -234,16 +203,7 @@
 
     });
 
-        
-        $('#AgregarAttributoCreate').click(function () {
-            var tag =  $("#NombreAtributo option:selected").val();
-            $('#summernote').summernote('insertText', tag);
-        });
 
-        $('#AgregarAttributoEdit').click(function () {
-            var tag= $('#editarModal').find("#NombreAtributo option:selected").val();
-            $('#editarModal').find('#summernote').summernote('insertText', tag);
-        });
 
 
     $('#btnBorrar').click(function () {
@@ -251,7 +211,7 @@
 
         Lobibox.confirm({
             title: 'Atención',
-            msg: "¿Esta seguro que desea eliminar la notificación?",
+            msg: "¿Esta seguro que desea eliminar la Agencia?",
             callback: function ($this, type, ev) {
                 if (type === 'yes') {
                     Delete();
@@ -294,46 +254,45 @@
                 });
     }
 
-        $("#form-create").validate({
-            errorLabelContainer: '.errors',
+    $("#form-create").validate({
         rules: {
-            inputNombre: { required: true, minlength: 2, maxlength: 500 },
-            inputDescripcion: { required: true, minlength: 2, maxlength: 500 },
-            inputArchivoActa: { required: true }
+            inputNro: { required: true, minlength: 1, maxlength: 50 },
+            inputNombre: { required: true, minlength: 1, maxlength: 150 },
+            inputFecha: { required: true}
         },
         messages: {
+            inputNro: {
+                required: "Este campo es requerido.",
+                minlength: "Introduzca al menos 1 caracter.",
+                maxlength: "La longitud máxima permtida es de 50 caracteres."
+            },
             inputNombre: {
-                required: "El campo Nombre es requerido.",
-                minlength: "Introduzca al menos 2 caracteres.",
-                maxlength: "La longitud máxima permtida es de 500 caracteres."
+                required: "Este campo es requerido.",
+                minlength: "Introduzca al menos 1 caracter.",
+                maxlength: "La longitud máxima permtida es de 150 caracteres."
             },
-            inputDescripcion: {
-                required: "Este campo Descripción es requerido.",
-                minlength: "Introduzca al menos 2 caracteres.",
-                maxlength: "La longitud máxima permtida es de 500 caracteres."
-            },
-            inputArchivoActa: {
-                required: "El Documento es requerido."
+            inputNombre: {
+                required: "Este campo es requerido."
             }
         },
         submitHandler: function (form) {
             $("#div-loader").show();
             var object = new Object();
+            object.NroAgencia = $("#input-Nro").val();
             object.Nombre = $("#input-Nombre").val();
-            object.Descripcion = $("#input-Descripcion").val();
-            object.Documento = $("#summernote").val();
+            object.FechaHabilitacion = $("#input-Fecha").val();
+
             var data = JSON.stringify(object);
 
 
-
             //Antes de editar, verifico que no este duplicando el Rol
-            var isDuplicate = getDuplicates(0, object.Nombre);
+            var isDuplicate = getDuplicates(0, object.NroAgencia);
 
             if (isDuplicate) {
                 $("#div-loader").hide();
                 Lobibox.notify('warning', {
                     title: 'Cuidado',
-                    msg: 'La notificacion ya existe, debe asignar otro nombre.'
+                    msg: 'El Número de Agencia ya existe, debe asignar otro nombre.'
                 });
 
                 return;
@@ -343,9 +302,9 @@
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("Create")',
-                data: data,
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
+                    data: data,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
                     success: function (dataResponse) {
                         $("#dataTables-Index").dataTable().fnReloadAjax();//Recargo la grilla
                         $('#nuevoModal').modal('hide');
@@ -377,47 +336,48 @@
     });
 
 
-        $("#form-edit").validate({
-            errorLabelContainer: '.errors',
-            rules: {
-                inputNombre: { required: true, minlength: 2, maxlength: 500 },
-                inputDescripcion: { required: true, minlength: 2, maxlength: 500 },
-                editordata: { required: true }
+    $("#form-edit").validate({
+        rules: {
+            inputNro: { required: true, minlength: 1, maxlength: 50 },
+            inputNombre: { required: true, minlength: 1, maxlength: 150 },
+            inputFecha: { required: true }
+        },
+        messages: {
+            inputNro: {
+                required: "Este campo es requerido.",
+                minlength: "Introduzca al menos 1 caracter.",
+                maxlength: "La longitud máxima permtida es de 50 caracteres."
             },
-            messages: {
-                inputNombre: {
-                    required: "El campo Nombre es requerido.",
-                    minlength: "Introduzca al menos 2 caracteres.",
-                    maxlength: "La longitud máxima permtida es de 500 caracteres."
-                },
-                inputDescripcion: {
-                    required: "Este campo Descripción es requerido.",
-                    minlength: "Introduzca al menos 2 caracteres.",
-                    maxlength: "La longitud máxima permtida es de 500 caracteres."
-                },
-                editordata: {
-                    required: "El Documento es requerido."
-                }
+            inputNombre: {
+                required: "Este campo es requerido.",
+                minlength: "Introduzca al menos 1 caracter.",
+                maxlength: "La longitud máxima permtida es de 150 caracteres."
             },
+            inputNombre: {
+                required: "Este campo es requerido."
+            }
+        },
         submitHandler: function (form) {
             $("#div-loader").show();
 
             var object = new Object();
             object.Id = $('#editarModal').find('input#input-Id').val();
+
+            object.NroAgencia = $('#editarModal').find('input#input-Nro').val();
             object.Nombre = $('#editarModal').find('input#input-Nombre').val();
-            object.Descripcion = $('#editarModal').find('input#input-Descripcion').val();
-            object.Documento = $('#editarModal').find('#summernote').val();
+            object.FechaHabilitacion = $('#editarModal').find('input#input-Fecha').val();
+
             var data = JSON.stringify(object);
 
             //Antes de editar, verifico que no este duplicando el Rol
-            var isDuplicate = getDuplicates(object.Id, object.Nombre);
+            var isDuplicate = getDuplicates(object.Id, object.NroAgencia);
 
             if (isDuplicate)
             {
                 $("#div-loader").hide();
                 Lobibox.notify('warning', {
                     title: 'Cuidado',
-                    msg: 'La notificacion ya existe, debe asignar otro nombre.'
+                    msg: 'El Número de Agencia ya existe, debe asignar otro.'
                 });
 
                 return;
@@ -426,9 +386,9 @@
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("Edit")',
-                data: data,
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
+                    data: data,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
                     success: function (dataResponse) {
                         $("#dataTables-Index").dataTable().fnReloadAjax();//Recargo la grilla
                         $('#editarModal').modal('hide');
@@ -474,26 +434,9 @@
             cache: false,
             success: function (result) {
                 $('#editarModal').find('input#input-Id').val(result.Id);
+                $('#editarModal').find('input#input-Nro').val(result.NroAgencia);
                 $('#editarModal').find('input#input-Nombre').val(result.Nombre);
-                $('#editarModal').find('input#input-Descripcion').val(result.Descripcion);
-                
-                $('#editarModal').find('#summernote').val(result.Documento).summernote({
-                    lang: 'es-ES',
-                    height: 250,
-                    toolbar: [
-                        // [groupName, [list of button]]
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['font', ['strikethrough', 'superscript', 'subscript']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['height', ['height']]
-                    ]
-                });
-
-
-               // $('#editarModal').find('#summernote').val(result.Documento).summernote('code');
-
+                $('#editarModal').find('input#input-Fecha').val(result.FechaHabilitacion);
             },
             error: function (response) {
                     Lobibox.notify('error', {
@@ -509,10 +452,8 @@
 
 
     //Reinicio los modal
-        $('.modal').on('hidden.bs.modal', function (e) {
-            $('#summernote').summernote('reset');
+    $('.modal').on('hidden.bs.modal', function (e) {
         $(".modal-body input").val(""),
-            $(".modal-body input").val(""),
             $(this).removeData('bs.modal');
         $("form").validate().resetForm();
     });

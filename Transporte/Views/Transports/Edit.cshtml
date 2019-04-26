@@ -88,6 +88,10 @@
         background-color: #ff6666; /* red */
     }
 
+    .validate-error {
+        background-color: #F6CED8!important; /* red */
+    }
+
     .date-warning {
         background-color: #ffff99; /* yellow */
     }
@@ -117,6 +121,23 @@
                                                 @Html.DropDownListFor(model => model.TransportTypeId, new SelectList(ViewBag.listaTipos, "Id", "Descripcion"), "Seleccione...", new { @class = "form-control input-sm", id = "TransportTypeId" })
                                             </div>
 
+                                            <div class="col-sm-2" id="divSubType">
+                                                <label>Sub Tipo</label><span class="red"> * </span>
+                                                @Html.DropDownListFor(model => model.SubType, new SelectList(
+                                                new List<Object>{new { value = "" , text = "Seleccione..."  },
+                                                                 new { value = "PRIMARIO" , text = "Primario"  },
+                                                                 new { value = "OTRO" , text = "Otro" }
+                                                                                 },
+                                                "value",
+                                                "text",
+                                                 1), new { id = "SubType", @class = "form-control input-sm" })
+                                            </div>
+
+                                            <div class="col-sm-4" id="divAgencia">
+                                                <label>Agencia</label><span class="red"> * </span>
+                                                @Html.DropDownListFor(model => model.AgencyId, new SelectList(ViewBag.listaAgencias, "Id", "Fullname"), "Seleccione...", new { @class = "form-control input-sm", id = "AgencyId" })
+                                            </div>
+
                                             <div class="col-sm-2">
                                                 <label>N° Parada</label>
                                                 @Html.EditorFor(model => model.ParadaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "ParadaNro" } })
@@ -136,7 +157,7 @@
                                         <div class="row">
                                             <div class="col-sm-2">
                                                 <label>Dominio</label><span class="red"> * </span>
-                                                @Html.EditorFor(model => model.Dominio, new { htmlAttributes = new { @class = "form-control input-sm", id = "Dominio" } })
+                                                @Html.EditorFor(model => model.Dominio, new { htmlAttributes = new { @class = "form-control input-sm", id = "Dominio", placeholder = "AAA999/AA999AA" } })
                                             </div>
 
                                             <div class="col-sm-2">
@@ -192,6 +213,13 @@
                                                 @Html.TextBoxFor(m => m.VtoConstanciaAFIP, new { @Value = Model.VtoConstanciaAFIP.HasValue ? Model.VtoConstanciaAFIP.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoConstanciaAFIP", @type = "datetime" })
                                             </div>
 
+                                            <div class="col-sm-2">
+                                                <label>Vto Pago Seguro</label><span class="red"> * </span>
+                                                @Html.TextBoxFor(m => m.VtoPagoSeguro, new { @Value = Model.VtoPagoSeguro.HasValue ? Model.VtoPagoSeguro.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoPagoSeguro", @type = "datetime" })
+                                            </div>
+
+
+
                                             <div class="col-sm-12">
                                                 <label>Observacion</label>
                                                 @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control input-sm", id = "Observaciones" } })
@@ -217,7 +245,7 @@
                                             @for (int i = 0; i < Model.Titulares.Count; i++)
                                             {
 
-                                                <div id="PanelTitulares" class="card-body">
+                                                <div id="PanelTitulares" class="card-body cPanelTitulares">
                                                     @Html.HiddenFor(x => x.Titulares[i].Enable, new { @class = "enable" })
                                                     @Html.HiddenFor(x => x.Titulares[i].Id)
                                                     <div class="well color-well">
@@ -238,13 +266,13 @@
                                                                 <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <label>DNI</label><span class="red"> * </span>
-                                                                        @Html.EditorFor(model => model.Titulares[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
+                                                                        @Html.EditorFor(model => model.Titulares[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "text", @onkeypress = "validate(event)" } })
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <label>Teléfono</label><span class="red"> * </span>
-                                                                        @Html.EditorFor(model => model.Titulares[i].Telefono, new { htmlAttributes = new { @class = "form-control input-sm", id = "Telefono", @type = "number" } })
+                                                                        @Html.EditorFor(model => model.Titulares[i].Telefono, new { htmlAttributes = new { @class = "form-control input-sm", id = "Telefono", @type = "text" } })
                                                                     </div>
                                                                 </div>
 
@@ -254,7 +282,7 @@
                                                                         @Html.EditorFor(model => model.Titulares[i].Email, new { htmlAttributes = new { @class = "form-control input-sm", id = "Email" } })
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-1 margin-top-15 text-right">
+                                                                <div class="col-lg-1 margin-top-15 text-right" style="padding:0px">
                                                                     @if (quedanTitulares == Model.Titulares.Count)
                                                                     {
                                                                         <span id="AgregarTitular" class="btn-mas fa fa-plus"></span>
@@ -326,7 +354,7 @@
                                             @for (int i = 0; i < Model.Choferes.Count; i++)
                                             {
 
-                                                <div id="PanelChoferes" class="card-body">
+                                                <div id="PanelChoferes" class="card-body cPanelChoferes">
                                                     @Html.HiddenFor(x => x.Choferes[i].Enable, new { @class = "enable" })
                                                     @Html.HiddenFor(x => x.Choferes[i].Id)
                                                     <div class="well color-well">
@@ -347,7 +375,7 @@
                                                                 <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <label>DNI</label><span class="red"> * </span>
-                                                                        @Html.EditorFor(model => model.Choferes[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "number" } })
+                                                                        @Html.EditorFor(model => model.Choferes[i].Dni, new { htmlAttributes = new { @class = "form-control input-sm", id = "DNI", @type = "text", @onkeypress = "validate(event)" } })
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-2">
@@ -405,7 +433,7 @@
                                             {
 
 
-                                                <div id="PanelCeladores" class="card-body">
+                                                <div id="PanelCeladores" class="card-body cPanelCeladores">
                                                     <div class="well color-well">
                                                         <div class="well-body">
                                                             <div class="row">
@@ -424,7 +452,7 @@
                                                                 <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <label>DNI</label>
-                                                                        <input id="DNI" class="form-control input-sm" type="number" name="Celadores[0].DNI">
+                                                                        <input id="DNI" class="form-control input-sm" type='text' onkeypress='validate(event)' name="Celadores[0].DNI">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-2">
@@ -449,7 +477,7 @@
                                                 for (int i = 0; i < Model.Celadores.Count; i++)
                                                 {
 
-                                                    <div id="PanelCeladores" class="card-body">
+                                                    <div id="PanelCeladores" class="card-body cPanelCeladores">
                                                         @Html.HiddenFor(x => x.Celadores[i].Enable, new { @class = "enable" })
                                                         @Html.HiddenFor(x => x.Celadores[i].Id)
                                                         <div class="well color-well">
@@ -536,6 +564,25 @@
     @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
     <script>
 
+        //Solo numeros
+
+        function validate(evt) {
+            var theEvent = evt || window.event;
+
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+                // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /^[0-9]*$/;
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        }
         $(document).ready(function () {
             var DiasPorVencer = '@ViewBag.DiasPorVencer';
             //$('#dt-FechaIngreso').attr("readonly", "readonly")
@@ -553,12 +600,57 @@
                 }
             });
 
+            //Mask
+            //XXXX-XXXXX-L-XXXX  
+            $('#Expediente').mask('0000-00000-S-0000');
+
+
 
             $('#QuitarTitular').hide();
             $('#QuitarChofer').hide();
             $('#QuitarCelador').hide();
+            
+
+            if ($('#TransportTypeId option:selected').text() == 'Remis') {
+                $('#divAgencia').show();
+
+            }
+            else {
+                $('#divAgencia').hide();
+            };
 
 
+            if ($('#TransportTypeId option:selected').text() == 'Escolar') {
+                $('#divSubType').show();
+
+            }
+            else {
+                $('#divSubType').hide();
+            };
+
+            //Cuando se selecciona Escolar, se habilta el subtipo
+            $('#TransportTypeId').on('change', function () {
+                if ($('#TransportTypeId option:selected').text() == 'Escolar') {
+                    $('#divSubType').show();
+
+                }
+                else {
+                    $('#SubType').val('');
+                    $('#divSubType').hide();
+                };
+            });
+
+            //Cuando se selecciona Remis, se habilta la Agencia
+            $('#TransportTypeId').on('change', function () {
+                if ($('#TransportTypeId option:selected').text() == 'Remis') {
+                    $('#divAgencia').show();
+
+                }
+                else {
+                    $('#SubType').val('');
+                    $('#divAgencia').hide();
+                };
+            });
 
             $(".conVencimiento").each(function () {
                 if ($(this).val()!='')
@@ -657,7 +749,7 @@
 
 
             //Reemplazo el boton
-            $(item).find('#QuitarTitular').hide();
+            $(item).find('#QuitarTitular').show();
             $(item).find('#AgregarTitular').show();
             //cambio el id
             // $(item).toggleClass('row-Hide row');
@@ -716,7 +808,7 @@
 
 
             //Reemplazo el boton
-            $(item).find('#QuitarChofer').hide();
+            $(item).find('#QuitarChofer').show();
             $(item).find('#AgregarChofer').show();
             //cambio el id
             // $(item).toggleClass('row-Hide row');
@@ -778,7 +870,7 @@
 
 
             //Reemplazo el boton
-            $(item).find('#QuitarCelador').hide();
+            $(item).find('#QuitarCelador').show();
             $(item).find('#AgregarCelador').show();
             //cambio el id
             // $(item).toggleClass('row-Hide row');
@@ -792,6 +884,9 @@
 
             $(this).parents('#PanelTitulares').find('.enable').val("False");
             $(this).parents('#PanelTitulares').remove();
+            $('#PanelTitulares').find('#AgregarTitular').show();
+            if ($('.cPanelTitulares').length == 1)
+                $('#PanelTitulares').find('#QuitarTitular').hide();
 
         });
 
@@ -799,11 +894,19 @@
             $(this).parents('#PanelChoferes').find('.enable').val("False");
             $(this).parents('#PanelChoferes').remove();
 
+            $('#PanelChoferes').find('#AgregarChofer').show();
+            if ($('.cPanelChoferes').length == 1)
+                $('#PanelChoferes').find('#QuitarChofer').hide();
+
         });
 
         $(document).on('click', '#QuitarCelador', function () {
             $(this).parents('#PanelCeladores').find('.enable').val("False");
             $(this).parents('#PanelCeladores').remove();
+
+            $('#PanelCeladores').find('#AgregarCelador').show();
+            if ($('.cPanelCeladores').length == 1)
+                $('#PanelCeladores').find('#QuitarCelador').hide();
 
         });
 
@@ -812,134 +915,333 @@
 
         function validoRequeridos() {
             var messageError = '';
+            var messageErrorCustom = '';
 
             if ($("#TransportTypeId").val() == '') {
+                $("#TransportTypeId").addClass('validate-error');
                 messageError += "Tipo </br>";
             }
+            else {
+                $("#TransportTypeId").removeClass('validate-error');
+            }
+
+            if ($('#TransportTypeId option:selected').text() == 'Escolar' && $('#SubType').val() == '') {
+                messageError += "Sub Tipo </br>";
+                $("#SubType").addClass('validate-error');
+
+            }
+            else {
+                $("#SubType").removeClass('validate-error');
+            }
+
+            if ($('#TransportTypeId option:selected').text() == 'Remis' && $('#AgencyId').val() == '') {
+                messageError += "Agencia </br>";
+                $("#AgencyId").addClass('validate-error');
+
+            }
+            else {
+                $("#AgencyId").removeClass('validate-error');
+            }
+
+
+            if ($('#TransportTypeId option:selected').text() == 'Taxi' && $('#ParadaNro').val() == '') {
+                messageError += "Parada </br>";
+                $("#ParadaNro").addClass('validate-error');
+
+            }
+            else {
+                $("#ParadaNro").removeClass('validate-error');
+            }
+
+
+
+            if ($('#TransportTypeId option:selected').text() == 'Taxi' && $('#PlazaNro').val() == '') {
+                messageError += "Plaza </br>";
+                $("#PlazaNro").addClass('validate-error');
+
+            }
+            else {
+                $("#PlazaNro").removeClass('validate-error');
+            }
+
+
 
             if ($("#Expediente").val() == '') {
                 messageError += "Expediente </br>";
+                $("#Expediente").addClass('validate-error');
+            }
+            else {
+                if ($("#Expediente").val().length != 17) {
+                    $("#Expediente").addClass('validate-error');
+                    messageErrorCustom += 'Expediente con formato incorrecto </br>';
+                }
+                else {
+                    $("#Expediente").removeClass('validate-error');
+                }
+
             }
 
             if ($("#Dominio").val() == '') {
                 messageError += "Dominio </br>";
+                $("#Dominio").addClass('validate-error');
+            }
+            else {
+
+                if (!/^([A-Za-z]{1}[0-9]{7})$|^([A-Za-z]{3}[0-9]{3})$|^([A-Za-z]{1}[0-9]{6})$ |^([A-Za-z]{2}[0-9]{3}[A-Za-z]{2})$/i.test($("#Dominio").val())) {
+                    messageErrorCustom += 'Dominio con formato incorrecto </br>';
+                    $("#Dominio").addClass('validate-error');
+                }
+                else {
+                    $("#Dominio").removeClass('validate-error');
+                }
             }
 
             if ($("#Marca").val() == '') {
                 messageError += "Marca </br>";
+                $("#Marca").addClass('validate-error');
+            }
+            else {
+                $("#Marca").removeClass('validate-error');
+            }
+
+            if ($("#Modelo").val() == '') {
+                messageError += "Marca </br>";
+                $("#Modelo").addClass('validate-error');
+            }
+            else {
+                $("#Modelo").removeClass('validate-error');
             }
 
             if ($("#FechaInscripcionInicial").val() == '') {
                 messageError += "Fecha Inscrip Inicial </br>";
+                $("#FechaInscripcionInicial").addClass('validate-error');
+            }
+            else {
+                $("#FechaInscripcionInicial").removeClass('validate-error');
             }
 
             if ($("#Desinfeccion").val() == '') {
                 messageError += "Fecha Desinfección </br>";
+                $("#Desinfeccion").addClass('validate-error');
+            }
+            else {
+                $("#Desinfeccion").removeClass('validate-error');
             }
 
             if ($("#Constatacion").val() == '') {
                 messageError += "Fecha Constatación </br>";
+                $("#Constatacion").addClass('validate-error');
+            }
+            else {
+                $("#Constatacion").removeClass('validate-error');
             }
 
             if ($("#VtoPoliza").val() == '') {
                 messageError += "Vto Poliza </br>";
+                $("#VtoPoliza").addClass('validate-error');
+            }
+            else {
+                $("#VtoPoliza").removeClass('validate-error');
             }
 
             if ($("#VtoVTV").val() == '') {
                 messageError += "VTV </br>";
+                $("#VtoVTV").addClass('validate-error');
+            }
+            else {
+                $("#VtoVTV").removeClass('validate-error');
             }
 
 
             if ($("#VtoMatafuego").val() == '') {
                 messageError += "Vto Matafuego </br>";
+                $("#VtoMatafuego").addClass('validate-error');
+            }
+            else {
+                $("#VtoMatafuego").removeClass('validate-error');
             }
 
-            if ($("#VtoConstanciaAFIP").val() == '') {
+            if ($('#TransportTypeId option:selected').text() == 'Escolar' && $("#VtoConstanciaAFIP").val() == '') {
                 messageError += "Const.Opcion AFIP </br>";
+                $("#VtoConstanciaAFIP").addClass('validate-error');
+            }
+            else {
+                $("#VtoConstanciaAFIP").removeClass('validate-error');
+            }
+
+            if ($("#VtoPagoSeguro").val() == '') {
+                messageError += "Vto Pago Seguro </br>";
+                $("#VtoPagoSeguro").addClass('validate-error');
+            }
+            else {
+                $("#VtoPagoSeguro").removeClass('validate-error');
             }
 
 
-
-
-
-            $('#PanelTitulares:visible').each(function () {
+            $('.cPanelTitulares:visible').each(function () {
                 if ($(this).find("#nombre").val() == '') {
                     messageError += "Nombre </br>";
+                    $(this).find("#nombre").addClass('validate-error');
                 }
+                else {
+                    $(this).find("#nombre").removeClass('validate-error');
+                }
+
                 if ($(this).find("#apellido").val() == '') {
                     messageError += "Apellido </br>";
+                    $(this).find("#apellido").addClass('validate-error');
                 }
+                else {
+                    $(this).find("#apellido").removeClass('validate-error');
+                }
+
                 if ($(this).find("#DNI").val() == '') {
                     messageError += "DNI </br>";
+                    $(this).find("#DNI").addClass('validate-error');
                 }
+                else {
+                    $(this).find("#DNI").removeClass('validate-error');
+                }
+
                 if ($(this).find("#Telefono").val() == '') {
                     messageError += "Teléfono </br>";
+                    $(this).find("#Telefono").addClass('validate-error');
                 }
+                else {
+                    $(this).find("#Telefono").removeClass('validate-error');
+                }
+
                 if ($(this).find("#CalleReal").val() == '') {
                     messageError += "Domicilio Real </br>";
+                    $(this).find("#CalleReal").addClass('validate-error');
                 }
+                else {
+                    $(this).find("#CalleReal").removeClass('validate-error');
+                }
+
                 if ($(this).find("#CalleConstituido").val() == '') {
                     messageError += "Domicilio Constituido </br>";
+                    $(this).find("#CalleConstituido").addClass('validate-error');
                 }
+                else {
+                    $(this).find("#CalleConstituido").removeClass('validate-error');
+                }
+
                 if ($(this).find("#Email").val() == '') {
                     messageError += "E-mail </br>";
+                    $(this).find("#Email").addClass('validate-error');
+                }
+                else {
+                    $(this).find("#Email").removeClass('validate-error');
                 }
 
                 if ($(this).find("#PartidoReal").val() == '') {
                     messageError += "Partido Constituido </br>";
+                    $(this).find("#PartidoReal").addClass('validate-error');
+                }
+                else {
+                    $(this).find("#PartidoReal").removeClass('validate-error');
                 }
 
                 if ($(this).find("#PartidoConstituido").val() == '') {
                     messageError += "Partido Constituido </br>";
+                    $(this).find("#PartidoConstituido").addClass('validate-error');
+                }
+                else {
+                    $(this).find("#PartidoConstituido").removeClass('validate-error');
                 }
 
             });
 
 
-            $('#PanelChoferes:visible').each(function () {
-                if ($(this).find("#nombre").val() == '') {
+            $('.cPanelChoferes:visible').each(function () {
+                if ($(this).find("#Nombre").val() == '') {
                     messageError += "Nombre </br>";
+                    $(this).find("#Nombre").addClass('validate-error');
                 }
-                if ($(this).find("#apellido").val() == '') {
+                else {
+                    $(this).find("#Nombre").removeClass('validate-error');
+                }
+
+                if ($(this).find("#Apellido").val() == '') {
                     messageError += "Apellido </br>";
+                    $(this).find("#Apellido").addClass('validate-error');
                 }
+                else {
+                    $(this).find("#Apellido").removeClass('validate-error');
+                }
+
                 if ($(this).find("#DNI").val() == '') {
                     messageError += "DNI </br>";
+                    $(this).find("#DNI").addClass('validate-error');
                 }
+                else {
+                    $(this).find("#DNI").removeClass('validate-error');
+                }
+
                 if ($(this).find("#VtoLicencia").val() == '') {
                     messageError += "Fecha Vto Licencia </br>";
+                    $(this).find("#VtoLicencia").addClass('validate-error');
+                }
+                else {
+                    $(this).find("#VtoLicencia").removeClass('validate-error');
                 }
                 //if ($(this).find("#VtoLibreta").val() == '') {
                 //    messageError += "Fecha Vto Libreta </br>";
                 //}
 
             });
+            //Valido el celador solo si el tipo de transporte es Escolar y Primario
+            if ($('#TransportTypeId option:selected').text() == 'Escolar' && $('#SubType').val() == 'PRIMARIO') {
+                $('.cPanelCeladores:visible').each(function () {
+                    if ($(this).find("#nombre").val() == '') {
+                        messageError += "Nombre </br>";
+                        $(this).find("#nombre").addClass('validate-error');
+                    }
+                    else {
+                        $(this).find("#nombre").removeClass('validate-error');
+                    }
 
-            //$('#PanelCeladores:visible').each(function () {
-            //    if ($(this).find("#nombre").val() == '') {
-            //        messageError += "Nombre </br>";
-            //    }
-            //    if ($(this).find("#apellido").val() == '') {
-            //        messageError += "Apellido </br>";
-            //    }
-            //    if ($(this).find("#DNI").val() == '') {
-            //        messageError += "DNI </br>";
-            //    }
+                    if ($(this).find("#apellido").val() == '') {
+                        messageError += "Apellido </br>";
+                        $(this).find("#apellido").addClass('validate-error');
+                    }
+                    else {
+                        $(this).find("#apellido").removeClass('validate-error');
+                    }
 
-            //    //if ($(this).find("#VtoLibreta").val() == '') {
-            //    //    messageError += "Fecha Vto Libreta </br>";
-            //    //}
+                    if ($(this).find("#DNI").val() == '') {
+                        messageError += "DNI </br>";
+                        $(this).find("#DNI").addClass('validate-error');
+                    }
+                    else {
+                        $(this).find("#DNI").removeClass('validate-error');
+                    }
 
-            //});
+                    //if ($(this).find("#VtoLibreta").val() == '') {
+                    //    messageError += "Fecha Vto Libreta </br>";
+                    //}
+
+                });
+            };
 
 
 
 
-            if (messageError != '') {
-                messageError = "¡Debe completar los campos requeridos! ";// </br>+ messageError;
+
+            if (messageError != '' || messageErrorCustom != '') {
+
+                if (messageErrorCustom != '') {
+                    messageError = messageErrorCustom
+                }
+                else {
+                    messageError = "¡Debe completar los campos requeridos! ";
+                }
             }
 
             return messageError;
+
+
 
         }
 
@@ -959,7 +1261,12 @@
              else
                  return true;
 
-         }
+        }
+
+        function mask() {
+            this.aa = new Array("patente", "Patente invalida.",
+                new Function("varName", "this.valorCondicion='1'; this.secondProperty='imp'; this.mask=/^([A-Za-z]{1}[0-9]{7})$|^([A-Za-z]{3}[0-9]{3})$|^([A-Za-z]{1}[0-9]{6})$ |^([A-Za-z]{2}[0-9]{3}[A-Za-z]{2})$/;  return this[varName];"));
+        }
 
 
         //SUBMIT

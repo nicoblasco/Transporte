@@ -121,6 +121,13 @@
                                         <a style="color: whitesmoke" href="@Url.Action("Index", "Notifications")">Alta de Notificaciones</a>
                                     </li>
                                 }
+
+                                @if (PermissionViewModel.TienePermisoAcesso(WindowHelper.GetWindowId("ABM Maestros", "Agencias")))
+                                {
+                                    <li>
+                                        <a style="color: whitesmoke" href="@Url.Action("Index", "Agencies")">Agencias</a>
+                                    </li>
+                                }
                                 @*@if (PermissionViewModel.TienePermisoAcesso(WindowHelper.GetWindowId("ABM Maestros", "Tags")))
                                 {
                                     <li>

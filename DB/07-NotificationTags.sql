@@ -54,5 +54,12 @@ INSERT [dbo].[NotificationTags] ([Id], [NombreAtributo], [Tag]) VALUES (26, N'Fe
 GO
 INSERT [dbo].[NotificationTags] ([Id], [NombreAtributo], [Tag]) VALUES (27, N'Fecha de Vencimiento de VTV', N'@Model.VtoVTV')
 GO
+INSERT [dbo].[NotificationTags] ([Id], [NombreAtributo], [Tag]) VALUES (28, N'Fecha de Vencimiento de Recibo de Pago Seguro', N'@Model.VtoPagoSeguro')
+INSERT [dbo].[NotificationTags] ([Id], [NombreAtributo], [Tag]) VALUES (29, N'Sub Tipo de Transporte (Primario/Otro)', N'@Model.SubTipoTransporte')
+INSERT [dbo].[NotificationTags] ([Id], [NombreAtributo], [Tag]) VALUES (30, N'Numero de Agencia', N'@Model.NroAgencia')
+INSERT [dbo].[NotificationTags] ([Id], [NombreAtributo], [Tag]) VALUES (31, N'Nombre de Fantasía de la Agencia de VTV', N'@Model.NombreAgencia')
+INSERT [dbo].[NotificationTags] ([Id], [NombreAtributo], [Tag]) VALUES (32, N'Fecha de Habilitación de la Agencia', N'@Model.FechaHabilitacionAgencia')
+INSERT [dbo].[NotificationTags] ([Id], [NombreAtributo], [Tag]) VALUES (33, N'Documentación Vencida', N'@Model.FechasVencidas')
+INSERT [dbo].[NotificationTags] ([Id], [NombreAtributo], [Tag]) VALUES (34, N'Documentación por Vencer', N'@Model.FechasPorVencer')
 SET IDENTITY_INSERT [dbo].[NotificationTags] OFF
 GO

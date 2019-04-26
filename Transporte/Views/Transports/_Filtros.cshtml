@@ -230,7 +230,7 @@
                     <div class="col-lg-2">
                         <div class="input-group">
                             <label for="Expediente">Expediente </label>
-                            <input id="Expediente" name="Expediente" class="form-control input-sm">
+                            <input id="Expediente" name="Expediente" class="form-control input-sm" placeholder="xxxx-xxxxx-L-xxxx">
 
                         </div>
                     </div>
@@ -238,7 +238,7 @@
                     <div class="col-lg-2">
                         <div class="input-group">
                             <label for="Dominio">Dominio </label>
-                            <input id="Dominio" name="Dominio" class="form-control input-sm">
+                            <input id="Dominio" name="Dominio" class="form-control input-sm" placeholder = "AAA999/AA999AA">
                         </div>
                     </div>
 
@@ -252,7 +252,7 @@
                     <div class="col-lg-2">
                         <div class="input-group">
                             <label for="DNI">DNI del Titular </label>
-                            <input id="DNI" name="DNI" class="form-control input-sm">
+                            <input id="DNI" name="DNI" class="form-control input-sm" type='text' onkeypress='validate(event)' >
                         </div>
                     </div>
 
@@ -273,18 +273,25 @@
                 <div class="row">
                     <div class="col-lg-2">
                         <div class="input-group">
-                            <label for="fecha-inicio">Fecha Desde </label>
-                            <span class="fa fa-calendar" aria-hidden="true" style="margin-left: 10px;"></span>
+                            <label for="fecha-inicio">Fecha Alta Desde </label>
+                            <span class="fa fa-calendar" aria-hidden="true" style="margin-left: 5px;"></span>
                             <input class="form-control input-sm input-date" id="fecha-inicio" type="text" name="FechaDesde">
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="input-group">
-                            <label for="fecha-fin">Fecha Hasta </label>
-                            <span class="fa fa-calendar" aria-hidden="true" style="margin-left: 10px;"></span>
+                            <label for="fecha-fin">Fecha Alta Hasta </label>
+                            <span class="fa fa-calendar" aria-hidden="true" style="margin-left: 5px;"></span>
                             <input class="form-control input-sm input-date" id="fecha-fin" type="text" name="FechaHasta">
 
 
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="input-group">
+                            <label for="Modelo">Modelo </label>
+                            <input id="Modelo" name="Modelo" class="form-control input-sm">
                         </div>
                     </div>
                 </div>
@@ -333,6 +340,11 @@
                         <button type="button" class="close">×</button>
                     </div>
                     <div class="alert tag" id="tagFechaHasta">
+                        <p class="tagId" style="display:none"></p>
+                        <p class="tagValue"></p>
+                        <button type="button" class="close">×</button>
+                    </div>
+                    <div class="alert tag" id="tagModelo">
                         <p class="tagId" style="display:none"></p>
                         <p class="tagValue"></p>
                         <button type="button" class="close">×</button>

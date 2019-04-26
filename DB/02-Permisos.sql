@@ -8,6 +8,7 @@ insert into [dbo].[Windows] (Descripcion,Enable,Url,Orden,ModuleId) values ('Tra
 
 insert into [dbo].[Windows] (Descripcion,Enable,Url,Orden,ModuleId) values ('Tipos de Transporte',1,'TransportTypes/Index',1,(select Id from [dbo].[Modules] where Descripcion='ABM Maestros'))
 insert into [dbo].[Windows] (Descripcion,Enable,Url,Orden,ModuleId) values ('Notificaciones',1,'Notifications/Index',2,(select Id from [dbo].[Modules] where Descripcion='ABM Maestros'))
+insert into [dbo].[Windows] (Descripcion,Enable,Url,Orden,ModuleId) values ('Agencias',1,'Agency/Index',3,(select Id from [dbo].[Modules] where Descripcion='ABM Maestros'))
 --insert into [dbo].[Windows] (Descripcion,Enable,Url,Orden,ModuleId) values ('Tags',1,'NotificationTags/Index',2,(select Id from [dbo].[Modules] where Descripcion='ABM Maestros'))
 
 

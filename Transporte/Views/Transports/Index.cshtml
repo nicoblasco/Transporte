@@ -82,6 +82,30 @@
     <script>
 
 
+        //Mask
+        //XXXX-XXXXX-L-XXXX  
+        $('#Expediente').mask('0000-00000-S-0000');
+
+        //Solo numeros
+
+        function validate(evt) {
+            var theEvent = evt || window.event;
+
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+                // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /^[0-9]*$/;
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        }
+
 
 
     $(document).ready(function () {
@@ -156,8 +180,9 @@
                     { "data": "id", defaultContent: '', className: 'px150' },
                     { "data": "FechaAlta", className: 'px200' },
                     { "data": "TransportType", className: 'px200' },
+                    { "data": "NombreTitular", className: 'px200' },
+                    { "data": "DniTitular", className: 'px200' },
                     { "data": "Dominio", className: 'px200' },
-                    { "data": "Marca", className: 'px200' },
                     { "data": "Modelo", className: 'px200' },
                     { "data": "Expediente", className: 'px200' },
                     { "data": "Estado", className: 'px200' }
@@ -494,6 +519,9 @@
                 case "tagFechaHasta":
                     $('#fecha-fin').val('');
                     break;
+                case "tagModelo":
+                    $('#Modelo').val('').change();;
+                    break;
 
                 default:
             }
@@ -512,7 +540,7 @@
             var Estado = $('#tagEstado').find('.tagId').text();
             var FechaDesde = $('#tagFechaDesde').find('.tagId').text();
             var FechaHasta = $('#tagFechaHasta').find('.tagId').text();
-
+            var Modelo = $('#tagModelo').find('.tagId').text();
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("SearchTransport", "Transports")",
@@ -524,7 +552,8 @@
                             "DNI": DNI,
                             "Estado": Estado,
                             "FechaDesde": FechaDesde,
-                            "FechaHasta": FechaHasta
+                            "FechaHasta": FechaHasta,
+                            "Modelo":Modelo
                         }),
                         dataType: "json",
                         contentType: 'application/json; charset=utf-8;',
@@ -636,6 +665,18 @@
                     $('#tagFechaHasta').find('.tagValue').text('');
                     $('#tagFechaHasta').hide();
                 }
+
+                if ($('#Modelo').val() != null && $('#Modelo').val() != '') {
+                    $('#tagModelo').find('.tagId').text($('#Modelo').val());
+                    $('#tagModelo').find('.tagValue').text($('#Modelo').val());
+                    $('#tagModelo').css("display", "inline-block");
+                }
+                else {
+                    $('#tagModelo').find('.tagId').text('');
+                    $('#tagModelo').find('.tagValue').text('');
+                    $('#tagModelo').hide();
+                }
+
 
 
             }

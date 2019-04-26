@@ -11,6 +11,7 @@ namespace Transporte.ViewModel
         public int Id { get; set; }
         public int TransportTypeId { get; set; }
         public virtual TransportType TransportType { get; set; }
+        public string SubType { get; set; }
         public string Expediente { get; set; }
 
         public  List<Person> Titulares { get; set; }
@@ -32,7 +33,9 @@ namespace Transporte.ViewModel
 
         public DateTime? VtoMatafuego { get; set; }
         public DateTime? VtoConstanciaAFIP { get; set; }
-
+        public DateTime? VtoPagoSeguro { get; set; }
+        public int? AgencyId { get; set; }
+        public virtual Agency Agency { get; set; }
         public DateTime FechaAlta { get; set; }
 
         public int UsuarioId { get; set; }

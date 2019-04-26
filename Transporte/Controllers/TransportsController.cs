@@ -37,6 +37,7 @@ namespace Transporte.Controllers
             ViewBag.Baja = PermissionViewModel.TienePermisoBaja(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
             ViewBag.listaNotificaciones = new List<Notification>(db.Notifications.ToList());
             ViewBag.listaTipos = new List<TransportType>(db.TransportTypes.Where(x => x.Enable == true).ToList());
+            
 
             return View();
         }
@@ -53,6 +54,7 @@ namespace Transporte.Controllers
                 foreach (var item in tabla)
                 {
                     string estado = GetEstado(item);
+                    Tuple<string, string> tuple = getNames(item.Persons.Where(x=>x.PersonTypeId== (int)PersonType.Titular).ToList() );
                     TransportIndexViewModel viewModel = new TransportIndexViewModel
                     {
                         Id = item.Id,
@@ -62,8 +64,13 @@ namespace Transporte.Controllers
                         Marca = item.Marca,
                         Modelo = item.Modelo,
                         TransportType = item.TransportType.Descripcion,
-                        FechaAlta = item.FechaAlta.ToString("dd/MM/yyyy HH:mm:ss")
+                        FechaAlta = item.FechaAlta.ToString("dd/MM/yyyy HH:mm:ss"),
+                        NombreTitular = tuple.Item1,
+                        DniTitular = tuple.Item2
+                        
                     };
+
+
 
                     viewModels.Add(viewModel);
                 }
@@ -77,13 +84,39 @@ namespace Transporte.Controllers
             }
         }
 
+        private Tuple<string,string> getNames(List<Person> titulares)
+        {
+            string names = null;
+            string dnis = null;
+            int i = 0;
+            foreach (var item in titulares)
+            {
+                if (i == 0)
+                {
+                    names = item.Apellido + " " + item.Nombre;
+                    dnis = item.Dni;
+                }
+                    
+                else
+                {
+                    names = names + " / " + item.Apellido + " " + item.Nombre;
+                    dnis = dnis + " / " + item.Dni;
+                }
+                    
+                i++;
+            }
+            return Tuple.Create(names,dnis);
+        }
 
-        public JsonResult SearchTransport(string Tipo, string Expediente, string Dominio, string Apellido, string DNI, string Estado, string FechaDesde, string FechaHasta)
+
+
+
+        public JsonResult SearchTransport(string Tipo, string Expediente, string Dominio, string Apellido, string DNI, string Estado, string FechaDesde, string FechaHasta, string Modelo)
         {
 
 
             List<TransportIndexViewModel> transports = new List<TransportIndexViewModel>();
-            transports = ArmarConsulta(Tipo, Expediente, Dominio, Apellido, DNI, Estado, FechaDesde, FechaHasta);
+            transports = ArmarConsulta(Tipo, Expediente, Dominio, Apellido, DNI, Estado, FechaDesde, FechaHasta, Modelo);
 
             ViewBag.Editar = PermissionViewModel.TienePermisoAlta(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
             ViewBag.Ver = PermissionViewModel.TienePermisoAlta(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
@@ -94,7 +127,7 @@ namespace Transporte.Controllers
         }
 
 
-        private List<TransportIndexViewModel> ArmarConsulta(string Tipo, string Expediente, string Dominio, string Apellido, string DNI, string Estado, string FechaDesde, string FechaHasta)
+        private List<TransportIndexViewModel> ArmarConsulta(string Tipo, string Expediente, string Dominio, string Apellido, string DNI, string Estado, string FechaDesde, string FechaHasta, string Modelo)
         {
             int TipoId = 0;
 
@@ -125,6 +158,7 @@ namespace Transporte.Controllers
                 .Where(x => !string.IsNullOrEmpty(Tipo) ? (x.TransportType.Id == TipoId && x.TransportType.Descripcion != null) : true)
                 .Where(x => !string.IsNullOrEmpty(Expediente) ? (x.Expediente == Expediente && x.Expediente != null) : true)
                 .Where(x => !string.IsNullOrEmpty(Dominio) ? (x.Dominio == Dominio && x.Dominio != null) : true)
+                .Where(x => !string.IsNullOrEmpty(Modelo) ? (x.Modelo == Modelo && x.Modelo != null) : true)
                 .Where(x => !string.IsNullOrEmpty(Apellido) ? (x.Persons.Where(y => y.PersonTypeId == TitularId.Value).FirstOrDefault().Apellido == Apellido) : true)
                 .Where(x => !string.IsNullOrEmpty(DNI) ? (x.Persons.Where(y => y.PersonTypeId == TitularId.Value).FirstOrDefault().Dni == DNI) : true)
                 .Where(x => !string.IsNullOrEmpty(Expediente) ? (x.Expediente == Expediente && x.Expediente != null) : true)
@@ -149,6 +183,7 @@ namespace Transporte.Controllers
                     string strEstado = GetEstado(t);
                     if (String.IsNullOrEmpty(Estado) || Estado == strEstado)
                     {
+                        Tuple<string, string> tuple = getNames(item.Persons.Where(x => x.PersonTypeId == (int)PersonType.Titular).ToList());
                         //Si filtro por estado, solo agrega el que coincide
                         //Si no filtro por estado que agregue todo
                         TransportIndexViewModel transport = new TransportIndexViewModel
@@ -160,7 +195,9 @@ namespace Transporte.Controllers
                             Estado = strEstado,
                             Modelo = item.Modelo,
                             TransportType = item.TransportType.Descripcion,
-                            FechaAlta = item.FechaAlta.ToString("dd/MM/yyyy HH:mm:ss")
+                            FechaAlta = item.FechaAlta.ToString("dd/MM/yyyy HH:mm:ss"),
+                            NombreTitular = tuple.Item1,
+                            DniTitular = tuple.Item2
 
                         };
 
@@ -185,32 +222,92 @@ namespace Transporte.Controllers
             string estadoCorrecto = "CORRECTO";
             string estadoPorVencer = "POR VENCER";
             string estadoVencido = "VENCIDO";
+            int diasDeAviso = db.Settings.Where(x => x.Clave == "DIASANTESDEVENCER").Select(x => x.Numero1).FirstOrDefault() ?? 0;
 
             //Verifico si tiene algo vencido
 
-            if ((VerificoVencimiento(transport.VtoPoliza) == Status.Vencido) || (VerificoVencimiento(transport.VtoVTV) == Status.Vencido) ||
-                (VerificoVencimiento(transport.VtoMatafuego) == Status.Vencido) || (VerificoVencimiento(transport.VtoConstanciaAFIP) == Status.Vencido) ||
-                 (VerificoVencimientoPersona(transport.Persons) == Status.Vencido))
+            if ((VerificoVencimiento(transport.VtoPoliza, diasDeAviso) == Status.Vencido) || (VerificoVencimiento(transport.VtoVTV, diasDeAviso) == Status.Vencido) ||
+                (VerificoVencimiento(transport.VtoMatafuego, diasDeAviso) == Status.Vencido) || (VerificoVencimiento(transport.VtoConstanciaAFIP, diasDeAviso) == Status.Vencido) || (VerificoVencimiento(transport.VtoPagoSeguro, diasDeAviso) == Status.Vencido) ||
+                 (VerificoVencimientoPersona(transport.Persons, diasDeAviso) == Status.Vencido))
                 return estadoVencido;
 
 
 
-            if ((VerificoVencimiento(transport.VtoPoliza) == Status.PorVencer) || (VerificoVencimiento(transport.VtoVTV) == Status.PorVencer) ||
-                (VerificoVencimiento(transport.VtoMatafuego) == Status.PorVencer) || (VerificoVencimiento(transport.VtoConstanciaAFIP) == Status.PorVencer) ||
-                 (VerificoVencimientoPersona(transport.Persons) == Status.PorVencer))
+            if ((VerificoVencimiento(transport.VtoPoliza, diasDeAviso) == Status.PorVencer) || (VerificoVencimiento(transport.VtoVTV, diasDeAviso) == Status.PorVencer) ||
+                (VerificoVencimiento(transport.VtoMatafuego, diasDeAviso) == Status.PorVencer) || (VerificoVencimiento(transport.VtoConstanciaAFIP, diasDeAviso) == Status.PorVencer) || (VerificoVencimiento(transport.VtoPagoSeguro, diasDeAviso) == Status.PorVencer) ||
+                 (VerificoVencimientoPersona(transport.Persons, diasDeAviso) == Status.PorVencer))
                 return estadoPorVencer;
 
 
             return estadoCorrecto;
         }
-        private Status VerificoVencimiento(DateTime? date)
+
+        private Tuple<string, string> GetFechasVencidas(Transport transport)
+        {
+
+            int diasDeAviso = db.Settings.Where(x => x.Clave == "DIASANTESDEVENCER").Select(x => x.Numero1).FirstOrDefault() ?? 0;
+            string fechasVencidas = null;
+            string fechasPorVencer = null;
+            //Verifico si tiene algo vencido
+
+            List<Tuple<string, string>> tuples = new List<Tuple<string, string>>();
+            tuples.Add(getDescriptionVto(transport.VtoPoliza, diasDeAviso, "Poliza"));
+            tuples.Add(getDescriptionVto(transport.VtoVTV, diasDeAviso, "VTV"));
+            tuples.Add(getDescriptionVto(transport.VtoMatafuego, diasDeAviso, "Matafuego"));
+            tuples.Add(getDescriptionVto(transport.VtoConstanciaAFIP, diasDeAviso, "Constancia AFIP"));
+            tuples.Add(getDescriptionVto(transport.VtoPagoSeguro, diasDeAviso, "Pago de Seguro"));
+
+
+            // (VerificoVencimientoPersona(transport.Persons, diasDeAviso) == Status.Vencido)
+            //return estadoVencido;
+
+            foreach (var item in transport.Persons)
+            {
+                tuples.Add(getDescriptionVto(item.VtoLibreta, diasDeAviso, "Libreta de "+item.Apellido + " " +item.Nombre ));
+                tuples.Add(getDescriptionVto(item.VtoLicencia, diasDeAviso, "Licencia de " + item.Apellido + " " + item.Nombre));
+            }
+
+
+
+            foreach (var item in tuples)
+            {
+                if (!string.IsNullOrEmpty(item.Item1))
+                    fechasVencidas += item.Item1 + "[br]";
+                if (!string.IsNullOrEmpty(item.Item2))
+                    fechasPorVencer += item.Item2 + "[br]";
+            }
+
+            return Tuple.Create(fechasVencidas, fechasPorVencer);
+        }
+
+        private Tuple<string,string> getDescriptionVto(DateTime? date, int diasDeAviso, string descripcion)
+        {
+            string fechasVencidas = null;
+            string fechasPorVencer = null;
+
+            switch (VerificoVencimiento(date, diasDeAviso))
+            {
+                case Status.Vencido:
+                    fechasVencidas= descripcion+ ": " + date?.ToString("dd/MM/yyyy");
+                    break;
+                case Status.PorVencer:
+                    fechasPorVencer = descripcion + ": " + date?.ToString("dd/MM/yyyy");
+                    break;
+            };
+
+            return Tuple.Create(fechasVencidas, fechasPorVencer);
+        }
+
+
+
+        private Status VerificoVencimiento(DateTime? date, int diasDeAviso)
         {
 
             //DateTime startDateTime = DateTime.Today; //Today at 00:00:00
             DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1); //Today at 23:59:59     
-            int diasDeAviso = db.Settings.Where(x => x.Clave == "DIASANTESDEVENCER").Select(x => x.Numero1).FirstOrDefault() ?? 0;
+            
 
-            if (date < endDateTime)
+            if (date?.AddDays(1).AddTicks(-1) < endDateTime)
                 return Status.Vencido;
             if (date <= (endDateTime.AddDays(diasDeAviso)))
                 return Status.PorVencer;
@@ -220,17 +317,19 @@ namespace Transporte.Controllers
 
         }
 
-        private Status VerificoVencimientoPersona(ICollection<Person> persons)
+
+
+        private Status VerificoVencimientoPersona(ICollection<Person> persons, int diasDeAviso)
         {
             foreach (var item in persons)
             {
-                if (VerificoVencimiento(item.VtoLibreta) == Status.Vencido || VerificoVencimiento(item.VtoLicencia) == Status.Vencido)
+                if (VerificoVencimiento(item.VtoLibreta, diasDeAviso) == Status.Vencido || VerificoVencimiento(item.VtoLicencia, diasDeAviso) == Status.Vencido)
                     return Status.Vencido;
             }
 
             foreach (var item in persons)
             {
-                if (VerificoVencimiento(item.VtoLibreta) == Status.PorVencer || VerificoVencimiento(item.VtoLicencia) == Status.PorVencer)
+                if (VerificoVencimiento(item.VtoLibreta, diasDeAviso) == Status.PorVencer || VerificoVencimiento(item.VtoLicencia, diasDeAviso) == Status.PorVencer)
                     return Status.PorVencer;
             }
 
@@ -306,6 +405,7 @@ namespace Transporte.Controllers
                 return View("~/Views/Shared/AccessDenied.cshtml");
             ViewBag.DiasPorVencer = db.Settings.Where(x => x.Clave == "DIASANTESDEVENCER").Select(x => x.Numero1).FirstOrDefault() ?? 0;
             ViewBag.listaTipos = new List<TransportType>(db.TransportTypes.Where(x => x.Enable == true).ToList());
+            ViewBag.listaAgencias = new List<Agency>(db.Agencies.Where(x => x.Enable == true).ToList());
             return View();
         }
 
@@ -342,7 +442,10 @@ namespace Transporte.Controllers
                     VtoPoliza = transportViewModel.VtoPoliza,
                     VtoVTV = transportViewModel.VtoVTV,
                     ParadaNro = transportViewModel.ParadaNro,
-                    PlazaNro = transportViewModel.PlazaNro
+                    PlazaNro = transportViewModel.PlazaNro,
+                    AgencyId = transportViewModel.AgencyId,
+                    SubType = transportViewModel.SubType,
+                    VtoPagoSeguro = transportViewModel.VtoPagoSeguro                    
 
                 };
 
@@ -415,6 +518,7 @@ namespace Transporte.Controllers
             }
 
             ViewBag.listaTipos = new List<TransportType>(db.TransportTypes.Where(x => x.Enable == true).ToList());
+            ViewBag.listaAgencias = new List<Agency>(db.Agencies.Where(x => x.Enable == true).ToList());
 
             TransportEditViewModel editViewModel = new TransportEditViewModel
             {
@@ -434,7 +538,10 @@ namespace Transporte.Controllers
                 VtoPoliza = transport.VtoPoliza,
                 VtoVTV = transport.VtoVTV,
                 ParadaNro = transport.ParadaNro,
-                PlazaNro = transport.PlazaNro
+                PlazaNro = transport.PlazaNro,
+                AgencyId = transport.AgencyId,
+                SubType = transport.SubType,
+                VtoPagoSeguro = transport.VtoPagoSeguro
             };
 
             editViewModel.Titulares = new List<Person>();
@@ -486,6 +593,7 @@ namespace Transporte.Controllers
 
             ViewBag.listaNotificaciones = new List<Notification>(db.Notifications.ToList());
             ViewBag.listaTipos = new List<TransportType>(db.TransportTypes.Where(x => x.Enable == true).ToList());
+            ViewBag.listaAgencias = new List<Agency>(db.Agencies.Where(x => x.Enable == true).ToList());
 
             TransportEditViewModel editViewModel = new TransportEditViewModel
             {
@@ -505,7 +613,10 @@ namespace Transporte.Controllers
                 VtoPoliza = transport.VtoPoliza,
                 VtoVTV = transport.VtoVTV,
                 ParadaNro = transport.ParadaNro,
-                PlazaNro = transport.PlazaNro
+                PlazaNro = transport.PlazaNro,
+                VtoPagoSeguro = transport.VtoPagoSeguro,
+                SubType = transport.SubType,
+                AgencyId = transport.AgencyId
             };
 
             editViewModel.Titulares = new List<Person>();
@@ -571,6 +682,9 @@ namespace Transporte.Controllers
                 transport.VtoVTV = transportViewModel.VtoVTV;
                 transport.ParadaNro = transportViewModel.ParadaNro;
                 transport.PlazaNro = transportViewModel.PlazaNro;
+                transport.VtoPagoSeguro = transportViewModel.VtoPagoSeguro;
+                transport.SubType = transportViewModel.SubType;
+                transport.AgencyId = transportViewModel.AgencyId;
 
 
                 //Borro los que ya no estan
@@ -835,7 +949,7 @@ namespace Transporte.Controllers
           
             Transport transport = db.Transports.Find(TransportId);
 
-
+            Tuple<string,string> tuple = GetFechasVencidas(transport);
 
         TransportReportViewModel reportViewModel = new TransportReportViewModel
         {
@@ -856,8 +970,14 @@ namespace Transporte.Controllers
             FechaAlta = transport.FechaAlta.ToString("dd/MM/yyyy"),
             TipoTransporte = transport.TransportType.Descripcion,
             ParadaNro = transport.ParadaNro,
-            PlazaNro = transport.PlazaNro
-
+            PlazaNro = transport.PlazaNro,
+            NombreAgencia = transport.Agency?.Nombre,
+            NroAgencia = transport.Agency?.NroAgencia,
+            FechaHabilitacionAgencia = transport.Agency?.FechaHabilitacion?.ToString("dd/MM/yyyy"),
+            SubTipoTransporte = transport.SubType,
+            VtoPagoSeguro = transport.VtoPagoSeguro?.ToString("dd/MM/yyyy"),
+            FechasVencidas = tuple.Item1,
+            FechasPorVencer = tuple.Item2
         };
 
         reportViewModel.Titulares = new List<Person>();
@@ -935,6 +1055,7 @@ namespace Transporte.Controllers
         [HttpPost]
         public FileResult Export(List<string> GridHtml, string name)
         {
+            
             using (MemoryStream stream = new System.IO.MemoryStream())
             {
                 
@@ -943,7 +1064,9 @@ namespace Transporte.Controllers
                 pdfDoc.Open();
                 foreach (var item in GridHtml)
                 {
-                    StringReader sr = new StringReader(item);
+                    string item2= item.Replace("<br>", "<br/>").Replace("[br]", "<br/>");
+
+                    StringReader sr = new StringReader(item2);
                     XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
                     pdfDoc.NewPage();
                 }
