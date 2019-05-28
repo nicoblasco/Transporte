@@ -479,7 +479,7 @@
 
     <div class="modal fade" id="notificacionModal" role="dialog">
         <div class="modal-dialog">
-            <form id="form-create" method="post" autocomplete="off">
+            <form id="form-notificacion" method="post" autocomplete="off">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
@@ -490,7 +490,7 @@
                         <form role="form" autocomplete="off">
                             <div class="form-group">
                                 <label>Seleccione Documento</label>
-                                @Html.DropDownList("selectNotification", new SelectList(ViewBag.listaNotificaciones, "Id", "Nombre"), new { @class = "form-control noDisabled" })
+                                @Html.DropDownList("selectNotification", new SelectList(ViewBag.listaNotificaciones, "Id", "Nombre"), new { id = "selectNotification", @class = "form-control noDisabled" })
                             </div>
                         </form>
                     </div>
@@ -626,56 +626,16 @@
 
 
 
-    @*$("#form-create").validate({
+    $("#form-notificacion").validate({
         rules: {
             selectNotification: { required: true}
         },
         messages: {
-            inputDescripcion: {
+            selectNotification: {
                 required: "Este campo es requerido."
             }
-        },
-        submitHandler: function (form) {
-            $("#div-loader").show();
-            var object = new Object();
-            object.Id = $('#Id').val();
-            object.NotificationId = $("#selectNotification option:selected").val();
-            var data = JSON.stringify(object);
-
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("Report")',
-                    data: data,
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-                    success: function (dataResponse) {
-                        $('#notificacionModal').modal('hide');
-                        $("#div-loader").hide();
-                        if (dataResponse.responseCode == 0)
-                            {
-                            $("#div-loader").hide();
-                            Lobibox.notify('success', {
-                                title: 'Exito',
-                                msg: 'El Reporte se ha generado correctamente.'
-                            });
-                        } else {
-                                Lobibox.notify('error', {
-                                    title: 'Error',
-                                    msg: 'Ah ocurrido un error, intente nuevamente.'
-                            });
-                        }
-                    },
-                    error: function (response) {
-                        $("#div-loader").hide();
-                            Lobibox.notify('error', {
-                                title: 'Error',
-                                msg: 'Ah ocurrido un error, intente nuevamente.'
-                            });
-                    }
-                });
-            },
-            errorElement: "p"
-    });*@
+        }
+    });
 
 
 
@@ -694,15 +654,10 @@
 
             var link = "@Html.Raw(@Url.Action("Report", "Transports", new { @TransportId = "_myTid_", @NotificacionId = "_myid_" }))";
             var link2 = link.replace('_myid_', idObject);
+            var link3 = link2.replace('_myTid_', idTransport);
 
-            $('#notificacionModal').find('a').attr("href", link2.replace('_myTid_', idTransport));
+            $('#notificacionModal').find('a').attr("href", link3);
         }
-
-
-
-
-
-
 
 
     </script>

@@ -462,7 +462,8 @@
 
 
     //Completo el modal edit con los datos de la grilla
-    $('#editarModal').on('shown.bs.modal', function (e) {
+        $('#editarModal').on('shown.bs.modal', function (e) {
+            
         var idObject = $('#dataTables-Index').find('tr.selected>td').first().text();
 
         $.ajax({
@@ -476,7 +477,9 @@
                 $('#editarModal').find('input#input-Id').val(result.Id);
                 $('#editarModal').find('input#input-Nombre').val(result.Nombre);
                 $('#editarModal').find('input#input-Descripcion').val(result.Descripcion);
-                
+
+                //$('.summernote').summernote('code', result.Descripcion);
+
                 $('#editarModal').find('#summernote').val(result.Documento).summernote({
                     lang: 'es-ES',
                     height: 250,
@@ -491,8 +494,6 @@
                     ]
                 });
 
-
-               // $('#editarModal').find('#summernote').val(result.Documento).summernote('code');
 
             },
             error: function (response) {
@@ -511,10 +512,14 @@
     //Reinicio los modal
         $('.modal').on('hidden.bs.modal', function (e) {
             $('#summernote').summernote('reset');
+            //$('#editarModal').find('#summernote').summernote('reset');
+            $('#editarModal').find('#summernote').summernote('destroy');
+            //$('#summernote').summernote('destroy');
         $(".modal-body input").val(""),
             $(".modal-body input").val(""),
             $(this).removeData('bs.modal');
-        $("form").validate().resetForm();
+            $("form").validate().resetForm();
+             
     });
 
     function getDuplicates(pid,pParam)
