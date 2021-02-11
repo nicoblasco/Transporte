@@ -18,15 +18,24 @@ namespace Transporte.Models
         public string Dni { get; set; }
 
         public string CalleReal { get; set; }
+        public string Altura { get; set; }
+        public string Piso { get; set; }
+        public string Depto { get; set; }
+
+        public string Barrio { get; set; }
+
         public string PartidoReal{ get; set; }
-        //public int? StreetRealId { get; set; }
-        //public virtual Street StreetReal { get; set; }
 
 
         public string CalleConstituido { get; set; }
+        public string AlturaConstituido { get; set; }
+        public string PisoConstituido { get; set; }
+        public string DeptoConstituido { get; set; }
+
+        public string BarrioConstituido { get; set; }
+
         public string PartidoConstituido { get; set; }
-        //public int? StreetConstituidoId { get; set; }
-        //public virtual Street StreetConstituido { get; set; }
+
         public string Telefono { get; set; }
         public string Email { get; set; }       
 

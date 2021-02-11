@@ -37,7 +37,7 @@ namespace Transporte.Controllers
             ViewBag.Baja = PermissionViewModel.TienePermisoBaja(WindowHelper.GetWindowId(ModuleDescription, WindowDescription));
             ViewBag.listaNotificaciones = new List<Notification>(db.Notifications.ToList());
             ViewBag.listaTipos = new List<TransportType>(db.TransportTypes.Where(x => x.Enable == true).ToList());
-            
+
 
             return View();
         }
@@ -54,7 +54,7 @@ namespace Transporte.Controllers
                 foreach (var item in tabla)
                 {
                     string estado = GetEstado(item);
-                    Tuple<string, string> tuple = getNames(item.Persons.Where(x=>x.PersonTypeId== (int)PersonType.Titular).ToList() );
+                    Tuple<string, string> tuple = getNames(item.Persons.Where(x => x.PersonTypeId == (int)PersonType.Titular).ToList());
                     TransportIndexViewModel viewModel = new TransportIndexViewModel
                     {
                         Id = item.Id,
@@ -67,7 +67,7 @@ namespace Transporte.Controllers
                         FechaAlta = item.FechaAlta.ToString("dd/MM/yyyy HH:mm:ss"),
                         NombreTitular = tuple.Item1,
                         DniTitular = tuple.Item2
-                        
+
                     };
 
 
@@ -84,7 +84,7 @@ namespace Transporte.Controllers
             }
         }
 
-        private Tuple<string,string> getNames(List<Person> titulares)
+        private Tuple<string, string> getNames(List<Person> titulares)
         {
             string names = null;
             string dnis = null;
@@ -96,16 +96,16 @@ namespace Transporte.Controllers
                     names = item.Apellido + " " + item.Nombre;
                     dnis = item.Dni;
                 }
-                    
+
                 else
                 {
                     names = names + " / " + item.Apellido + " " + item.Nombre;
                     dnis = dnis + " / " + item.Dni;
                 }
-                    
+
                 i++;
             }
-            return Tuple.Create(names,dnis);
+            return Tuple.Create(names, dnis);
         }
 
 
@@ -263,7 +263,7 @@ namespace Transporte.Controllers
 
             foreach (var item in transport.Persons)
             {
-                tuples.Add(getDescriptionVto(item.VtoLibreta, diasDeAviso, "Libreta de "+item.Apellido + " " +item.Nombre ));
+                tuples.Add(getDescriptionVto(item.VtoLibreta, diasDeAviso, "Libreta de " + item.Apellido + " " + item.Nombre));
                 tuples.Add(getDescriptionVto(item.VtoLicencia, diasDeAviso, "Licencia de " + item.Apellido + " " + item.Nombre));
             }
 
@@ -280,7 +280,7 @@ namespace Transporte.Controllers
             return Tuple.Create(fechasVencidas, fechasPorVencer);
         }
 
-        private Tuple<string,string> getDescriptionVto(DateTime? date, int diasDeAviso, string descripcion)
+        private Tuple<string, string> getDescriptionVto(DateTime? date, int diasDeAviso, string descripcion)
         {
             string fechasVencidas = null;
             string fechasPorVencer = null;
@@ -288,7 +288,7 @@ namespace Transporte.Controllers
             switch (VerificoVencimiento(date, diasDeAviso))
             {
                 case Status.Vencido:
-                    fechasVencidas= descripcion+ ": " + date?.ToString("dd/MM/yyyy");
+                    fechasVencidas = descripcion + ": " + date?.ToString("dd/MM/yyyy");
                     break;
                 case Status.PorVencer:
                     fechasPorVencer = descripcion + ": " + date?.ToString("dd/MM/yyyy");
@@ -305,7 +305,7 @@ namespace Transporte.Controllers
 
             //DateTime startDateTime = DateTime.Today; //Today at 00:00:00
             DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1); //Today at 23:59:59     
-            
+
 
             if (date?.AddDays(1).AddTicks(-1) < endDateTime)
                 return Status.Vencido;
@@ -445,7 +445,7 @@ namespace Transporte.Controllers
                     PlazaNro = transportViewModel.PlazaNro,
                     AgencyId = transportViewModel.AgencyId,
                     SubType = transportViewModel.SubType,
-                    VtoPagoSeguro = transportViewModel.VtoPagoSeguro                    
+                    VtoPagoSeguro = transportViewModel.VtoPagoSeguro
 
                 };
 
@@ -736,6 +736,15 @@ namespace Transporte.Controllers
                                         item.Apellido = titular.Apellido;
                                         item.CalleConstituido = titular.CalleConstituido;
                                         item.CalleReal = titular.CalleReal;
+                                        item.Altura = titular.Altura;
+                                        item.Piso = titular.Piso;
+                                        item.Depto = titular.Depto;
+                                        item.Barrio = titular.Barrio;
+                                        item.Dni = titular.Dni;
+                                        item.AlturaConstituido = titular.AlturaConstituido;
+                                        item.PisoConstituido = titular.PisoConstituido;
+                                        item.DeptoConstituido = titular.DeptoConstituido;
+                                        item.BarrioConstituido = titular.BarrioConstituido;
                                         item.Dni = titular.Dni;
                                         item.Email = titular.Email;
                                         item.PartidoConstituido = titular.PartidoConstituido;
@@ -918,9 +927,9 @@ namespace Transporte.Controllers
             List<string> contenidoText = new List<string>();
             Notification notification = db.Notifications.Find(NotificacionId);
 
-            for (int i = 0; i < TransportId.Length ; i++)
+            for (int i = 0; i < TransportId.Length; i++)
             {
-                contenidoText.AddRange( ArmarHtml(TransportId[i], notification));
+                contenidoText.AddRange(ArmarHtml(TransportId[i], notification));
             }
 
 
@@ -946,125 +955,133 @@ namespace Transporte.Controllers
 
         private List<string> ArmarHtml(int TransportId, Notification notification)
         {
-          
+
             Transport transport = db.Transports.Find(TransportId);
 
-            Tuple<string,string> tuple = GetFechasVencidas(transport);
+            Tuple<string, string> tuple = GetFechasVencidas(transport);
 
-        TransportReportViewModel reportViewModel = new TransportReportViewModel
-        {
-            Constatacion = transport.Constatacion?.ToString("dd/MM/yyyy"),
-            Desinfeccion = transport.Desinfeccion?.ToString("dd/MM/yyyy"),
-            Dominio = transport.Dominio,
-            Expediente = transport.Expediente,
-            FechaInscripcionInicial = transport.FechaInscripcionInicial?.ToString("dd/MM/yyyy"),
-            Id = transport.Id,
-            Marca = transport.Marca,
-            Modelo = transport.Modelo,
-            Observaciones = transport.Observaciones,
-            ReciboPagoSeguro = transport.ReciboPagoSeguro,
-            VtoConstanciaAFIP = transport.VtoConstanciaAFIP?.ToString("dd/MM/yyyy"),
-            VtoMatafuego = transport.VtoMatafuego?.ToString("dd/MM/yyyy"),
-            VtoPoliza = transport.VtoPoliza?.ToString("dd/MM/yyyy"),
-            VtoVTV = transport.VtoVTV?.ToString("dd/MM/yyyy"),
-            FechaAlta = transport.FechaAlta.ToString("dd/MM/yyyy"),
-            TipoTransporte = transport.TransportType.Descripcion,
-            ParadaNro = transport.ParadaNro,
-            PlazaNro = transport.PlazaNro,
-            NombreAgencia = transport.Agency?.Nombre,
-            NroAgencia = transport.Agency?.NroAgencia,
-            FechaHabilitacionAgencia = transport.Agency?.FechaHabilitacion?.ToString("dd/MM/yyyy"),
-            SubTipoTransporte = transport.SubType,
-            VtoPagoSeguro = transport.VtoPagoSeguro?.ToString("dd/MM/yyyy"),
-            FechasVencidas = tuple.Item1,
-            FechasPorVencer = tuple.Item2
-        };
-
-        reportViewModel.Titulares = new List<Person>();
-        reportViewModel.Choferes = new List<Person>();
-        foreach (var item in transport.Persons.Where(x => x.Enable == true))
-        {
-
-            switch (GetPersonTypeCode(item.PersonTypeId))
+            TransportReportViewModel reportViewModel = new TransportReportViewModel
             {
-                case "TI":
-                    {
-                        reportViewModel.Titulares.Add(item);// = new List<Person> { item };
+                Constatacion = transport.Constatacion?.ToString("dd/MM/yyyy"),
+                Desinfeccion = transport.Desinfeccion?.ToString("dd/MM/yyyy"),
+                Dominio = transport.Dominio,
+                Expediente = transport.Expediente,
+                FechaInscripcionInicial = transport.FechaInscripcionInicial?.ToString("dd/MM/yyyy"),
+                Id = transport.Id,
+                Marca = transport.Marca,
+                Modelo = transport.Modelo,
+                Observaciones = transport.Observaciones,
+                ReciboPagoSeguro = transport.ReciboPagoSeguro,
+                VtoConstanciaAFIP = transport.VtoConstanciaAFIP?.ToString("dd/MM/yyyy"),
+                VtoMatafuego = transport.VtoMatafuego?.ToString("dd/MM/yyyy"),
+                VtoPoliza = transport.VtoPoliza?.ToString("dd/MM/yyyy"),
+                VtoVTV = transport.VtoVTV?.ToString("dd/MM/yyyy"),
+                FechaAlta = transport.FechaAlta.ToString("dd/MM/yyyy"),
+                TipoTransporte = transport.TransportType.Descripcion,
+                ParadaNro = transport.ParadaNro,
+                PlazaNro = transport.PlazaNro,
+                NombreAgencia = transport.Agency?.Nombre,
+                NroAgencia = transport.Agency?.NroAgencia,
+                FechaHabilitacionAgencia = transport.Agency?.FechaHabilitacion?.ToString("dd/MM/yyyy"),
+                SubTipoTransporte = transport.SubType,
+                VtoPagoSeguro = transport.VtoPagoSeguro?.ToString("dd/MM/yyyy"),
+                FechasVencidas = tuple.Item1,
+                FechasPorVencer = tuple.Item2
+            };
+
+            reportViewModel.Titulares = new List<Person>();
+            reportViewModel.Choferes = new List<Person>();
+            foreach (var item in transport.Persons.Where(x => x.Enable == true))
+            {
+
+                switch (GetPersonTypeCode(item.PersonTypeId))
+                {
+                    case "TI":
+                        {
+                            reportViewModel.Titulares.Add(item);// = new List<Person> { item };
+                            break;
+                        }
+                    case "CH":
+                        {
+                            reportViewModel.Choferes.Add(item);
+                            break;
+                        }
+                    default:
                         break;
-                    }
-                case "CH":
-                    {
-                        reportViewModel.Choferes.Add(item);
-                        break;
-                    }
-                default:
-                    break;
+                }
+
             }
 
+            int c = 0;
+            foreach (var item in reportViewModel.Choferes)
+            {
+                if (c == 0)
+                {
+                    reportViewModel.ChoferNombre = item.Apellido;
+                }
+                else
+                {
+                    reportViewModel.ChoferNombre = reportViewModel.ChoferNombre + " y del Sr." + item.Apellido;
+                }
+                c = c + 1;
+            }
+
+            string templateText = notification.Documento;
+
+            List<string> contenidoText = new List<string>();
+
+            foreach (var item in reportViewModel.Titulares)
+            {
+
+                reportViewModel.NombreTitular = item.Nombre;
+                reportViewModel.ApellidoTitular = item.Apellido;
+                reportViewModel.CalleConstituidoTitular = item.CalleConstituido;
+                reportViewModel.CalleRealTitular = item.CalleReal;
+                reportViewModel.AlturaRealTitular = item.Altura;
+                reportViewModel.PisoRealTitular = item.Piso;
+                reportViewModel.BarrioRealTitular = item.Barrio;
+                reportViewModel.DeptoRealTitular = item.Depto;
+                reportViewModel.AlturaConstituidoTitular = item.AlturaConstituido;
+                reportViewModel.PisoConstituidoTitular = item.PisoConstituido;
+                reportViewModel.BarrioConstituidoTitular = item.BarrioConstituido;
+                reportViewModel.DeptoConstituidoTitular = item.DeptoConstituido;
+                reportViewModel.TelefonoTitular = item.Telefono;
+                reportViewModel.EmailTitular = item.Email;
+                reportViewModel.DniTitular = item.Dni;
+                reportViewModel.PartidoConstituidoTitular = item.PartidoConstituido;
+                reportViewModel.PartidoRealTitular = item.PartidoReal;
+
+
+
+
+                if (Engine.Razor.IsTemplateCached(notification.Id.ToString(), null))
+                {
+                    contenidoText.Add(Engine.Razor.Run(notification.Id.ToString(), null, reportViewModel));
+                }
+                else
+                {
+                    contenidoText.Add(Engine.Razor.RunCompile(templateText, notification.Id.ToString(), null, reportViewModel));
+                }
+            }
+
+            return contenidoText;
         }
-
-        int c = 0;
-        foreach (var item in reportViewModel.Choferes)
-        {
-            if (c == 0)
-            {
-                reportViewModel.ChoferNombre = item.Apellido;
-            }
-            else
-            {
-                reportViewModel.ChoferNombre = reportViewModel.ChoferNombre + " y del Sr." + item.Apellido;
-            }
-            c = c + 1;
-        }
-
-        string templateText = notification.Documento;
-
-        List<string> contenidoText = new List<string>();
-
-        foreach (var item in reportViewModel.Titulares)
-        {
-
-            reportViewModel.NombreTitular = item.Nombre;
-            reportViewModel.ApellidoTitular = item.Apellido;
-            reportViewModel.CalleConstituidoTitular = item.CalleConstituido;
-            reportViewModel.CalleRealTitular = item.CalleConstituido;
-            reportViewModel.TelefonoTitular = item.Telefono;
-            reportViewModel.EmailTitular = item.Email;
-            reportViewModel.DniTitular = item.Dni;
-            reportViewModel.PartidoConstituidoTitular = item.PartidoConstituido;
-            reportViewModel.PartidoRealTitular = item.PartidoReal;
-
-
-
-
-            if (Engine.Razor.IsTemplateCached(notification.Id.ToString(), null))
-            {
-                contenidoText.Add(Engine.Razor.Run(notification.Id.ToString(), null, reportViewModel));
-            }
-            else
-            {
-                contenidoText.Add(Engine.Razor.RunCompile(templateText, notification.Id.ToString(), null, reportViewModel));
-            }
-        }
-
-        return contenidoText;
-    }
 
 
 
         [HttpPost]
         public FileResult Export(List<string> GridHtml, string name)
         {
-            
+
             using (MemoryStream stream = new System.IO.MemoryStream())
             {
-                
+
                 Document pdfDoc = new Document(PageSize.A4, 50f, 50f, 100f, 100f);
                 PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
                 pdfDoc.Open();
                 foreach (var item in GridHtml)
                 {
-                    string item2= item.Replace("<br>", "<br/>").Replace("[br]", "<br/>");
+                    string item2 = item.Replace("<br>", "<br/>").Replace("[br]", "<br/>");
 
                     StringReader sr = new StringReader(item2);
                     XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
@@ -1072,7 +1089,7 @@ namespace Transporte.Controllers
                 }
 
                 pdfDoc.Close();
-                return File(stream.ToArray(), "application/pdf", name+".pdf");
+                return File(stream.ToArray(), "application/pdf", name + ".pdf");
             }
         }
 

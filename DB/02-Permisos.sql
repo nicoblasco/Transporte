@@ -3,7 +3,7 @@ insert into [dbo].[Modules] (Descripcion,Enable) values ('Menu Principal',1);
 insert into [dbo].[Modules] (Descripcion,Enable) values ('ABM Maestros',1);
 insert into [dbo].[Modules] (Descripcion,Enable) values ('Configuración',1);
 
-insert into [dbo].[Windows] (Descripcion,Enable,Url,Orden,ModuleId) values ('Transportes',1,'Transports/Index',1,(select Id from [dbo].[Modules] where Descripcion='Menu Principal'))
+//insert into [dbo].[Windows] (Descripcion,Enable,Url,Orden,ModuleId) values ('Transportes',1,'Transports/Index',1,(select Id from [dbo].[Modules] where Descripcion='Menu Principal'))
 
 
 insert into [dbo].[Windows] (Descripcion,Enable,Url,Orden,ModuleId) values ('Tipos de Transporte',1,'TransportTypes/Index',1,(select Id from [dbo].[Modules] where Descripcion='ABM Maestros'))

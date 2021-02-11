@@ -40,9 +40,20 @@ namespace Transporte.ViewModel
         public string DniTitular { get; set; }
 
         public string CalleRealTitular { get; set; }
+        public string AlturaRealTitular { get; set; }
+        public string PisoRealTitular { get; set; }
+        public string DeptoRealTitular { get; set; }
 
+        public string BarrioRealTitular { get; set; }
 
         public string CalleConstituidoTitular { get; set; }
+
+        public string AlturaConstituidoTitular { get; set; }
+        public string PisoConstituidoTitular { get; set; }
+        public string DeptoConstituidoTitular { get; set; }
+
+        public string BarrioConstituidoTitular { get; set; }
+
         public string PartidoConstituidoTitular { get; set; }
         public string PartidoRealTitular { get; set; }
 

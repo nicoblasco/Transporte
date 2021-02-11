@@ -139,13 +139,13 @@
                                                 @Html.DropDownListFor(model => model.AgencyId, new SelectList(ViewBag.listaAgencias, "Id", "Fullname"), "Seleccione...", new { @class = "form-control input-sm", id = "AgencyId" })
                                             </div>
 
-                                            <div class="col-sm-2">
-                                                <label>N° Parada</label>
+                                            <div class="col-sm-2"  id="divParada">
+                                                <label  id="lblParada">N° Parada</label>
                                                 @Html.EditorFor(model => model.ParadaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "ParadaNro" } })
                                             </div>
 
-                                            <div class="col-sm-2">
-                                                <label>N° Plaza</label>
+                                            <div class="col-sm-2"  id="divPlaza">
+                                                <label  id="lblPlaza">N° Plaza</label>
                                                 @Html.EditorFor(model => model.PlazaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "PlazaNro" } })
                                             </div>
 
@@ -183,7 +183,7 @@
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label>Fecha Constatación</label>
+                                                <label>Fecha Inspección</label>
                                                 @*@Html.EditorFor(model => model.Constatacion, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "Constatacion", @type = "datetime" } })*@
                                                 @Html.TextBoxFor(m => m.Constatacion, new { @Value = Model.Constatacion.HasValue ? Model.Constatacion.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width", id = "Constatacion", @type = "datetime" })
                                             </div>
@@ -209,7 +209,7 @@
                                                 @Html.TextBoxFor(m => m.VtoMatafuego, new { @Value = Model.VtoMatafuego.HasValue ? Model.VtoMatafuego.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoMatafuego", @type = "datetime" })
                                             </div>
 
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-2"  id="divConstanciaAFIP">
                                                 <label>Const.Opcion AFIP</label>
                                                 @*@Html.EditorFor(model => model.VtoConstanciaAFIP, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoConstanciaAFIP", @type = "datetime" } })*@
                                                 @Html.TextBoxFor(m => m.VtoConstanciaAFIP, new { @Value = Model.VtoConstanciaAFIP.HasValue ? Model.VtoConstanciaAFIP.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoConstanciaAFIP", @type = "datetime" })
@@ -289,8 +289,32 @@
                                                             <div class="row">
                                                                 <div class="col-lg-3">
                                                                     <div class="input-group">
-                                                                        <label>Domicilio Real</label>
+                                                                        <label>Calle Real</label>
                                                                         @Html.EditorFor(model => model.Titulares[i].CalleReal, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleReal" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Altura</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Altura, new { htmlAttributes = new { @class = "form-control input-sm", id = "AlturaReal" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Piso</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Piso, new { htmlAttributes = new { @class = "form-control input-sm", id = "PisoReal" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Depto</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Depto, new { htmlAttributes = new { @class = "form-control input-sm", id = "DeptoReal" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Barrio</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Barrio, new { htmlAttributes = new { @class = "form-control input-sm", id = "BarrioReal" } })
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-3">
@@ -299,10 +323,37 @@
                                                                         @Html.EditorFor(model => model.Titulares[i].PartidoReal, new { htmlAttributes = new { @class = "form-control input-sm", id = "PartidoReal" } })
                                                                     </div>
                                                                 </div>
+
+                                                            </div>
+                                                            <div class="row">
                                                                 <div class="col-lg-3">
                                                                     <div class="input-group">
                                                                         <label>Domicilio Constituido</label>
                                                                         @Html.EditorFor(model => model.Titulares[i].CalleConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleConstituido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Altura</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].AlturaConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "AlturaConstituido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Piso</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].PisoConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "PisoConstituido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Depto</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].DeptoConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "DeptoConstituido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Barrio</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].BarrioConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "BarrioConstituido" } })
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-3">
@@ -393,7 +444,7 @@
                                 @if (Model.Celadores.Count > 0)
                                 {
                                     int quedanCeladores = Model.Celadores.Count;
-                                    <div class="row">
+                                    <div class="row"  id="divCeladora">
                                         <div class="col-lg-12 f-cost">
                                             <div class="card">
                                                 <div class="card-header">
@@ -542,24 +593,58 @@
             $("select").prop('disabled', true);
             $(".noDisabled").prop('disabled', false);
             $("#btnSalir").prop('disabled', false);
-            
-
-            if ($('#TransportTypeId option:selected').text() == 'Escolar') {
-                $('#divSubType').show();
-
-            }
-            else {
-                $('#divSubType').hide();
-            };
+           
 
 
-            if ($('#TransportTypeId option:selected').text() == 'Remis') {
-                $('#divAgencia').show();
+                if ($('#TransportTypeId option:selected').text() == 'Escolar') {
+                    $('#divSubType').show();
+                    $("#divParada").hide();
+                    $("#lblPlaza").text("N° de Orden");
+                    $('#divAgencia').hide();
+                    $("#divConstanciaAFIP").show();
+                    $("#divCeladora").show();
+                    $('#divAgencia').hide();
+                }
+                else {
 
-            }
-            else {
-                $('#divAgencia').hide();
-            };
+                    if ($('#TransportTypeId option:selected').text() == 'Remis') {
+                        $('#divAgencia').show();
+                        $("#divParada").hide();
+                        $("#divPlaza").hide();
+                        $("#divConstanciaAFIP").hide();
+                        $("#divCeladora").hide();
+                        $('#SubType').val('');
+                        $('#divSubType').hide();
+
+                    }
+                    else {
+                        if ($('#TransportTypeId option:selected').text() == 'Taxi') {
+                            $("#divConstanciaAFIP").hide();
+                            $("#divCeladora").hide();
+                            $("#lblPlaza").text("N° Plaza");
+                            $("#divParada").show();
+                            $("#divPlaza").show();
+                            $('#SubType').val('');
+                            $('#divSubType').hide();
+                            $('#divAgencia').hide();
+                        }
+                        else {
+
+                            $('#SubType').val('');
+                            $('#divSubType').hide();
+                            $("#divParada").show();
+                            $("#divPlaza").show();
+                            $("#lblPlaza").text("N° Plaza");
+                            $("#divConstanciaAFIP").show();
+                            $("#divCeladora").show();
+
+                        }
+                    }
+
+
+
+                };
+
 
 
 

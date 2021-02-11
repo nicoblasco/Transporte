@@ -138,13 +138,13 @@
                                                 @Html.DropDownListFor(model => model.AgencyId, new SelectList(ViewBag.listaAgencias, "Id", "Fullname"), "Seleccione...", new { @class = "form-control input-sm", id = "AgencyId" })
                                             </div>
 
-                                            <div class="col-sm-2">
-                                                <label>N° Parada</label>
+                                            <div class="col-sm-2" id="divParada">
+                                                <label id="lblParada">N° Parada</label>
                                                 @Html.EditorFor(model => model.ParadaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "ParadaNro" } })
                                             </div>
 
-                                            <div class="col-sm-2">
-                                                <label>N° Plaza</label>
+                                            <div class="col-sm-2"  id="divPlaza">
+                                                <label  id="lblPlaza">N° Plaza</label>
                                                 @Html.EditorFor(model => model.PlazaNro, new { htmlAttributes = new { @class = "form-control input-sm", id = "PlazaNro" } })
                                             </div>
 
@@ -181,7 +181,7 @@
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label>Fecha Constatación</label><span class="red"> * </span>
+                                                <label>Fecha Inspección</label><span class="red"> * </span>
                                                 @*@Html.EditorFor(model => model.Constatacion, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "Constatacion", @type = "datetime" } })*@
                                                 @Html.TextBoxFor(m => m.Constatacion, new { @Value = Model.Constatacion.HasValue ? Model.Constatacion.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width", id = "Constatacion", @type = "datetime" })
                                             </div>
@@ -207,14 +207,14 @@
                                                 @Html.TextBoxFor(m => m.VtoMatafuego, new { @Value = Model.VtoMatafuego.HasValue ? Model.VtoMatafuego.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoMatafuego", @type = "datetime" })
                                             </div>
 
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-2"  id="divConstanciaAFIP">
                                                 <label>Const.Opcion AFIP</label><span class="red"> * </span>
                                                 @*@Html.EditorFor(model => model.VtoConstanciaAFIP, new { htmlAttributes = new { @class = "form-control input-sm input-date", id = "VtoConstanciaAFIP", @type = "datetime" } })*@
                                                 @Html.TextBoxFor(m => m.VtoConstanciaAFIP, new { @Value = Model.VtoConstanciaAFIP.HasValue ? Model.VtoConstanciaAFIP.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoConstanciaAFIP", @type = "datetime" })
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label>Vto Pago Seguro</label><span class="red"> * </span>
+                                                <label>Vto Pago Seguro</label>
                                                 @Html.TextBoxFor(m => m.VtoPagoSeguro, new { @Value = Model.VtoPagoSeguro.HasValue ? Model.VtoPagoSeguro.Value.ToString("dd/MM/yyyy") : null, @class = "form-control input-sm  input-date input-width conVencimiento", id = "VtoPagoSeguro", @type = "datetime" })
                                             </div>
 
@@ -278,7 +278,7 @@
 
                                                                 <div class="col-lg-3">
                                                                     <div class="input-group">
-                                                                        <label>E-mail</label><span class="red"> * </span>
+                                                                        <label>E-mail</label>
                                                                         @Html.EditorFor(model => model.Titulares[i].Email, new { htmlAttributes = new { @class = "form-control input-sm", id = "Email" } })
                                                                     </div>
                                                                 </div>
@@ -300,8 +300,33 @@
                                                             <div class="row">
                                                                 <div class="col-lg-3">
                                                                     <div class="input-group">
-                                                                        <label>Domicilio Real</label><span class="red"> * </span>
+                                                                        <label>Calle Real</label><span class="red"> * </span>
                                                                         @Html.EditorFor(model => model.Titulares[i].CalleReal, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleReal" } })
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Altura</label><span class="red"> * </span>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Altura, new { htmlAttributes = new { @class = "form-control input-sm", id = "AlturaReal" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Piso</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Piso, new { htmlAttributes = new { @class = "form-control input-sm", id = "PisoReal" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Depto</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Depto, new { htmlAttributes = new { @class = "form-control input-sm", id = "DeptoReal" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Barrio</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].Barrio, new { htmlAttributes = new { @class = "form-control input-sm", id = "BarrioReal" } })
                                                                     </div>
                                                                 </div>
 
@@ -312,10 +337,37 @@
                                                                     </div>
                                                                 </div>
 
+                                                            </div>
+                                                            <div class="row">
                                                                 <div class="col-lg-3">
                                                                     <div class="input-group">
                                                                         <label>Domicilio Constituido</label><span class="red"> * </span>
                                                                         @Html.EditorFor(model => model.Titulares[i].CalleConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "CalleConstituido" } })
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Altura</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].AlturaConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "AlturaConstituido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Piso</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].PisoConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "PisoConstituido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <div class="input-group">
+                                                                        <label>Depto</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].DeptoConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "DeptoConstituido" } })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="input-group">
+                                                                        <label>Barrio</label>
+                                                                        @Html.EditorFor(model => model.Titulares[i].BarrioConstituido, new { htmlAttributes = new { @class = "form-control input-sm", id = "BarrioConstituido" } })
                                                                     </div>
                                                                 </div>
 
@@ -418,7 +470,7 @@
                                 </div>
 
                                 @*CELADORES*@
-                                <div class="row">
+                                <div class="row" id="divCeladora">
                                     <div class="col-lg-12 f-cost">
                                         <div class="card">
                                             <div class="card-header">
@@ -609,54 +661,78 @@
             $('#QuitarTitular').hide();
             $('#QuitarChofer').hide();
             $('#QuitarCelador').hide();
-            
-
-            if ($('#TransportTypeId option:selected').text() == 'Remis') {
-                $('#divAgencia').show();
-
-            }
-            else {
-                $('#divAgencia').hide();
-            };
+            habilitaCampos();
+           
 
 
-            if ($('#TransportTypeId option:selected').text() == 'Escolar') {
-                $('#divSubType').show();
-
-            }
-            else {
-                $('#divSubType').hide();
-            };
-
-            //Cuando se selecciona Escolar, se habilta el subtipo
             $('#TransportTypeId').on('change', function () {
+                habilitaCampos();
+            });
+
+            function habilitaCampos() {
                 if ($('#TransportTypeId option:selected').text() == 'Escolar') {
                     $('#divSubType').show();
-
-                }
-                else {
-                    $('#SubType').val('');
-                    $('#divSubType').hide();
-                };
-            });
-
-            //Cuando se selecciona Remis, se habilta la Agencia
-            $('#TransportTypeId').on('change', function () {
-                if ($('#TransportTypeId option:selected').text() == 'Remis') {
-                    $('#divAgencia').show();
-
-                }
-                else {
-                    $('#SubType').val('');
+                    $("#divParada").hide();
+                    $("#lblPlaza").text("N° de Orden");
                     $('#divAgencia').hide();
+                    $("#divConstanciaAFIP").show();
+                    $("#divCeladora").show();
+                    $('#divAgencia').hide();
+
+                }
+                else {
+
+                    if ($('#TransportTypeId option:selected').text() == 'Remis') {
+                        $('#divAgencia').show();
+                        $("#divParada").hide();
+                        $("#divPlaza").hide();
+                        $("#divConstanciaAFIP").hide();
+                        $("#divCeladora").hide();
+                        $('#SubType').val('');
+                        $('#divSubType').hide();
+                    }
+                    else {
+                        if ($('#TransportTypeId option:selected').text() == 'Taxi') {
+                            $("#divConstanciaAFIP").hide();
+                            $("#divCeladora").hide();
+                            $("#lblPlaza").text("N° Plaza");
+                            $("#divParada").show();
+                            $("#divPlaza").show();
+                            $('#SubType').val('');
+                            $('#divSubType').hide();
+                            $('#divAgencia').hide();
+                        }
+                        else {
+
+                            $('#SubType').val('');
+                            $('#divSubType').hide();
+                            $("#divParada").show();
+                            $("#divPlaza").show();
+                            $("#lblPlaza").text("N° Plaza");
+                            $("#divConstanciaAFIP").show();
+                            $("#divCeladora").show();
+
+                        }
+                    }
+
+
+
                 };
-            });
+            }
 
             $(".conVencimiento").each(function () {
                 if ($(this).val()!='')
                     validateDate($(this));
             });
 
+            $('#Dominio').on('keypress', function (event) {
+                var regex = new RegExp("^[a-zA-Z0-9]+$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
 
             function validateDate(objeto) {
                 var fechaconVencimiento = convertToDate($(objeto).val());
@@ -1029,7 +1105,7 @@
             }
 
             if ($("#Constatacion").val() == '') {
-                messageError += "Fecha Constatación </br>";
+                messageError += "Fecha Inspección </br>";
                 $("#Constatacion").addClass('validate-error');
             }
             else {
@@ -1069,13 +1145,13 @@
                 $("#VtoConstanciaAFIP").removeClass('validate-error');
             }
 
-            if ($("#VtoPagoSeguro").val() == '') {
-                messageError += "Vto Pago Seguro </br>";
-                $("#VtoPagoSeguro").addClass('validate-error');
-            }
-            else {
-                $("#VtoPagoSeguro").removeClass('validate-error');
-            }
+            //if ($("#VtoPagoSeguro").val() == '') {
+            //    messageError += "Vto Pago Seguro </br>";
+            //    $("#VtoPagoSeguro").addClass('validate-error');
+            //}
+            //else {
+            //    $("#VtoPagoSeguro").removeClass('validate-error');
+            //}
 
 
             $('.cPanelTitulares:visible').each(function () {
@@ -1127,13 +1203,13 @@
                     $(this).find("#CalleConstituido").removeClass('validate-error');
                 }
 
-                if ($(this).find("#Email").val() == '') {
-                    messageError += "E-mail </br>";
-                    $(this).find("#Email").addClass('validate-error');
-                }
-                else {
-                    $(this).find("#Email").removeClass('validate-error');
-                }
+                //if ($(this).find("#Email").val() == '') {
+                //    messageError += "E-mail </br>";
+                //    $(this).find("#Email").addClass('validate-error');
+                //}
+                //else {
+                //    $(this).find("#Email").removeClass('validate-error');
+                //}
 
                 if ($(this).find("#PartidoReal").val() == '') {
                     messageError += "Partido Constituido </br>";
